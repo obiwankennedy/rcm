@@ -1,6 +1,8 @@
 #include "gamemastermodel.h"
 
-#include <QDebug>
+#include <QColor>
+#include <QVariant>
+#include <QDataStream>
 
 GameMasterModel::GameMasterModel(QObject *parent) :
     QAbstractListModel(parent)
@@ -25,7 +27,9 @@ QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
         /// @todo puts image
         if(!m_gameMasterList[index.row()]->isPresent())
         {
-            return Qt::gray;
+            QVariant var;
+            var.setValue(QColor(Qt::gray));
+            return var;
         }
     }
     else if(Qt::CheckStateRole == role)

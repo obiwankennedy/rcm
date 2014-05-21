@@ -20,7 +20,7 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QWidget *parent) :
     m_gameDelegate = new GameEditorDelegate(l);
 
     ui->m_scenarioTable->setItemDelegateForColumn(0,m_gameDelegate);
-    ui->m_scenarioTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+    ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     ui->m_scenarioTable->horizontalHeader()->setStretchLastSection(true);
 //    ui->m_scenarioTable->horizontalHeader()->setCascadingSectionResizes(true);
 

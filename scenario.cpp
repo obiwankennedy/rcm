@@ -1,3 +1,4 @@
+#include <QDataStream>
 #include "scenario.h"
 
 Scenario::Scenario()

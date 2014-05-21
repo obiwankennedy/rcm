@@ -1,5 +1,6 @@
 #include "gamemodel.h"
 
+#include <QDataStream>
 
 GameModel::GameModel(QObject *parent) :
     QAbstractListModel(parent)

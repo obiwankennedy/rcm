@@ -1,5 +1,6 @@
 #include "gamemaster.h"
 #include <QUuid>
+#include <QDataStream>
 
 GameMaster::GameMaster()
     : m_id(QUuid::createUuid().toString())

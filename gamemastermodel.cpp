@@ -59,6 +59,7 @@ QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
 
     }
 
+
     return QVariant();
 }
 bool GameMasterModel::setData(const QModelIndex & index, const QVariant & value, int role)
@@ -69,6 +70,7 @@ bool GameMasterModel::setData(const QModelIndex & index, const QVariant & value,
     if(role==Qt::CheckStateRole)
     {
           m_gameMasterList[index.row()]->setPresent(!m_gameMasterList[index.row()]->isPresent());
+          emit gameMasterStatusHasChanged(m_gameMasterList[index.row()],m_gameMasterList[index.row()]->isPresent());
           return true;
     }
     return false;
@@ -93,11 +95,12 @@ void GameMasterModel::readFromData(QDataStream& from)
         GameMaster* tmp = new GameMaster();
         tmp->readFromData(from);
         append(tmp);
+        emit gmHasBeenAdded(tmp);
     }
 
 }
 
-void GameMasterModel::writeToData(QDataStream& to)
+void GameMasterModel::writeToData(QDataStream& to) const
 {
     to << m_gameMasterList.count();
 

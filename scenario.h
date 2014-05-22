@@ -34,6 +34,7 @@ public:
     enum STATE {AVAILABLE,RUNNING,DONE};
 
     Scenario();
+    virtual ~Scenario();
 
 //set
     void setGameId(QString id);

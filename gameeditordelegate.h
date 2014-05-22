@@ -39,4 +39,4 @@ private:
 
 };
 
-#endif // GAMEEDITORDELEGATE_H
+// GAMEEDITORDELEGATE_H

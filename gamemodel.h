@@ -40,7 +40,7 @@ public:
 
 
     virtual void readFromData(QDataStream&);
-    virtual void writeToData(QDataStream&) ;
+    virtual void writeToData(QDataStream&) const;
 
 
     QMap<QString,Game*>& getGameMap();

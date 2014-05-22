@@ -69,7 +69,7 @@ void GameModel::readFromData(QDataStream& from)
 
 }
 
-void GameModel::writeToData(QDataStream& to)
+void GameModel::writeToData(QDataStream& to) const
 {
     to << m_gameList.count();
 

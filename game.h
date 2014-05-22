@@ -34,7 +34,7 @@ public:
 
     Game();
     virtual void readFromData(QDataStream&);
-    virtual void writeToData(QDataStream&);
+    virtual void writeToData(QDataStream&) const;
 
     //
     void setTitle(QString title);

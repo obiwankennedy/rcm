@@ -45,14 +45,18 @@ public:
     void setMaximumPlayer(quint32);
     void setMinimumPlayer(quint32);
     void setTitle(QString m);
+    void setState(Scenario::STATE m);
     void setDescription(QString m);
+    void setCurrentPlayers(quint32 m);
 
 
 //gets
     Scenario::LEVEL getLevel() const;
+    Scenario::STATE getState() const;
     quint64 getDuration() const;
     quint32 getMaximumPlayers() const;
     quint32 getMinimumPlayers() const;
+    quint32 getCurrentPlayers() const;
     QString getGameId();
     QString getTitle();
     QString getDescription();
@@ -65,7 +69,13 @@ public:
 
 //save & restore
     virtual void readFromData(QDataStream&);
-    virtual void writeToData(QDataStream&);
+    virtual void writeToData(QDataStream&) const;
+
+    friend QDataStream &operator<<(QDataStream &out, const Scenario &myObj);
+    friend QDataStream &operator>>(QDataStream &in, Scenario &myObj);
+
+    void increaseCurrentPlayerCount(quint32 i =1 );
+    void decreaseCurrentPlayerCount(quint32 i =1 );
 
 private:
     QString m_gameId;
@@ -84,4 +94,7 @@ private:
 
 };
 
+
+
+ Q_DECLARE_METATYPE(Scenario)
 #endif // GAMESESSION_H

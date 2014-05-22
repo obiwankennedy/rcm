@@ -46,6 +46,7 @@ public:
     void setPerformer(QString m_id);
 
     void appendScenario(Scenario*);
+    void removeScenario(Scenario* tmp);
 
     virtual QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
     QList<Scenario*>* getScenarioList();

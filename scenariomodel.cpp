@@ -26,6 +26,9 @@ ScenarioModel::ScenarioModel(QObject *parent) :
 {
     m_scenarioList = new QList<Scenario*>();
     m_columns << tr("Game")<< tr("Title")<< tr("Duration")<< tr("Level")<< tr("Min")<< tr("Max")<< tr("Description");
+
+    qRegisterMetaType<Scenario>("Scenario");
+    qRegisterMetaTypeStreamOperators<Scenario>("Scenario");
 }
 
 int ScenarioModel::rowCount ( const QModelIndex &  ) const
@@ -62,6 +65,14 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
         }
 
 
+    }
+
+    else if(Qt::UserRole == role)
+    {
+        QVariant var;
+        Scenario* tmp = m_scenarioList->at(index.row());
+        var.setValue(*tmp);
+        return var;
     }
 
     return QVariant();
@@ -160,5 +171,12 @@ QVariant ScenarioModel::headerData ( int section, Qt::Orientation orientation, i
     {
         return m_columns[section];
     }
+
     return QVariant();
+}
+void ScenarioModel::removeScenario(Scenario* tmp)
+{
+    beginRemoveRows(QModelIndex(),m_scenarioList->indexOf(tmp),m_scenarioList->indexOf(tmp));
+    m_scenarioList->removeOne(tmp);
+    endRemoveRows();
 }

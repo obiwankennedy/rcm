@@ -27,14 +27,15 @@
 
 #include "game.h"
 #include "serializable.h"
+#include "scenario.h"
 
 class GameMaster : public Serialisable
 {
 public:
     GameMaster();
 
-    void insertGame(Game*,bool b = false);
-    void removeGame(Game*);
+    void insertScenario(Scenario*);
+    void removeScenario(Scenario*);
 
     void setName(QString name);
     void setFirstName(QString fn);
@@ -50,7 +51,11 @@ public:
     QString getId() const;
 
 
-    int getGameCount();
+    QList<Scenario*>* getGMScenarios() const;
+    void setGMScenario(QList<Scenario*>* l);
+
+
+    int getScenarioCount() const;
 
 
     bool isPresent();
@@ -58,10 +63,8 @@ public:
 
 
     virtual void readFromData(QDataStream&);
-    virtual void writeToData(QDataStream&);
-protected:
-    int getListGameCount();
-    int getListGameAuthorCount();
+    virtual void writeToData(QDataStream&) const;
+
 
 private:
     QString m_id;
@@ -70,8 +73,7 @@ private:
     QString m_firstName;
     QString m_nickname;
     QString m_mailAddress;
-    QList<Game*> m_gameList;
-    QList<Game*> m_gameAuthorList;
+    QList<Scenario*>* m_scenarioList;
 
     bool m_isPresent;
 };

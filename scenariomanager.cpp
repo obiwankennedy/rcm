@@ -20,8 +20,68 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include "scenariomanager.h"
+#include "ui_mainwindow.h"
 
-ScenarioManager::ScenarioManager(QObject *parent) :
-    QObject(parent)
+#include <QDebug>
+
+ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QObject *parent) :
+    QObject(parent),m_ui(ui)
 {
+    m_availableScenarioModel = new ScenarioModel();
+    m_runningScenarioModel = new ScenarioModel();
+    m_doneScenarioModel = new ScenarioModel();
+
+
+    m_customerView = new CustomerView();
+
+
+    ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
+    ui->m_scenarioRunningView->setModel(m_runningScenarioModel);
+    ui->m_scenarioDoneView->setModel(m_doneScenarioModel);
+
+
+    m_scenarioDelegate = new ScenarioItemDelegate(m_list);
+    ui->m_scenarioAvailabeView->setItemDelegate(m_scenarioDelegate);
+}
+
+
+void ScenarioManager::addScenarios(QList<Scenario*>* l,Scenario::STATE m )
+{
+    foreach(Scenario* tmp,*l)
+    {
+        addScenario(tmp,m);
+    }
+
+}
+
+void ScenarioManager::addScenario(Scenario* l,Scenario::STATE s)
+{
+    l->setState(s);
+    ScenarioModel* model = getRightModel(s);
+    model->appendScenario(l);
+}
+ScenarioModel* ScenarioManager::getRightModel(Scenario::STATE m)
+{
+    switch(m)
+    {
+    case Scenario::AVAILABLE:
+        return m_availableScenarioModel;
+    case Scenario::RUNNING:
+        return m_runningScenarioModel;
+    case Scenario::DONE:
+        return m_doneScenarioModel;
+    }
+    return NULL;
+}
+void ScenarioManager::showCustomView(bool b)
+{
+    m_customerView->setVisible(b);
+}
+void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
+{
+    foreach(Scenario* tmp,*l)
+    {
+        ScenarioModel* model = getRightModel(tmp->getState());
+        model->removeScenario(tmp);
+    }
 }

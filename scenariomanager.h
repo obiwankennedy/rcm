@@ -28,27 +28,44 @@
 
 
 #include "scenario.h"
-
+#include "scenariomodel.h"
+#include "scenarioitemdelegate.h"
+#include "customerview.h"
+namespace Ui {
+class MainWindow;
+}
 
 class ScenarioManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ScenarioManager(QObject *parent = 0);
+    explicit ScenarioManager(Ui::MainWindow* ui,QObject *parent = 0);
     
 
-    void addAvailableScenarios(QList<Scenario*>* l);
-    void addRunningScenarios(QList<Scenario*>* l);
-    void addDoneScenarios(QList<Scenario*>* l);
+    void addScenarios(QList<Scenario*>* l,Scenario::STATE s = Scenario::AVAILABLE);
     
-    void addOneAvailableScenario(Scenario* l);
-    void addOneRunningScenario(Scenario* l);
-    void addOneDoneScenario(Scenario* l);
+    void addScenario(Scenario* l,Scenario::STATE s = Scenario::AVAILABLE);
+
+    void removeScenarioFromList(QList<Scenario*>* l);
+
+    ScenarioModel* getRightModel(Scenario::STATE m);
+
+public slots:
+    void showCustomView(bool);
 
 private:
-    QList<Scenario*>* m_availableScenarioList;
-    QList<Scenario*>* m_runningScenarioList;
-    QList<Scenario*>* m_doneScenarioList;
+    ScenarioModel* m_availableScenarioModel;
+    ScenarioModel* m_runningScenarioModel;
+    ScenarioModel* m_doneScenarioModel;
+    //QList<Scenario*>* m_availableScenarioList;
+    //QList<Scenario*>* m_runningScenarioList;
+    //QList<Scenario*>* m_doneScenarioList;
+
+    Ui::MainWindow* m_ui;
+    ScenarioItemDelegate* m_scenarioDelegate;
+    QMap<QString,Game*> m_list;
+
+    CustomerView* m_customerView;
 };
 
 #endif // SCENARIOMANAGER_H

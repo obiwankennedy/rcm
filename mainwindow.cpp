@@ -39,9 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_scenarioList = new QList<Scenario*>();
-    m_customerView = new CustomerView();
-    m_customerView->setVisible(true);
+
     m_gameModel = new GameModel();
     m_gameMasterModel = new GameMasterModel();
     //m_gameMasterPresenceModel = new GameMasterModel();
@@ -50,10 +48,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
-
+   m_scenarioManager = new ScenarioManager(ui);
     initActions();
 
     ui->m_gameView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -74,7 +74,8 @@ void MainWindow::initActions()
 
     connect(m_addGameAct,SIGNAL(triggered()),this,SLOT(addGameDialog()));
     connect(m_addGMAct,SIGNAL(triggered()),this,SLOT(addGameMasterDialog()));
-
+    connect(m_gameMasterModel,SIGNAL(gmHasBeenAdded(GameMaster*)),this,SLOT(addGmScenarioListToGlobalList(GameMaster*)));
+    connect(m_gameMasterModel,SIGNAL(gameMasterStatusHasChanged(GameMaster*,bool)),this,SLOT(statusGmHasChanged(GameMaster*,bool)));
 
 
 
@@ -86,6 +87,8 @@ void MainWindow::initActions()
     connect(ui->m_quitAct,SIGNAL(triggered()),this,SLOT(close()));
     connect(ui->m_saveAct,SIGNAL(triggered()),this,SLOT(saveData()));
     connect(ui->m_saveAsAct,SIGNAL(triggered()),this,SLOT(saveAsData()));
+
+    connect(ui->m_customerViewDisplayAct,SIGNAL(triggered(bool)),m_scenarioManager,SLOT(showCustomView(bool)));
 
 }
 void  MainWindow::addGameDialog()
@@ -215,9 +218,29 @@ void MainWindow::addGameMasterDialog()
         QList<Scenario*>* list = dialog.getScenarioList();
 
         //All scenario are Available
-        m_scenarioList->append(*list);
+        tmp->setGMScenario(list);
+
+        //m_scenarioManager->addScenarios(list);
 
 
     }
 }
 
+void MainWindow::addGmScenarioListToGlobalList(GameMaster* l)
+{
+    if(l->isPresent())
+    {
+        m_scenarioManager->addScenarios(l->getGMScenarios());
+    }
+}
+void MainWindow::statusGmHasChanged(GameMaster* l,bool b)
+{
+    if(b)
+    {
+        addGmScenarioListToGlobalList(l);
+    }
+    else
+    {
+        m_scenarioManager->removeScenarioFromList(l->getGMScenarios());
+    }
+}

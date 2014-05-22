@@ -27,28 +27,18 @@ GameMaster::GameMaster()
     : m_id(QUuid::createUuid().toString())
 {
     m_isPresent = false;
+    m_scenarioList = new QList<Scenario*>();
 }
 
-void GameMaster::insertGame(Game* game,bool b)
+void GameMaster::insertScenario(Scenario* game)
 {
-    if(b)
-    {
-        m_gameAuthorList.append(game);
-    }
-    else
-    {
-        m_gameList.append(game);
-    }
+   m_scenarioList->append(game);
+
 }
 
-void GameMaster::removeGame(Game* game)
+void GameMaster::removeScenario(Scenario* game)
 {
-    bool removed = m_gameList.removeOne(game);
-
-    if(!removed)
-    {
-        m_gameAuthorList.removeOne(game);
-    }
+    m_scenarioList->removeOne(game);
 }
 
 void GameMaster::setName(QString name)
@@ -109,23 +99,17 @@ void GameMaster::readFromData(QDataStream& from)
    from >> size;
    for(int i = 0; i<size;++i)
    {
-       Game* tmp = new Game();
+       Scenario* tmp = new Scenario();
        tmp->readFromData(from);
-       insertGame(tmp,false);
+       insertScenario(tmp);
    }
 
-   from >> size;
-   for(int i = 0; i<size;++i)
-   {
-       Game* tmp = new Game();
-       tmp->readFromData(from);
-       insertGame(tmp,true);
-   }
+
 
 
 }
 
-void GameMaster::writeToData(QDataStream& to)
+void GameMaster::writeToData(QDataStream& to) const
 {
     to << m_name;
     to << m_phoneNumber;
@@ -134,33 +118,22 @@ void GameMaster::writeToData(QDataStream& to)
     to << m_mailAddress;
     to << m_isPresent;
 
-    to << getGameCount();
-    foreach(Game* tmp,m_gameList)
+    to << getScenarioCount();
+    foreach(Scenario* tmp,*m_scenarioList)
     {
         tmp->writeToData(to);
     }
 
-    to << getListGameCount();
-    foreach(Game* tmp,m_gameAuthorList)
-    {
-        tmp->writeToData(to);
-    }
+
 }
 
-int GameMaster::getGameCount()
+int GameMaster::getScenarioCount() const
 {
-   return m_gameList.count();
+   return m_scenarioList->count();
 }
 
-int GameMaster::getListGameCount()
-{
-   return m_gameAuthorList.count();
-}
 
-int GameMaster::getListGameAuthorCount()
-{
-    return getGameCount()+getListGameAuthorCount();
-}
+
 bool GameMaster::isPresent()
 {
     return m_isPresent;
@@ -172,5 +145,13 @@ void GameMaster::setPresent(bool b)
 }
 QString GameMaster::getId() const
 {
-
+    return m_id;
+}
+QList<Scenario*>*  GameMaster::getGMScenarios() const
+{
+    return m_scenarioList;
+}
+void  GameMaster::setGMScenario(QList<Scenario*>* l)
+{
+    m_scenarioList = l;
 }

@@ -36,7 +36,7 @@ class Serialisable
 {
 public:
     virtual void readFromData(QDataStream&) = 0;
-    virtual void writeToData(QDataStream&) = 0;
+    virtual void writeToData(QDataStream&) const = 0;
 };
 
 #endif // SERIALIZABLE_H

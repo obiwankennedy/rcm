@@ -36,7 +36,7 @@ void Game::readFromData(QDataStream& from)
     from >> m_uuid;
 }
 
-void Game::writeToData(QDataStream& to)
+void Game::writeToData(QDataStream& to) const
 {
     to << m_title;
     to << m_punchLine;

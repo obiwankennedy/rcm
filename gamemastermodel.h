@@ -39,9 +39,10 @@ public:
     void append(GameMaster*);
 
     virtual void readFromData(QDataStream&);
-    virtual void writeToData(QDataStream&) ;
+    virtual void writeToData(QDataStream&) const;
 signals:
-    
+    void gameMasterStatusHasChanged(GameMaster*,bool);
+    void gmHasBeenAdded(GameMaster*);
 public slots:
     
 private:

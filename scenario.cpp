@@ -60,7 +60,7 @@ QString Scenario::getGameId()
 
 QString Scenario::getGameMasterId()
 {
-return m_gameMasterId;
+    return m_gameMasterId;
 }
 
 quint64 Scenario::getDuration()
@@ -135,7 +135,7 @@ void Scenario::readFromData(QDataStream& from)
     m_state=(Scenario::STATE)i;
 }
 
-void Scenario::writeToData(QDataStream& to)
+void Scenario::writeToData(QDataStream& to) const
 {
     to << m_gameId;
     to << m_title;
@@ -148,6 +148,7 @@ void Scenario::writeToData(QDataStream& to)
     to << m_maximumPlayers;
     to << m_minimumPlayers;
     to << m_currentPlayers;
+    to << m_description;
     to << m_state;
 }
 QString Scenario::getDescription()
@@ -161,4 +162,40 @@ void Scenario::setTitle(QString m)
 void Scenario::setDescription(QString m)
 {
     m_description = m;
+}
+Scenario::STATE Scenario::getState() const
+{
+    return m_state;
+}
+void Scenario::setState(Scenario::STATE m)
+{
+    m_state=m;
+}
+QDataStream &operator>>(QDataStream &in, Scenario &myObj)
+{
+    myObj.readFromData(in);
+    return in;
+}
+
+QDataStream &operator<<(QDataStream &out, const Scenario &myObj)
+{
+    myObj.writeToData(out);
+    return out;
+}
+void Scenario::increaseCurrentPlayerCount(quint32 i)
+{
+    m_currentPlayers+=i;
+}
+
+void Scenario::decreaseCurrentPlayerCount(quint32 i)
+{
+    m_currentPlayers-=i;
+}
+quint32 Scenario::getCurrentPlayers() const
+{
+    return m_currentPlayers;
+}
+void Scenario::setCurrentPlayers(quint32 m)
+{
+    m_currentPlayers = m;
 }

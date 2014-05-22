@@ -24,7 +24,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -123,41 +123,42 @@
        <attribute name="title">
         <string>Scénarios</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>Availables</string>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QListView" name="m_scenarioAvailabeView"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_4">
-          <property name="title">
-           <string>Running</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QListView" name="m_scenarioRunningView"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_5">
-          <property name="title">
-           <string>Done</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <widget class="QListView" name="m_scenarioDoneView"/>
-           </item>
-          </layout>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string>Availables</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QListView" name="m_scenarioAvailabeView"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_4">
+           <property name="title">
+            <string>Running</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QListView" name="m_scenarioRunningView"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_5">
+           <property name="title">
+            <string>Done</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QListView" name="m_scenarioDoneView"/>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -190,7 +191,7 @@
     <property name="title">
      <string>Show</string>
     </property>
-    <addaction name="actionScenario_Window"/>
+    <addaction name="m_customerViewDisplayAct"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menuShow"/>
@@ -243,7 +244,10 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionScenario_Window">
+  <action name="m_customerViewDisplayAct">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Scenario Window</string>
    </property>

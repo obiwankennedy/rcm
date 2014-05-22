@@ -28,7 +28,8 @@
 #include "gamemodel.h"
 #include "gamemastermodel.h"
 #include "scenario.h"
-#include "customerview.h"
+
+#include "scenariomanager.h"
 
 #include "preferences/preferencesmanager.h"
 #include "serializable.h"
@@ -53,6 +54,8 @@ public:
 public slots:
     void addGameDialog();
     void addGameMasterDialog();
+    void addGmScenarioListToGlobalList(GameMaster* l);
+    void statusGmHasChanged(GameMaster* l,bool);
 
 protected:
     void closeEvent ( QCloseEvent * event );
@@ -68,6 +71,7 @@ private slots:
 
 
 
+
 private:
     void initActions();
 
@@ -77,7 +81,7 @@ private:
     GameModel* m_gameModel;
     GameMasterModel* m_gameMasterModel;
 
-    QList<Scenario*>* m_scenarioList;
+
     //GameMasterModel* m_gameMasterPresenceModel;
 
     //QActions
@@ -86,10 +90,11 @@ private:
     QAction* m_removeGMAct;
     QAction* m_addGMAct;
 
-    CustomerView* m_customerView;
+
 
     QString m_currentDataPath;
     PreferencesManager* m_preferences;
+    ScenarioManager* m_scenarioManager;
 };
 
 #endif // MAINWINDOW_H

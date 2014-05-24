@@ -23,16 +23,17 @@
 #include <QPainter>
 
 #include "scenarioitemdelegate.h"
+#include <QDebug>
 
-ScenarioItemDelegate::ScenarioItemDelegate(QMap<QString,Game*>& l)
-    : m_list(l)
+ScenarioItemDelegate::ScenarioItemDelegate(QMap<QString,Game*>& l,Scenario::STATE m )
+    : m_list(l),m_state(m)
 {
 }
 QSize ScenarioItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
  {
     QSize a = QStyledItemDelegate::sizeHint(option,index);
 
-   return QSize(a.width(),a.height()*2);
+   return QSize(a.width(),a.height()*3);
  }
 void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -58,12 +59,30 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         //style->drawPrimitive(QStyle::PE_PanelItemViewItem, &modifiedOption, painter);
         style->drawPrimitive(QStyle::PE_PanelItemViewRow,&option,painter);
         style->drawItemText(painter,checkBoxRect,Qt::AlignHCenter | Qt::AlignTop ,option.palette,true,tmp.getTitle());
-        style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignTop ,option.palette,true,tr("Dispo: %1/%2").arg(tmp.getCurrentPlayers()).arg(tmp.getMaximumPlayers()));
+        style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignTop ,option.palette,true,tr("Players: %1/%2").arg(tmp.getCurrentPlayers()).arg(tmp.getMaximumPlayers()));
+
+        if(Scenario::AVAILABLE == m_state)
+        {
+            QString str=minutesToHours(tmp.getDuration(),tr("Duration"));
+            style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+        }
+        else if(Scenario::RUNNING == m_state)
+        {
+            QString str=minutesToHours(tmp.getRestingTime(),tr("End in"));
+            style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+
+        }
 
 
-
-
-
+        style->drawItemText(painter,checkBoxRect,Qt::AlignCenter,option.palette,true,m_list[tmp.getGameId()]->getTitle());
 
     }
+}
+QString ScenarioItemDelegate::minutesToHours(int minutes,QString word) const
+{
+    int hours = minutes/60;
+    minutes -= 60*hours;
+
+
+    return QString(tr("%3: %1:%2")).arg(hours,2,10,QChar('0')).arg(minutes,2,10,QChar('0')).arg(word);
 }

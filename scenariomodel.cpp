@@ -20,15 +20,25 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include "scenariomodel.h"
+#include <QDebug>
 
-ScenarioModel::ScenarioModel(QObject *parent) :
-    QAbstractListModel(parent)
+ScenarioModel::ScenarioModel(Scenario::STATE m,QObject *parent) :
+    QAbstractListModel(parent),m_state(m)
 {
     m_scenarioList = new QList<Scenario*>();
     m_columns << tr("Game")<< tr("Title")<< tr("Duration")<< tr("Level")<< tr("Min")<< tr("Max")<< tr("Description");
 
     qRegisterMetaType<Scenario>("Scenario");
     qRegisterMetaTypeStreamOperators<Scenario>("Scenario");
+
+
+    m_timer = new QTimer();
+    m_timer->setInterval(1000*15);
+    if(m_state == Scenario::RUNNING)
+    {
+        connect(m_timer,SIGNAL(timeout()),this,SLOT(timeOut()));
+        connect(this,SIGNAL(addedData()),this,SLOT(mayStartTimer()));
+    }
 }
 
 int ScenarioModel::rowCount ( const QModelIndex &  ) const
@@ -82,42 +92,74 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
     if(!index.isValid())
         return false;
 
+    Scenario* current=m_scenarioList->at(index.row());
+
     if(role==Qt::EditRole)
     {
         bool result=false;
         switch(index.column())
         {
             case 0:
-                m_scenarioList->at(index.row())->setGameId(value.toString());
+                current->setGameId(value.toString());
                 result = true;
                 break;
             case 1:
-                m_scenarioList->at(index.row())->setTitle(value.toString());
+                current->setTitle(value.toString());
                 result = true;
                 break;
             case 2:
-                m_scenarioList->at(index.row())->setDuration(value.toInt());
+                current->setDuration(value.toInt());
                 result = true;
                 break;
             case 3:
-                m_scenarioList->at(index.row())->setLevel((Scenario::LEVEL)value.toInt());
+                current->setLevel((Scenario::LEVEL)value.toInt());
                 result = true;
                 break;
             case 4:
-                m_scenarioList->at(index.row())->setMinimumPlayer(value.toInt());
+                current->setMinimumPlayer(value.toInt());
                 result = true;
                 break;
             case 5:
-                 m_scenarioList->at(index.row())->setMaximumPlayer(value.toInt());
+                 current->setMaximumPlayer(value.toInt());
                 result = true;
                 break;
             case 6:
-                m_scenarioList->at(index.row())->setDescription(value.toString());
+               current->setDescription(value.toString());
                 result = true;
                 break;
         }
-            emit updateHeader();
+          //emit updateHeader();
+          emit dataChanged(index,index);
           return result;
+    }
+    else if(ScenarioModel::INCREASE_CURRENT == role)
+    {
+
+        if(current->getMaximumPlayers()>=current->getCurrentPlayers()+value.toInt())
+        {
+            current->increaseCurrentPlayerCount(value.toInt());
+            emit dataChanged(index,index);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if(ScenarioModel::DECREASE_CURRENT == role)
+    {
+
+        int valueInt = current->getCurrentPlayers()-value.toInt();
+        if(valueInt>=0)
+        {
+            current->decreaseCurrentPlayerCount(value.toInt());
+            emit dataChanged(index,index);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     return false;
 
@@ -131,12 +173,12 @@ Qt::ItemFlags ScenarioModel::flags ( const QModelIndex & index ) const
 void ScenarioModel::setDataList(QList<Scenario*>* l )
 {
     m_scenarioList = l;
-
 }
 void ScenarioModel::addDataList(QList<Scenario*>* l)
 {
     beginInsertRows(QModelIndex(),m_scenarioList->size(),m_scenarioList->size()+l->size());
     m_scenarioList->append(*l);
+    emit addedData();
     endInsertRows();
 }
 
@@ -148,6 +190,7 @@ void ScenarioModel::appendScenario(Scenario* a)
 {
     beginInsertRows(QModelIndex(),m_scenarioList->size(),m_scenarioList->size());
     m_scenarioList->append(a);
+    emit addedData();
     endInsertRows();
 
 }
@@ -179,4 +222,36 @@ void ScenarioModel::removeScenario(Scenario* tmp)
     beginRemoveRows(QModelIndex(),m_scenarioList->indexOf(tmp),m_scenarioList->indexOf(tmp));
     m_scenarioList->removeOne(tmp);
     endRemoveRows();
+}
+Scenario* ScenarioModel::getScenarioById(QString id)
+{
+    foreach(Scenario* tmp,*m_scenarioList)
+    {
+        if(tmp->getScenarioId()==id)
+        {
+
+            return tmp;
+        }
+    }
+    return NULL;
+}
+void ScenarioModel::mayStartTimer()
+{
+    if((!m_scenarioList->isEmpty())&&(!m_timer->isActive()))
+    {
+        m_timer->start();
+    }
+    else  if(m_scenarioList->isEmpty())
+    {
+        m_timer->stop();
+    }
+}
+void ScenarioModel::timeOut()
+{
+    if(!m_scenarioList->isEmpty())
+    {
+       emit dataChanged(createIndex(0,0),createIndex(m_scenarioList->size(),0));
+    }
+
+
 }

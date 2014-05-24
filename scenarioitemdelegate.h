@@ -29,12 +29,16 @@
 class ScenarioItemDelegate : public QStyledItemDelegate
 {
 public:
-    ScenarioItemDelegate(QMap<QString,Game*>& l);
+    ScenarioItemDelegate(QMap<QString,Game*>& l,Scenario::STATE m);
 
     QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+
+    QString minutesToHours(int minutes,QString word) const;
 private:
-    QMap<QString,Game*> m_list;
+    QMap<QString,Game*>& m_list;
+    Scenario::STATE m_state;
 
 };
 

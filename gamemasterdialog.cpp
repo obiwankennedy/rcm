@@ -33,7 +33,7 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QWidget *parent) :
     m_delScenarioAct=new QAction(tr("Del"),this);
 
     ui->setupUi(this);
-    m_model = new ScenarioModel();
+    m_model = new ScenarioModel(Scenario::AVAILABLE);
     ui->m_scenarioTable->setModel(m_model);
     ui->m_deleteButton->setDefaultAction(m_delScenarioAct);
     ui->m_newButton->setDefaultAction(m_addScenarioAct);
@@ -49,6 +49,8 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QWidget *parent) :
 #endif
     ui->m_scenarioTable->horizontalHeader()->setStretchLastSection(true);
 //    ui->m_scenarioTable->horizontalHeader()->setCascadingSectionResizes(true);
+
+    ui->m_scenarioTable->verticalHeader()->setVisible(false);
 
 
 

@@ -35,6 +35,8 @@ public:
 
     Scenario();
 
+    virtual ~Scenario();
+
 //set
     void setGameId(QString id);
     void setGameMasterId(QString id);
@@ -48,6 +50,9 @@ public:
     void setState(Scenario::STATE m);
     void setDescription(QString m);
     void setCurrentPlayers(quint32 m);
+    void setScenarioId(QString m);
+
+    void setReferenceScenario(const Scenario*);
 
 
 //gets
@@ -57,13 +62,15 @@ public:
     quint32 getMaximumPlayers() const;
     quint32 getMinimumPlayers() const;
     quint32 getCurrentPlayers() const;
-    QString getGameId();
-    QString getTitle();
-    QString getDescription();
-    QString getGameMasterId();
-    quint64 getDuration();
-    quint32 getTableNumber();
-    QDateTime getDateTime();
+    QString getGameId() const;
+    QString getTitle() const;
+    QString getDescription() const;
+    QString getGameMasterId() const;
+    quint32 getTableNumber() const;
+    QDateTime getDateTime() const;
+    QString getScenarioId() const;
+
+    quint32 getRestingTime() const;
 
 
 

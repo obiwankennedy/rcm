@@ -39,6 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_title=tr("%1[*] - Rolisteam Convention Manager");
+
+    setWindowTitle(m_title.arg("Unkown"));
 
     m_gameModel = new GameModel();
     m_gameMasterModel = new GameMasterModel();
@@ -48,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
-   m_scenarioManager = new ScenarioManager(ui);
+    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap());
     initActions();
 
     ui->m_gameView->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -124,6 +127,7 @@ bool MainWindow::maybeSave()
 void MainWindow::readFile()
 {
     QFile file(m_currentDataPath);
+    setWindowTitle(m_title.arg(m_currentDataPath));
     if (file.open(QIODevice::ReadOnly))
     {
         QDataStream in(&file);
@@ -135,7 +139,6 @@ void MainWindow::readFile()
 }
 void MainWindow::saveData()
 {
-
     if (m_currentDataPath.isNull())
     {
             saveAsData();
@@ -145,10 +148,6 @@ void MainWindow::saveData()
     {
             m_currentDataPath += ".rcdb";
     }
-
-
-
-
 
     QFile file(m_currentDataPath);
 

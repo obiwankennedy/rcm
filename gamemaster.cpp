@@ -95,6 +95,8 @@ void GameMaster::readFromData(QDataStream& from)
    from >> m_nickname;
    from >> m_mailAddress;
    from >> m_isPresent;
+
+   m_isPresent = false;
    int size;
    from >> size;
    for(int i = 0; i<size;++i)
@@ -103,10 +105,6 @@ void GameMaster::readFromData(QDataStream& from)
        tmp->readFromData(from);
        insertScenario(tmp);
    }
-
-
-
-
 }
 
 void GameMaster::writeToData(QDataStream& to) const

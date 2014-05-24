@@ -24,6 +24,7 @@
 
 #include <QAbstractListModel>
 #include <QStringList>
+#include <QTimer>
 
 
 #include "scenario.h"
@@ -33,7 +34,9 @@ class ScenarioModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit ScenarioModel(QObject *parent = 0);
+    enum CustomRole {INCREASE_CURRENT = Qt::UserRole+1,DECREASE_CURRENT};
+
+    explicit ScenarioModel(Scenario::STATE m,QObject *parent = 0);
     int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
     int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
@@ -47,20 +50,25 @@ public:
 
     void appendScenario(Scenario*);
     void removeScenario(Scenario* tmp);
+    Scenario* getScenarioById(QString tmp);
 
     virtual QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
     QList<Scenario*>* getScenarioList();
 signals:
     void updateHeader();
+    void addedData();
 public slots:
-
+    void mayStartTimer();
+    void timeOut();
 private:
     QList<Scenario*>* m_scenarioList;
     QList<Game*>* m_gameList;
     QString m_uuid;//isolate
     bool m_isFiltered;
     QStringList m_columns;
-    
+    Scenario::STATE m_state;
+    /// @todo there may be a way to place this in manager/controler
+    QTimer* m_timer;
 };
 
 #endif // SCENARIOMODEL_H

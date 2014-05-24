@@ -22,6 +22,7 @@
 #include "gamemodel.h"
 
 #include <QDataStream>
+#include <QDebug>
 
 GameModel::GameModel(QObject *parent) :
     QAbstractListModel(parent)
@@ -60,12 +61,14 @@ void GameModel::readFromData(QDataStream& from)
 {
     int size;
     from >> size;
+
     for(int i = 0; i < size;++i)
     {
         Game* tmp = new Game();
         tmp->readFromData(from);
         append(tmp);
     }
+
 
 }
 

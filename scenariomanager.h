@@ -39,7 +39,7 @@ class ScenarioManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ScenarioManager(Ui::MainWindow* ui,QObject *parent = 0);
+    explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QObject *parent = 0);
     
 
     void addScenarios(QList<Scenario*>* l,Scenario::STATE s = Scenario::AVAILABLE);
@@ -50,22 +50,51 @@ public:
 
     ScenarioModel* getRightModel(Scenario::STATE m);
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+    void showContextMenu(QContextMenuEvent* event,Scenario::STATE m);
+    bool eventFilterForAvailable(QEvent* );
+     bool eventFilterForRunning(QEvent* );
+      bool eventFilterForDone(QEvent* );
+
 public slots:
     void showCustomView(bool);
+    void increaseCurrentPlayerCount();
+    void decreaseCurrentPlayerCount();
+    void startScenario();
+    void editScenario();
+    void scenarioIsDone();
+
+
 
 private:
     ScenarioModel* m_availableScenarioModel;
     ScenarioModel* m_runningScenarioModel;
     ScenarioModel* m_doneScenarioModel;
+
+
+    ScenarioItemDelegate* m_avScenarioDelegate;
+    ScenarioItemDelegate* m_runningScenarioDelegate;
+    ScenarioItemDelegate* m_doneScenarioDelegate;
+
     //QList<Scenario*>* m_availableScenarioList;
     //QList<Scenario*>* m_runningScenarioList;
     //QList<Scenario*>* m_doneScenarioList;
 
     Ui::MainWindow* m_ui;
-    ScenarioItemDelegate* m_scenarioDelegate;
-    QMap<QString,Game*> m_list;
+
+    QMap<QString,Game*>& m_list;
 
     CustomerView* m_customerView;
+
+
+    //Actions
+    QAction* m_increasePlayersCount;
+    QAction* m_decreasePlayersCount;
+    QAction* m_startScenario;
+    QAction* m_editScenario;
+    QAction* m_scenarioIsFinished;
+
 };
 
 #endif // SCENARIOMANAGER_H

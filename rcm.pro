@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     gameeditordelegate.cpp \
     scenariomanager.cpp \
     customerview.cpp \
-    scenarioitemdelegate.cpp
+    scenarioitemdelegate.cpp \
+    scenarioeditordialog.cpp
 
 HEADERS  += mainwindow.h \
     gamemaster.h \
@@ -40,9 +41,11 @@ HEADERS  += mainwindow.h \
     gameeditordelegate.h \
     scenariomanager.h \
     customerview.h \
-    scenarioitemdelegate.h
+    scenarioitemdelegate.h \
+    scenarioeditordialog.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \
     gamedialog.ui \
-    customerview.ui
+    customerview.ui \
+    scenarioeditordialog.ui

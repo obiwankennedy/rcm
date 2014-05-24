@@ -20,13 +20,35 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include <QDataStream>
+#include <QDateTime>
+#include <QDebug>
+
 #include "scenario.h"
 
 Scenario::Scenario()
-    : m_scenarioId(QUuid().toString()),m_duration(60),m_level(BEGINNER),m_maximumPlayers(6),m_minimumPlayers(2)
+    : m_scenarioId(QUuid().toString()),m_duration(60),m_level(BEGINNER),m_maximumPlayers(6),m_minimumPlayers(2),m_currentPlayers(0)
 {
 
 }
+void Scenario::setReferenceScenario(const Scenario* a)
+{
+    //m_scenarioId = a.getScenarioId();
+    m_state = a->getState();
+    m_duration = a->getDuration();
+    m_description = a->getDescription();
+    m_level = a->getLevel();
+    m_gameId = a->getGameId();
+    m_gameMasterId = a->getGameMasterId();
+    m_maximumPlayers = a->getMaximumPlayers();
+    m_minimumPlayers = a->getMinimumPlayers();
+    m_title = a->getTitle();
+}
+
+Scenario::~Scenario()
+{
+
+}
+
 void Scenario::setGameId(QString id)
 {
     m_gameId = id;
@@ -53,38 +75,33 @@ void Scenario::setDateTime(QDateTime time)
 }
 
 
-QString Scenario::getGameId()
+QString Scenario::getGameId() const
 {
     return m_gameId;
 }
 
-QString Scenario::getGameMasterId()
+QString Scenario::getGameMasterId()const
 {
     return m_gameMasterId;
 }
 
-quint64 Scenario::getDuration()
+quint64 Scenario::getDuration()const
 {
     return m_duration;
 }
 
-quint32 Scenario::getTableNumber()
+quint32 Scenario::getTableNumber()const
 {
     return m_tableNumber;
 }
 
-QDateTime Scenario::getDateTime()
+QDateTime Scenario::getDateTime()const
 {
     return m_startTime;
 }
 Scenario::LEVEL  Scenario::getLevel() const
 {
     return m_level;
-}
-quint64  Scenario::getDuration() const
-{
-    return m_duration;
-
 }
 quint32  Scenario::getMaximumPlayers() const
 {
@@ -109,7 +126,7 @@ void Scenario::setLevel(Scenario::LEVEL lvl)
 {
     m_level = lvl;
 }
-QString Scenario::getTitle()
+QString Scenario::getTitle() const
 {
     return m_title;
 }
@@ -151,7 +168,7 @@ void Scenario::writeToData(QDataStream& to) const
     to << m_description;
     to << m_state;
 }
-QString Scenario::getDescription()
+QString Scenario::getDescription() const
 {
     return m_description;
 }
@@ -170,6 +187,11 @@ Scenario::STATE Scenario::getState() const
 void Scenario::setState(Scenario::STATE m)
 {
     m_state=m;
+    if(m_state==Scenario::RUNNING)
+    {
+        m_startTime = QDateTime::currentDateTime();
+    }
+
 }
 QDataStream &operator>>(QDataStream &in, Scenario &myObj)
 {
@@ -198,4 +220,20 @@ quint32 Scenario::getCurrentPlayers() const
 void Scenario::setCurrentPlayers(quint32 m)
 {
     m_currentPlayers = m;
+}
+QString Scenario::getScenarioId() const
+{
+    return m_scenarioId;
+}
+void Scenario::setScenarioId(QString m)
+{
+    m_scenarioId = m;
+}
+quint32 Scenario::getRestingTime() const
+{
+    QDateTime now(QDateTime::currentDateTime());
+    int seconds = m_startTime.secsTo(now);
+    int min = m_duration-(seconds/60);
+
+    return min < 0 ? 0 : min;
 }

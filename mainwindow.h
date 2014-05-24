@@ -95,6 +95,8 @@ private:
     QString m_currentDataPath;
     PreferencesManager* m_preferences;
     ScenarioManager* m_scenarioManager;
+
+    QString m_title;
 };
 
 #endif // MAINWINDOW_H

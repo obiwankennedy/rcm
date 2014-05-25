@@ -128,7 +128,7 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
                 result = true;
                 break;
         }
-          //emit updateHeader();
+          emit updateHeader();
           emit dataChanged(index,index);
           return result;
     }

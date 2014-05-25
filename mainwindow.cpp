@@ -278,8 +278,8 @@ void MainWindow::editGameMaster(const QModelIndex& index)
     if(index.isValid())
     {
         GameMaster* tmp = m_gameMasterModel->getMasterList().at(index.row());
-        GameMasterDialog dialog;
-        dialog.setTitle(tmp->getTitle());
+        GameMasterDialog dialog(m_gameModel->getGameMap());
+        /*dialog.setTitle(tmp->getTitle());
         dialog.setDescription(tmp->getDescription());
         dialog.setPunchLine(tmp->getPunchLine());
 
@@ -292,7 +292,7 @@ void MainWindow::editGameMaster(const QModelIndex& index)
 
             m_gameModel->append(tmp);
 
-        }
+        }*/
 
     }
 }

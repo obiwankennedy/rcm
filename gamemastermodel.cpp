@@ -114,7 +114,11 @@ Qt::ItemFlags GameMasterModel::flags ( const QModelIndex & index ) const
 {
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
 }
- QMap<QString,GameMaster*>& GameMasterModel::getMasterMap()
- {
+QMap<QString,GameMaster*>& GameMasterModel::getMasterMap()
+{
      return m_gameMasterMap;
- }
+}
+QList<GameMaster*>& GameMasterModel::getMasterList()
+{
+    return m_gameMasterList;
+}

@@ -69,6 +69,11 @@ private slots:
     void openData();
 
 
+    //edition
+    void editGame(const QModelIndex& index);
+    void editGameMaster(const QModelIndex& index);
+
+
 
 
 

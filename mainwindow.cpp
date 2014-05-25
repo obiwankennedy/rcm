@@ -93,6 +93,11 @@ void MainWindow::initActions()
 
     connect(ui->m_customerViewDisplayAct,SIGNAL(triggered(bool)),m_scenarioManager,SLOT(showCustomView(bool)));
 
+    //edit game and game master
+    connect(ui->m_gameView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGame(QModelIndex)));
+    connect(ui->m_gameView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGameMaster(QModelIndex)));
+
+
 }
 void  MainWindow::addGameDialog()
 {
@@ -242,4 +247,33 @@ void MainWindow::statusGmHasChanged(GameMaster* l,bool b)
     {
         m_scenarioManager->removeScenarioFromList(l->getGMScenarios());
     }
+}
+void MainWindow::editGame(const QModelIndex& index)
+{
+    if(index.isValid())
+    {
+        Game* tmp = m_gameModel->getGameList().at(index.row());
+        GameDialog dialog;
+        dialog.setTitle(tmp->getTitle());
+        dialog.setDescription(tmp->getDescription());
+        dialog.setPunchLine(tmp->getPunchLine());
+
+        if(dialog.exec())
+        {
+
+            tmp->setTitle(dialog.getTitle());
+            tmp->setPunchLine(dialog.getPunchLine());
+            tmp->setDescription(dialog.getDescription());
+
+            m_gameModel->append(tmp);
+
+        }
+
+    }
+
+}
+
+void MainWindow::editGameMaster(const QModelIndex& index)
+{
+
 }

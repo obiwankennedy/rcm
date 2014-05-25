@@ -40,6 +40,10 @@ public:
     QString getPunchLine();
     QString getDescription();
 
+    void setTitle(QString);
+    void setPunchLine(QString);
+    void setDescription(QString);
+
 
     
 private:

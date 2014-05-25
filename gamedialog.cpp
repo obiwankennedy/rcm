@@ -48,5 +48,18 @@ QString GameDialog::getDescription()
 {
     return ui->m_descriptionEdit->toPlainText();
 }
+void GameDialog::setTitle(QString str)
+{
+    ui->m_titleEdit->setText(str);
+}
 
+void GameDialog::setPunchLine(QString styr)
+{
+    ui->m_punchLineEdit->setText(styr);
+}
+
+void GameDialog::setDescription(QString str)
+{
+    ui->m_descriptionEdit->setText(str);
+}
 

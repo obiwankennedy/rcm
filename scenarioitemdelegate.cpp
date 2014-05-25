@@ -25,8 +25,8 @@
 #include "scenarioitemdelegate.h"
 #include <QDebug>
 
-ScenarioItemDelegate::ScenarioItemDelegate(QMap<QString,Game*>& l,Scenario::STATE m )
-    : m_list(l),m_state(m)
+ScenarioItemDelegate::ScenarioItemDelegate(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& masterlist,Scenario::STATE m )
+    : m_list(l),m_masterlist(masterlist),m_state(m)
 {
 }
 QSize ScenarioItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const

@@ -82,6 +82,7 @@ void GameMasterModel::append(GameMaster* tmp)
     beginInsertRows(QModelIndex(),m_gameMasterList.size(),m_gameMasterList.size());
 
     m_gameMasterList.append(tmp);
+    m_gameMasterMap.insert(tmp->getId(),tmp);
 
     endInsertRows();
 

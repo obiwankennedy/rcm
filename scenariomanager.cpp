@@ -68,15 +68,15 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
 
 
 
-    m_avScenarioDelegate = new ScenarioItemDelegate(m_list,Scenario::AVAILABLE);
+    m_avScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::AVAILABLE);
     m_ui->m_scenarioAvailabeView->setItemDelegate(m_avScenarioDelegate);
 
 
-    m_runningScenarioDelegate = new ScenarioItemDelegate(m_list,Scenario::RUNNING);
+    m_runningScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::RUNNING);
     m_ui->m_scenarioRunningView->setItemDelegate(m_runningScenarioDelegate);
 
 
-    m_doneScenarioDelegate = new ScenarioItemDelegate(m_list,Scenario::DONE);
+    m_doneScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::DONE);
     m_ui->m_scenarioDoneView->setItemDelegate(m_doneScenarioDelegate);
 }
 

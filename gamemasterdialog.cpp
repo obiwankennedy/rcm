@@ -107,3 +107,31 @@ void GameMasterDialog::updateGameListHeader()
 {
     ui->m_scenarioTable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }
+void GameMasterDialog::setName(QString str)
+{
+    ui->m_nameEdit->setText(str);
+}
+
+void GameMasterDialog::setNickName(QString str)
+{
+ui->m_nickNameEdit->setText(str);
+}
+
+void GameMasterDialog::setFirstName(QString str)
+{
+ui->m_firstNameEdit->setText(str);
+}
+
+void GameMasterDialog::setPhoneNumber(QString str)
+{
+ui->m_phoneEdit->setText(str);
+}
+
+void GameMasterDialog::setMailAddress(QString str)
+{
+    ui->m_mailAddress->setText(str);
+}
+void GameMasterDialog::setScenarioList(QList<Scenario*>* lst)
+{
+    m_model->addDataList(lst);
+}

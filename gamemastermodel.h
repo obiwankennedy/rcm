@@ -41,7 +41,9 @@ public:
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
+
     QMap<QString,GameMaster*>& getMasterMap();
+    QList<GameMaster*>& getMasterList();
 signals:
     void gameMasterStatusHasChanged(GameMaster*,bool);
     void gmHasBeenAdded(GameMaster*);

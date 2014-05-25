@@ -46,6 +46,14 @@ public:
     QString getPhoneNumber();
     QString getMailAddress();
 
+    void setName(QString str);
+    void setNickName(QString str);
+    void setFirstName(QString str);
+    void setPhoneNumber(QString str);
+    void setMailAddress(QString str);
+
+    void setScenarioList(QList<Scenario*>* lst);
+
     QList<Scenario*>* getScenarioList();
     void setPerformer(QString m_id);
 public slots:

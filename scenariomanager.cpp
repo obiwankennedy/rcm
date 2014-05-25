@@ -31,6 +31,7 @@
 ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, QObject *parent ) :
     QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap)
 {
+    qDebug() << m_masterList.keys();
     //model
     m_availableScenarioModel = new ScenarioModel(Scenario::AVAILABLE);
     m_runningScenarioModel = new ScenarioModel(Scenario::RUNNING);

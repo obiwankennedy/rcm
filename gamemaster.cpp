@@ -95,6 +95,7 @@ void GameMaster::readFromData(QDataStream& from)
    from >> m_nickname;
    from >> m_mailAddress;
    from >> m_isPresent;
+   from >> m_id;
 
    m_isPresent = false;
    int size;
@@ -115,6 +116,7 @@ void GameMaster::writeToData(QDataStream& to) const
     to << m_nickname;
     to << m_mailAddress;
     to << m_isPresent;
+    to << m_id;
 
     to << getScenarioCount();
     foreach(Scenario* tmp,*m_scenarioList)

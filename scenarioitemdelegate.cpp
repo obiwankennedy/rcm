@@ -65,6 +65,9 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         {
             QString str=minutesToHours(tmp.getDuration(),tr("Duration"));
             style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+            GameMaster* myGameMaster = m_masterlist[tmp.getGameMasterId()];
+            QString gmStr = tr("Nickname:%1, phone:%2");
+            style->drawItemText(painter,checkBoxRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()).arg(myGameMaster->getPhoneNumber()));
         }
         else if(Scenario::RUNNING == m_state)
         {
@@ -74,7 +77,10 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
 
 
+
+
         style->drawItemText(painter,checkBoxRect,Qt::AlignCenter,option.palette,true,m_list[tmp.getGameId()]->getTitle());
+
 
     }
 }

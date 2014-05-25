@@ -42,6 +42,7 @@ void Scenario::setReferenceScenario(const Scenario* a)
     m_maximumPlayers = a->getMaximumPlayers();
     m_minimumPlayers = a->getMinimumPlayers();
     m_title = a->getTitle();
+    m_startTime = a->getDateTime();
 }
 
 Scenario::~Scenario()

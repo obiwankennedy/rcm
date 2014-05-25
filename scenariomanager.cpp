@@ -28,8 +28,8 @@
 #include <QContextMenuEvent>
 
 
-ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map, QObject *parent ) :
-    QObject(parent),m_ui(ui),m_list(map)
+ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, QObject *parent ) :
+    QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap)
 {
     //model
     m_availableScenarioModel = new ScenarioModel(Scenario::AVAILABLE);
@@ -300,11 +300,11 @@ void ScenarioManager::scenarioIsDone()
 
 
         model->removeScenario(mySce);
-        mySce->setState(Scenario::DONE);
+        mySce->setState(Scenario::AVAILABLE);
         model = getRightModel(mySce->getState());
         model->appendScenario(mySce);
 
-        myNewSce->setState(Scenario::AVAILABLE);
+        myNewSce->setState(Scenario::DONE);
         model = getRightModel(myNewSce->getState());
         model->appendScenario(myNewSce);
     }

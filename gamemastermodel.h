@@ -23,6 +23,7 @@
 #define GAMEMASTERMODEL_H
 
 #include <QAbstractListModel>
+#include <QMap>
 
 #include "gamemaster.h"
 #include "serializable.h"
@@ -40,6 +41,7 @@ public:
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
+    QMap<QString,GameMaster*>& getMasterMap();
 signals:
     void gameMasterStatusHasChanged(GameMaster*,bool);
     void gmHasBeenAdded(GameMaster*);
@@ -47,6 +49,7 @@ public slots:
     
 private:
     QList<GameMaster*> m_gameMasterList;
+    QMap<QString,GameMaster*> m_gameMasterMap;
 };
 
 #endif // GAMEMASTERMODEL_H

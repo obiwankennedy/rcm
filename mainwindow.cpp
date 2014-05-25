@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
-    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap());
+    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
     initActions();
 
     ui->m_gameView->setSelectionMode(QAbstractItemView::ExtendedSelection);

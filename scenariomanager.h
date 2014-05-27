@@ -24,7 +24,7 @@
 
 #include <QObject>
 #include <QList>
-
+#include <QListView>
 
 
 #include "scenario.h"
@@ -32,6 +32,7 @@
 #include "scenarioitemdelegate.h"
 #include "customerview.h"
 #include "gamemaster.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -42,22 +43,23 @@ class ScenarioManager : public QObject
 public:
     explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent = 0);
     
-
+    
     void addScenarios(QList<Scenario*>* l,Scenario::STATE s = Scenario::AVAILABLE);
     
     void addScenario(Scenario* l,Scenario::STATE s = Scenario::AVAILABLE);
-
+    
     void removeScenarioFromList(QList<Scenario*>* l);
-
+    
     ScenarioModel* getRightModel(Scenario::STATE m);
-
+    QListView* getFocusedListView();
+    
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
     void showContextMenu(QContextMenuEvent* event,Scenario::STATE m);
     bool eventFilterForAvailable(QEvent* );
-     bool eventFilterForRunning(QEvent* );
-      bool eventFilterForDone(QEvent* );
-
+    bool eventFilterForRunning(QEvent* );
+    bool eventFilterForDone(QEvent* );
+    
 public slots:
     void showCustomView(bool);
     void increaseCurrentPlayerCount();
@@ -65,38 +67,38 @@ public slots:
     void startScenario();
     void editScenario();
     void scenarioIsDone();
-
-
-
+    
+    
+    
 private:
     ScenarioModel* m_availableScenarioModel;
     ScenarioModel* m_runningScenarioModel;
     ScenarioModel* m_doneScenarioModel;
-
-
+    
+    
     ScenarioItemDelegate* m_avScenarioDelegate;
     ScenarioItemDelegate* m_runningScenarioDelegate;
     ScenarioItemDelegate* m_doneScenarioDelegate;
-
+    
     //QList<Scenario*>* m_availableScenarioList;
     //QList<Scenario*>* m_runningScenarioList;
     //QList<Scenario*>* m_doneScenarioList;
-
+    
     Ui::MainWindow* m_ui;
-
+    
     QMap<QString,Game*>& m_list;
     QMap<QString,GameMaster*>& m_masterList;
-
+    
     CustomerView* m_customerView;
-
-
+    
+    
     //Actions
     QAction* m_increasePlayersCount;
     QAction* m_decreasePlayersCount;
     QAction* m_startScenario;
     QAction* m_editScenario;
     QAction* m_scenarioIsFinished;
-
+    
 };
 
 #endif // SCENARIOMANAGER_H

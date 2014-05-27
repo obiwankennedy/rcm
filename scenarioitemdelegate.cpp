@@ -25,16 +25,18 @@
 #include "scenarioitemdelegate.h"
 #include <QDebug>
 
-ScenarioItemDelegate::ScenarioItemDelegate(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& masterlist,Scenario::STATE m )
-    : m_list(l),m_masterlist(masterlist),m_state(m)
+#define FACTOR_SIZE 3
+
+ScenarioItemDelegate::ScenarioItemDelegate(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& masterlist,Scenario::STATE m, bool isPrivate )
+    : m_list(l),m_masterlist(masterlist),m_state(m),m_private(isPrivate)
 {
 }
 QSize ScenarioItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
- {
+{
     QSize a = QStyledItemDelegate::sizeHint(option,index);
 
-   return QSize(a.width(),a.height()*3);
- }
+    return QSize(a.width(),a.height()*FACTOR_SIZE);
+}
 void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     if(index.isValid())
@@ -48,38 +50,124 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         QStyle *style=qApp->style();
 
-        QRect checkBoxRect=style->subElementRect(QStyle::SE_ItemViewItemText, &option);
+        QRect itemRect=option.rect;//style->subElementRect(QStyle::SE_ItemViewItemText, &option);
 
-        if( option.state & QStyle::State_Selected )
-        {
-        //    QStyledItemDelegate::paint(painter, option, index);
-            painter->fillRect(option.rect, option.palette.highlight());
-        }
+        painter->save();
+        painter->drawRect(itemRect);
+        itemRect.adjust(1,1,-1,-1);
+        painter->restore();
 
-        //style->drawPrimitive(QStyle::PE_PanelItemViewItem, &modifiedOption, painter);
         style->drawPrimitive(QStyle::PE_PanelItemViewRow,&option,painter);
-        style->drawItemText(painter,checkBoxRect,Qt::AlignHCenter | Qt::AlignTop ,option.palette,true,tmp.getTitle());
-        style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignTop ,option.palette,true,tr("Players: %1/%2").arg(tmp.getCurrentPlayers()).arg(tmp.getMaximumPlayers()));
+
+
+
 
         if(Scenario::AVAILABLE == m_state)
         {
+            qreal a = (qreal)tmp.getCurrentPlayers()/(qreal)tmp.getMaximumPlayers();
+            QColor green(0,255,0);
+            QColor startColor(237,127,16);
+            QColor result;
+            qreal bleu = startColor.blue() + (a*(green.blue()-startColor.blue()));
+            qreal red = startColor.red() + (a*(green.red()-startColor.red()));
+            qreal greenValue = startColor.green() + (a*(green.green()-startColor.green()));
+
+
+            painter->save();
+            if( option.state & QStyle::State_Selected )
+            {
+                QColor bis = option.palette.highlight().color();
+                painter->fillRect(itemRect, bis);
+            }
+            else
+            {
+                result.setBlue(bleu);
+                result.setGreen(greenValue);
+                result.setRed(red);
+
+                painter->fillRect(itemRect,result);
+            }
+            painter->restore();
+
+
+        }
+        else if( option.state & QStyle::State_Selected )
+        {
+
+            painter->fillRect(itemRect, option.palette.highlight());
+        }
+
+
+
+
+
+
+
+
+        if(Scenario::AVAILABLE == m_state)
+        {
+
+
+
             QString str=minutesToHours(tmp.getDuration(),tr("Duration"));
-            style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
-            GameMaster* myGameMaster = m_masterlist[tmp.getGameMasterId()];
-            QString gmStr = tr("Nickname:%1, phone:%2");
-            style->drawItemText(painter,checkBoxRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()).arg(myGameMaster->getPhoneNumber()));
+            style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+
+
+
         }
         else if(Scenario::RUNNING == m_state)
         {
             QString str=minutesToHours(tmp.getRestingTime(),tr("End in"));
-            style->drawItemText(painter,checkBoxRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+            style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+
+             QStyleOptionProgressBarV2 progressBarStyleOption;
+                QRect progressBarRect;
+
+                progressBarRect.setY(2*option.rect.height()/3);
+                progressBarRect.setX(option.rect.width()/4);
+                progressBarRect.setHeight(option.rect.height()/3);
+                progressBarRect.setWidth(option.rect.width()/2);
+
+
+                progressBarStyleOption.rect = progressBarRect;
+
+
+                const int progress = 100*tmp.getRestingTime()/tmp.getDuration();
+
+                progressBarStyleOption.minimum = 0;
+                progressBarStyleOption.state = option.state;
+                progressBarStyleOption.maximum = 100;
+                progressBarStyleOption.textAlignment = Qt::AlignHCenter | Qt::AlignBottom;
+                progressBarStyleOption.progress = 100-progress ;
+                progressBarStyleOption.text = QString( "%1%" ).arg( progressBarStyleOption.progress  );
+                progressBarStyleOption.textVisible = true;
+
+                style->drawControl( QStyle::CE_ProgressBar, &progressBarStyleOption, painter );
+
+
+
 
         }
 
+        GameMaster* myGameMaster = m_masterlist[tmp.getGameMasterId()];
+        if(!m_private)
+        {
+            QString gmStr = tr("GM:%1, phone:%2");
+            style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()).arg(myGameMaster->getPhoneNumber()));
+        }
+        else
+        {
+            QString gmStr = tr("GM:%1");
+            style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()));
+        }
 
 
+        //
+        style->drawItemText(painter,itemRect,Qt::AlignHCenter | Qt::AlignTop ,option.palette,true,tmp.getTitle());
+        style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignTop ,option.palette,true,tr("Players: %1/%2").arg(tmp.getCurrentPlayers()).arg(tmp.getMaximumPlayers()));
 
-        style->drawItemText(painter,checkBoxRect,Qt::AlignCenter,option.palette,true,m_list[tmp.getGameId()]->getTitle());
+
+        style->drawItemText(painter,itemRect,Qt::AlignCenter,option.palette,true,m_list[tmp.getGameId()]->getTitle());
 
 
     }

@@ -46,6 +46,7 @@ public:
     QMap<QString,Game*>& getGameMap();
     QList<Game*>& getGameList();
 
+    virtual void removeItem(QModelIndex&);
     
 
 

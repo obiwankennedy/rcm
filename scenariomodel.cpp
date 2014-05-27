@@ -79,6 +79,7 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
 
     else if(Qt::UserRole == role)
     {
+
         QVariant var;
         Scenario* tmp = m_scenarioList->at(index.row());
         var.setValue(*tmp);
@@ -232,6 +233,7 @@ Scenario* ScenarioModel::getScenarioById(QString id)
 
             return tmp;
         }
+
     }
     return NULL;
 }

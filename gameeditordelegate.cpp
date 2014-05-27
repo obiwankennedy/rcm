@@ -24,6 +24,7 @@
 #include <QModelIndex>
 #include <QPainter>
 #include <QApplication>
+#include <QDebug>
 
 GameEditorDelegate::GameEditorDelegate(QMap<QString,Game*>& l)
     : m_list(l)
@@ -32,8 +33,9 @@ GameEditorDelegate::GameEditorDelegate(QMap<QString,Game*>& l)
 
 QWidget* GameEditorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index	) const
 {
+    Q_UNUSED(option)
+    Q_UNUSED(index)
     QComboBox *cb = new QComboBox(parent);
-     int row = index.row();
 
 
      foreach(Game* tmp,m_list.values())
@@ -43,11 +45,12 @@ QWidget* GameEditorDelegate::createEditor(QWidget *parent, const QStyleOptionVie
 
      return cb;
 }
-void GameEditorDelegate::setEditorData(QWidget *editor	, const QModelIndex &index)
+void GameEditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     if(QComboBox *cb = qobject_cast<QComboBox *>(editor))
     {
          QString currentText = index.data(Qt::EditRole).toString();
+
          int cbIndex = cb->findData(currentText);
 
          if(cbIndex >= 0)
@@ -65,9 +68,13 @@ void GameEditorDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptio
 void GameEditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     if(QComboBox *cb = qobject_cast<QComboBox *>(editor))
+    {
            model->setData(index,cb->itemData(cb->currentIndex()), Qt::EditRole);
-       else
+    }
+    else
+    {
            QStyledItemDelegate::setModelData(editor, model, index);
+    }
 }
 
 
@@ -82,6 +89,7 @@ void GameEditorDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         else
         {
             QString currentText = index.data(Qt::EditRole).toString();
+
             Game* tmp = m_list[currentText];
             QString value;
             if(NULL!=tmp)
@@ -92,11 +100,10 @@ void GameEditorDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
            QStyle *style=qApp->style();
 
+
+
            QRect checkBoxRect=style->subElementRect(QStyle::SE_ItemViewItemText, &option);
 
-
-
-           //style->drawPrimitive(QStyle::PE_PanelItemViewItem, &modifiedOption, painter);
            style->drawItemText(painter,checkBoxRect,Qt::AlignCenter ,option.palette,true,value);
 
 
@@ -105,4 +112,20 @@ void GameEditorDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
         }
     }
+}
+QSize GameEditorDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+    QSize a = QStyledItemDelegate::sizeHint(option,index);
+
+    QString currentText = index.data(Qt::EditRole).toString();
+
+    Game* tmp = m_list[currentText];
+    QString value;
+    if(NULL!=tmp)
+    {
+        value = tmp->getTitle();
+    }
+    a.setWidth(option.fontMetrics.width(value));
+
+    return a;
 }

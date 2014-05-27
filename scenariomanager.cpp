@@ -38,7 +38,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
     m_doneScenarioModel = new ScenarioModel(Scenario::DONE);
 
 
-    m_customerView = new CustomerView();
+    m_customerView = new CustomerView(m_availableScenarioModel,map,mastermap);
 
     //view
     m_ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
@@ -173,7 +173,7 @@ void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m
 }
 void ScenarioManager::increaseCurrentPlayerCount()
 {
-    QModelIndex index = m_ui->m_scenarioAvailabeView->currentIndex();
+    QModelIndex index = getFocusedListView()->currentIndex();
 
     if(index.isValid())
     {
@@ -186,7 +186,7 @@ void ScenarioManager::increaseCurrentPlayerCount()
 }
 void ScenarioManager::decreaseCurrentPlayerCount()
 {
-    QModelIndex index = m_ui->m_scenarioAvailabeView->currentIndex();
+    QModelIndex index = getFocusedListView()->currentIndex();
 
     if(index.isValid())
     {
@@ -199,13 +199,14 @@ void ScenarioManager::decreaseCurrentPlayerCount()
 }
 void ScenarioManager::startScenario()
 {
-    QModelIndex index = m_ui->m_scenarioAvailabeView->currentIndex();
+    QModelIndex index = getFocusedListView()->currentIndex();
+
 
     if(index.isValid())
     {
         QVariant var = index.data(Qt::UserRole);
         Scenario sce = var.value<Scenario>();
-        //
+
         ScenarioModel* model = getRightModel(sce.getState());
         Scenario* mySce = model->getScenarioById(sce.getScenarioId());
         model->removeScenario(mySce);
@@ -217,7 +218,7 @@ void ScenarioManager::startScenario()
 }
 void ScenarioManager::editScenario()
 {
-    QModelIndex index = m_ui->m_scenarioAvailabeView->currentIndex();
+    QModelIndex index = getFocusedListView()->currentIndex();
 
     if(index.isValid())
     {
@@ -248,6 +249,8 @@ bool ScenarioManager::eventFilterForAvailable( QEvent *event)
         case Qt::Key_Enter:
             editScenario();
             break;
+        default:
+            return false;
         }
 
         return true;
@@ -274,6 +277,26 @@ bool ScenarioManager::eventFilterForDone(QEvent * ent)
 }
 bool ScenarioManager::eventFilterForRunning(QEvent * event)
 {
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        switch(keyEvent->key())
+        {
+        case Qt::Key_Plus:
+            increaseCurrentPlayerCount();
+            break;
+        case Qt::Key_Minus:
+            decreaseCurrentPlayerCount();
+            break;
+        case Qt::Key_Enter:
+            editScenario();
+            break;
+        default:
+            return false;
+        }
+
+        return true;
+    }
     if(event->type() == QEvent::ContextMenu)
     {
         QContextMenuEvent* menuEvent = static_cast<QContextMenuEvent*>(event);
@@ -283,7 +306,7 @@ bool ScenarioManager::eventFilterForRunning(QEvent * event)
 }
 void ScenarioManager::scenarioIsDone()
 {
-    QModelIndex index = m_ui->m_scenarioRunningView->currentIndex();
+    QModelIndex index = getFocusedListView()->currentIndex();
 
     if(index.isValid())
     {
@@ -301,12 +324,29 @@ void ScenarioManager::scenarioIsDone()
 
 
         model->removeScenario(mySce);
-        mySce->setState(Scenario::AVAILABLE);
+        //mySce->setState(Scenario::AVAILABLE);
+        mySce->reset();
         model = getRightModel(mySce->getState());
         model->appendScenario(mySce);
 
         myNewSce->setState(Scenario::DONE);
         model = getRightModel(myNewSce->getState());
         model->appendScenario(myNewSce);
+    }
+}
+QListView* ScenarioManager::getFocusedListView()
+{
+
+    if(m_ui->m_scenarioAvailabeView->hasFocus())
+    {
+        return m_ui->m_scenarioAvailabeView;
+    }
+    else if(m_ui->m_scenarioDoneView->hasFocus())
+    {
+        return m_ui->m_scenarioDoneView;
+    }
+    else if(m_ui->m_scenarioRunningView->hasFocus())
+    {
+        return m_ui->m_scenarioRunningView;
     }
 }

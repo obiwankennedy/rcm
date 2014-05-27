@@ -30,7 +30,7 @@
 class ScenarioItemDelegate : public QStyledItemDelegate
 {
 public:
-    ScenarioItemDelegate(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& masterlist,Scenario::STATE m);
+    ScenarioItemDelegate(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& masterlist,Scenario::STATE m, bool isPrivate = false);
 
     QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
@@ -41,7 +41,7 @@ private:
     QMap<QString,Game*>& m_list;
     QMap<QString,GameMaster*>& m_masterlist;
     Scenario::STATE m_state;
-
+    bool m_private;
 };
 
 #endif // SCENARIOITEMDELEGATE_H

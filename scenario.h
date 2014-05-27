@@ -36,6 +36,7 @@ public:
     Scenario();
 
     virtual ~Scenario();
+    void reset();
 
 //set
     void setGameId(QString id);

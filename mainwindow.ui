@@ -176,7 +176,7 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_File">
+   <widget class="QMenu" name="m_fileMenu">
     <property name="title">
      <string>&amp;File</string>
     </property>
@@ -184,6 +184,7 @@
     <addaction name="m_openAct"/>
     <addaction name="m_saveAct"/>
     <addaction name="m_saveAsAct"/>
+    <addaction name="separator"/>
     <addaction name="separator"/>
     <addaction name="m_quitAct"/>
    </widget>
@@ -200,7 +201,7 @@
     <addaction name="m_newGameAct"/>
     <addaction name="m_newGmAct"/>
    </widget>
-   <addaction name="menu_File"/>
+   <addaction name="m_fileMenu"/>
    <addaction name="menuActuion"/>
    <addaction name="menuShow"/>
   </widget>

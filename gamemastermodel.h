@@ -44,6 +44,8 @@ public:
 
     QMap<QString,GameMaster*>& getMasterMap();
     QList<GameMaster*>& getMasterList();
+
+    virtual void removeItem(QModelIndex&);
 signals:
     void gameMasterStatusHasChanged(GameMaster*,bool);
     void gmHasBeenAdded(GameMaster*);

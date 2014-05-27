@@ -89,3 +89,12 @@ QList<Game*>& GameModel::getGameList()
 {
     return m_gameList;
 }
+void GameModel::removeItem(QModelIndex& index)
+{
+    beginRemoveRows(QModelIndex(),index.row(),index.row());
+
+    Game* tmp = m_gameList.at(index.row());
+    m_gameMap.remove(tmp->getUuid());
+    m_gameList.removeAll(tmp);
+    endRemoveRows();
+}

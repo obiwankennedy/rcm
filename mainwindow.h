@@ -49,6 +49,10 @@ public:
 
     void readSettings();
     void writeSettings();
+
+
+    void addRecentFile();
+    void refreshOpenedFile();
     
 
 public slots:
@@ -73,9 +77,11 @@ private slots:
     void editGame(const QModelIndex& index);
     void editGameMaster(const QModelIndex& index);
 
+    //removal
+    void removeGame();
+    void removeGameMaster();
 
-
-
+    void openRecentFile();
 
 private:
     void initActions();
@@ -94,6 +100,10 @@ private:
     QAction* m_removeGameAct;
     QAction* m_removeGMAct;
     QAction* m_addGMAct;
+    QMenu* m_recentFile;
+    QList<QAction*>* m_recentFileActions;
+
+
 
 
 

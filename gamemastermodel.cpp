@@ -122,3 +122,13 @@ QList<GameMaster*>& GameMasterModel::getMasterList()
 {
     return m_gameMasterList;
 }
+void GameMasterModel::removeItem(QModelIndex& index)
+{
+    beginRemoveRows(QModelIndex(),index.row(),index.row());
+
+    GameMaster* tmp = m_gameMasterList.at(index.row());
+    m_gameMasterMap.remove(tmp->getId());
+    m_gameMasterList.removeAll(tmp);
+    emit gameMasterStatusHasChanged(tmp,false);
+    endRemoveRows();
+}

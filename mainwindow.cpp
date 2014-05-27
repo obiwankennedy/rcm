@@ -20,6 +20,7 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include <QFile>
+#include <QDebug>
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QCloseEvent>
@@ -40,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     m_title=tr("%1[*] - Rolisteam Convention Manager");
+    m_recentFileActions = new QList<QAction*>();
 
     setWindowTitle(m_title.arg("Unkown"));
 
@@ -55,6 +57,13 @@ MainWindow::MainWindow(QWidget *parent) :
     initActions();
 
     ui->m_gameView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    readSettings();
+
+    m_recentFile=new QMenu(tr("Recent Files"));
+    refreshOpenedFile();
+    ui->m_fileMenu->insertMenu(ui->m_quitAct,m_recentFile);
+    ui->m_fileMenu->insertSeparator(ui->m_quitAct);
 
 
 }
@@ -77,9 +86,13 @@ void MainWindow::initActions()
 
     connect(m_addGameAct,SIGNAL(triggered()),this,SLOT(addGameDialog()));
     connect(m_addGMAct,SIGNAL(triggered()),this,SLOT(addGameMasterDialog()));
+
     connect(m_gameMasterModel,SIGNAL(gmHasBeenAdded(GameMaster*)),this,SLOT(addGmScenarioListToGlobalList(GameMaster*)));
     connect(m_gameMasterModel,SIGNAL(gameMasterStatusHasChanged(GameMaster*,bool)),this,SLOT(statusGmHasChanged(GameMaster*,bool)));
 
+    //removal connection
+    connect(m_removeGameAct,SIGNAL(triggered()),this,SLOT(removeGame()));
+    connect(m_removeGMAct,SIGNAL(triggered()),this,SLOT(removeGameMaster()));
 
 
 
@@ -124,12 +137,12 @@ void MainWindow::closeEvent ( QCloseEvent * event )
 
     if (maybeSave())
     {
-             writeSettings();
-             event->accept();
+        writeSettings();
+        event->accept();
     }
     else
     {
-             event->ignore();
+        event->ignore();
     }
 }
 bool MainWindow::maybeSave()
@@ -156,12 +169,12 @@ void MainWindow::saveData()
 {
     if (m_currentDataPath.isNull())
     {
-            saveAsData();
+        saveAsData();
     }
 
     if(!m_currentDataPath.endsWith(".rcdb"))
     {
-            m_currentDataPath += ".rcdb";
+        m_currentDataPath += ".rcdb";
     }
 
     QFile file(m_currentDataPath);
@@ -172,7 +185,7 @@ void MainWindow::saveData()
     if (file.open(QIODevice::WriteOnly))
     {
         QDataStream in(&file);
-// write data
+        // write data
         m_gameModel->writeToData(in);
         m_gameMasterModel->writeToData(in);
 
@@ -194,24 +207,96 @@ void MainWindow::openData()
     {
         if(!m_currentDataPath.endsWith(".rcdb"))
         {
-                m_currentDataPath += ".rcdb";
+            m_currentDataPath += ".rcdb";
         }
 
         readFile();
+        addRecentFile();
     }
 }
 void MainWindow::readSettings()
 {
+    QSettings settings("rolisteam","rcm/preferences");
+    move(settings.value("pos", QPoint(200, 200)).toPoint());
+    resize(settings.value("size", QSize(600, 400)).toSize());
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
 
+
+
+    int size = settings.beginReadArray("recentFiles");
+    for (int i = size-1; i > -1; --i)
+    {
+        settings.setArrayIndex(i);
+        QFile info(settings.value("path").toString());
+        if(info.exists())
+        {
+            QAction* tmp=new QAction(settings.value("name").toString(),this);
+            tmp->setData(settings.value("path"));
+            m_recentFileActions->append(tmp);
+        }
+    }
+    settings.endArray();
+
+
+    m_preferences->readSettings(settings);
 }
 
 void MainWindow::writeSettings()
 {
 
+    QSettings settings("rolisteam","rcm/preferences");
+    settings.setValue("pos", pos());
+    settings.setValue("size", size());
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+
+
+    settings.beginWriteArray("recentFiles");
+    qDebug() << "write settings" << m_recentFileActions->size();
+    for (int i = 0; i < m_recentFileActions->size(); ++i)
+    {
+        settings.setArrayIndex(i);
+        settings.setValue("name", m_recentFileActions->at(i)->text());
+        settings.setValue("path", m_recentFileActions->at(i)->data());
+    }
+    settings.endArray();
+
+
+
+    m_preferences->writeSettings(settings);
+
+}
+void MainWindow::openRecentFile()
+{
+    QAction* tmp = dynamic_cast<QAction*>(sender());
+    m_currentDataPath=tmp->data().toString();
+
+    readFile();
+    // updateTitle();
+
+}
+void MainWindow::addRecentFile()
+{
+    QFileInfo fileinfo(m_currentDataPath);
+    m_preferences->registerValue("MindMapDirectory",fileinfo.absoluteDir().canonicalPath());
+    QAction* tmp=new QAction(fileinfo.fileName(),this);
+    tmp->setData(fileinfo.absoluteFilePath());
+    connect(tmp,SIGNAL(triggered()),this,SLOT(openRecentFile()));
+
+    int size=m_preferences->value("MaxSizeRecentFile",5).toInt();
+    if((size<=m_recentFileActions->size())&&(size>0))
+    {
+        delete m_recentFileActions->at(0);
+        m_recentFileActions->removeAt(0);
+    }
+    m_recentFileActions->append(tmp);
+    refreshOpenedFile();
 }
 void MainWindow::addGameMasterDialog()
 {
     GameMasterDialog dialog(m_gameModel->getGameMap());
+    connect(&dialog,SIGNAL(addGame()),this,SLOT(addGameDialog()));
     dialog.setWindowFlags(Qt::Window );
 
     if(dialog.exec())
@@ -289,6 +374,7 @@ void MainWindow::editGameMaster(const QModelIndex& index)
     {
         GameMaster* tmp = m_gameMasterModel->getMasterList().at(index.row());
         GameMasterDialog dialog(m_gameModel->getGameMap());
+        connect(&dialog,SIGNAL(addGame()),this,SLOT(addGameDialog()));
 
         dialog.setName(tmp->getName());
         dialog.setNickName(tmp->getNickName());
@@ -320,4 +406,26 @@ void MainWindow::editGameMaster(const QModelIndex& index)
         }
 
     }
+}
+void MainWindow::removeGame()
+{
+    QModelIndex index = ui->m_gameView->currentIndex();
+    m_gameModel->removeItem(index);
+}
+
+void MainWindow::removeGameMaster()
+{
+    QModelIndex index = ui->m_masterView->currentIndex();
+    m_gameMasterModel->removeItem(index);
+}
+void MainWindow::refreshOpenedFile()
+{
+    m_recentFile->clear();
+    for (int i = 0; i < m_recentFileActions->size(); ++i)
+    {
+
+        m_recentFile->addAction(m_recentFileActions->at(i));
+        connect(m_recentFileActions->at(i),SIGNAL(triggered()),this,SLOT(openRecentFile()));
+    }
+
 }

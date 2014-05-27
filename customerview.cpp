@@ -22,11 +22,15 @@
 #include "customerview.h"
 #include "ui_customerview.h"
 
-CustomerView::CustomerView(QWidget *parent) :
+CustomerView::CustomerView(ScenarioModel* model,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::CustomerView)
+    ui(new Ui::CustomerView),
+    m_model(model)
 {
     ui->setupUi(this);
+    m_scenarioDelegate = new ScenarioItemDelegate(map,mastermap,Scenario::AVAILABLE,true);
+    ui->listView->setItemDelegate(m_scenarioDelegate);
+    ui->listView->setModel(m_model);
 }
 
 CustomerView::~CustomerView()

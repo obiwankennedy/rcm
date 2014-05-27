@@ -56,9 +56,13 @@ public:
 
     QList<Scenario*>* getScenarioList();
     void setPerformer(QString m_id);
+signals:
+    void addGame();
+
 public slots:
     void addScenario();
     void updateGameListHeader();
+
 
 private:
     Ui::GameMasterDialog *ui;
@@ -67,6 +71,7 @@ private:
 
     QAction* m_addScenarioAct;
     QAction* m_delScenarioAct;
+    QAction* m_addGameAct;
     GameEditorDelegate* m_gameDelegate;
 };
 

@@ -91,11 +91,15 @@ void MainWindow::initActions()
     connect(ui->m_saveAct,SIGNAL(triggered()),this,SLOT(saveData()));
     connect(ui->m_saveAsAct,SIGNAL(triggered()),this,SLOT(saveAsData()));
 
+
+    connect(ui->m_newGameAct,SIGNAL(triggered()),this,SLOT(addGameDialog()));
+    connect(ui->m_newGmAct,SIGNAL(triggered()),this,SLOT(addGameMasterDialog()));
+
     connect(ui->m_customerViewDisplayAct,SIGNAL(triggered(bool)),m_scenarioManager,SLOT(showCustomView(bool)));
 
     //edit game and game master
     connect(ui->m_gameView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGame(QModelIndex)));
-    connect(ui->m_gameView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGameMaster(QModelIndex)));
+    connect(ui->m_masterView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGameMaster(QModelIndex)));
 
 
 }
@@ -118,12 +122,15 @@ void  MainWindow::addGameDialog()
 void MainWindow::closeEvent ( QCloseEvent * event )
 {
 
-    if (maybeSave()) {
+    if (maybeSave())
+    {
              writeSettings();
              event->accept();
-         } else {
+    }
+    else
+    {
              event->ignore();
-         }
+    }
 }
 bool MainWindow::maybeSave()
 {
@@ -132,7 +139,10 @@ bool MainWindow::maybeSave()
 void MainWindow::readFile()
 {
     QFile file(m_currentDataPath);
-    setWindowTitle(m_title.arg(m_currentDataPath));
+    QFileInfo info(m_currentDataPath);
+
+
+    setWindowTitle(m_title.arg(info.fileName()));
     if (file.open(QIODevice::ReadOnly))
     {
         QDataStream in(&file);
@@ -279,20 +289,35 @@ void MainWindow::editGameMaster(const QModelIndex& index)
     {
         GameMaster* tmp = m_gameMasterModel->getMasterList().at(index.row());
         GameMasterDialog dialog(m_gameModel->getGameMap());
-        /*dialog.setTitle(tmp->getTitle());
-        dialog.setDescription(tmp->getDescription());
-        dialog.setPunchLine(tmp->getPunchLine());
+
+        dialog.setName(tmp->getName());
+        dialog.setNickName(tmp->getNickName());
+        dialog.setMailAddress(tmp->getMailAddress());
+        dialog.setFirstName(tmp->getFirstName());
+        dialog.setPhoneNumber(tmp->getPhoneNumber());
+        dialog.setScenarioList(tmp->getGMScenarios());
+
+
 
         if(dialog.exec())
         {
 
-            tmp->setTitle(dialog.getTitle());
-            tmp->setPunchLine(dialog.getPunchLine());
-            tmp->setDescription(dialog.getDescription());
+            tmp->setName(dialog.getName());
+            tmp->setNickName(dialog.getNickName());
+            tmp->setFirstName(dialog.getFirstName());
+            tmp->setPhoneNumber(dialog.getPhoneNumber());
+            tmp->setMailAddress(dialog.getMailAddress());
 
-            m_gameModel->append(tmp);
 
-        }*/
+
+
+            dialog.setPerformer(tmp->getId());
+            QList<Scenario*>* list = dialog.getScenarioList();
+
+            //All scenario are Available
+            tmp->setGMScenario(list);
+
+        }
 
     }
 }

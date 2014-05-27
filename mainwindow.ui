@@ -24,11 +24,11 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Données</string>
+        <string>Data</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
@@ -121,7 +121,7 @@
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>Scénarios</string>
+        <string>Scenarios</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
@@ -173,7 +173,7 @@
      <x>0</x>
      <y>0</y>
      <width>966</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -193,7 +193,15 @@
     </property>
     <addaction name="m_customerViewDisplayAct"/>
    </widget>
+   <widget class="QMenu" name="menuActuion">
+    <property name="title">
+     <string>Action</string>
+    </property>
+    <addaction name="m_newGameAct"/>
+    <addaction name="m_newGmAct"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menuActuion"/>
    <addaction name="menuShow"/>
   </widget>
   <action name="m_openAct">
@@ -242,6 +250,22 @@
    </property>
    <property name="text">
     <string>Scenario Window</string>
+   </property>
+  </action>
+  <action name="m_newGameAct">
+   <property name="text">
+    <string>New Game</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+N</string>
+   </property>
+  </action>
+  <action name="m_newGmAct">
+   <property name="text">
+    <string>New Gm</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+G</string>
    </property>
   </action>
  </widget>

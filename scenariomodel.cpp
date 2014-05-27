@@ -177,9 +177,10 @@ void ScenarioModel::setDataList(QList<Scenario*>* l )
 }
 void ScenarioModel::addDataList(QList<Scenario*>* l)
 {
-    beginInsertRows(QModelIndex(),m_scenarioList->size(),m_scenarioList->size()+l->size());
+    beginInsertRows(QModelIndex(),m_scenarioList->size(),m_scenarioList->size()+l->size()-1);
     m_scenarioList->append(*l);
     emit addedData();
+    emit updateHeader();
     endInsertRows();
 }
 
@@ -192,6 +193,7 @@ void ScenarioModel::appendScenario(Scenario* a)
     beginInsertRows(QModelIndex(),m_scenarioList->size(),m_scenarioList->size());
     m_scenarioList->append(a);
     emit addedData();
+    emit updateHeader();
     endInsertRows();
 
 }
@@ -254,6 +256,4 @@ void ScenarioModel::timeOut()
     {
        emit dataChanged(createIndex(0,0),createIndex(m_scenarioList->size(),0));
     }
-
-
 }

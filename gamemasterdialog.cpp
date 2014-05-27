@@ -31,12 +31,15 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QWidget *parent) :
 
     m_addScenarioAct=new QAction(tr("Add"),this);
     m_delScenarioAct=new QAction(tr("Del"),this);
+    m_addGameAct=new QAction(tr("Add Game"),this);
 
     ui->setupUi(this);
     m_model = new ScenarioModel(Scenario::AVAILABLE);
     ui->m_scenarioTable->setModel(m_model);
     ui->m_deleteButton->setDefaultAction(m_delScenarioAct);
     ui->m_newButton->setDefaultAction(m_addScenarioAct);
+    ui->m_addGame->setDefaultAction(m_addGameAct);
+
 
     m_gameDelegate = new GameEditorDelegate(l);
 
@@ -56,6 +59,7 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QWidget *parent) :
 
     connect(m_addScenarioAct,SIGNAL(triggered()),this,SLOT(addScenario()));
     connect(m_model,SIGNAL(updateHeader()),this,SLOT(updateGameListHeader()));
+    connect(ui->m_addGame,SIGNAL(pressed()),this,SIGNAL(addGame()));
 }
 
 GameMasterDialog::~GameMasterDialog()
@@ -133,5 +137,7 @@ void GameMasterDialog::setMailAddress(QString str)
 }
 void GameMasterDialog::setScenarioList(QList<Scenario*>* lst)
 {
+
     m_model->addDataList(lst);
+     updateGameListHeader();
 }

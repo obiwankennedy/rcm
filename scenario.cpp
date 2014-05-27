@@ -26,7 +26,7 @@
 #include "scenario.h"
 
 Scenario::Scenario()
-    : m_scenarioId(QUuid().toString()),m_duration(60),m_level(BEGINNER),m_maximumPlayers(6),m_minimumPlayers(2),m_currentPlayers(0)
+    : m_scenarioId(QUuid::createUuid().toString()),m_duration(60),m_level(BEGINNER),m_maximumPlayers(6),m_minimumPlayers(2),m_currentPlayers(0)
 {
 
 }
@@ -43,6 +43,13 @@ void Scenario::setReferenceScenario(const Scenario* a)
     m_minimumPlayers = a->getMinimumPlayers();
     m_title = a->getTitle();
     m_startTime = a->getDateTime();
+    m_currentPlayers = a->getCurrentPlayers();
+}
+void Scenario::reset()
+{
+    m_currentPlayers = 0;
+    m_startTime = QDateTime();
+    m_state=Scenario::AVAILABLE;
 }
 
 Scenario::~Scenario()

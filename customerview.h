@@ -22,23 +22,19 @@
 #ifndef CUSTOMERVIEW_H
 #define CUSTOMERVIEW_H
 
-#include <QMainWindow>
+#include <QQuickView>
 #include "scenarioitemdelegate.h"
 #include "scenariomodel.h"
-namespace Ui {
-class CustomerView;
-}
 
-class CustomerView : public QMainWindow
+class CustomerView : public QQuickView
 {
     Q_OBJECT
     
 public:
-    explicit CustomerView(ScenarioModel* model,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, QWidget *parent = 0);
+    explicit CustomerView(ScenarioModel* model,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, QWindow *parent = 0);
     ~CustomerView();
     
 private:
-    Ui::CustomerView *ui;
     ScenarioItemDelegate* m_scenarioDelegate;
     ScenarioModel* m_model;
 };

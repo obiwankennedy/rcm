@@ -20,20 +20,27 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include "customerview.h"
-#include "ui_customerview.h"
+#include <QQmlContext>
 
-CustomerView::CustomerView(ScenarioModel* model,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::CustomerView),
+#include <QQuickView>
+
+CustomerView::CustomerView(ScenarioModel* model,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QWindow* parent) :
+    QQuickView(parent),
     m_model(model)
 {
-    ui->setupUi(this);
-    m_scenarioDelegate = new ScenarioItemDelegate(map,mastermap,Scenario::AVAILABLE,true);
-    ui->listView->setItemDelegate(m_scenarioDelegate);
-    ui->listView->setModel(m_model);
+    //ui->setupUi(this);
+    //m_scenarioDelegate = new ScenarioItemDelegate(map,mastermap,Scenario::AVAILABLE,true);
+    //ui->listView->setItemDelegate(m_scenarioDelegate);
+    //ui->listView->setModel(m_model);
+    rootContext()->setContextProperty("_myModel",m_model);
+    setSource(QUrl("qrc:/listView.qml"));
+
+    setResizeMode(QQuickView::SizeRootObjectToView);
+
+
 }
 
 CustomerView::~CustomerView()
 {
-    delete ui;
+
 }

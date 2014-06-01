@@ -22,8 +22,8 @@
 #include "scenariomodel.h"
 #include <QDebug>
 
-ScenarioModel::ScenarioModel(Scenario::STATE m,QObject *parent) :
-    QAbstractListModel(parent),m_state(m)
+ScenarioModel::ScenarioModel(QMap<QString,Game*>& l,Scenario::STATE m,QObject *parent) :
+    QAbstractListModel(parent),m_state(m),m_list(l)
 {
     m_scenarioList = new QList<Scenario*>();
     m_columns << tr("Game")<< tr("Title")<< tr("Duration")<< tr("Level")<< tr("Min")<< tr("Max")<< tr("Description");
@@ -73,13 +73,50 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
             case 6:
                 return m_scenarioList->at(index.row())->getDescription();
         }
-
-
     }
-
+    else if(ScenarioModel::TitleRole == role)
+    {
+       return m_scenarioList->at(index.row())->getTitle();
+    }
+    else if(ScenarioModel::GameIdRole == role)
+    {
+       return m_scenarioList->at(index.row())->getGameId();
+    }
+    else if(ScenarioModel::GameMasterIdRole == role)
+    {
+        return m_scenarioList->at(index.row())->getGameMasterId();
+    }
+    else if(ScenarioModel::DurationRole == role)
+    {
+     return m_scenarioList->at(index.row())->getDuration();
+    }
+    else if(ScenarioModel::CurrentPlayerRole == role)
+    {
+      return m_scenarioList->at(index.row())->getCurrentPlayers();
+    }
+    else if(ScenarioModel::MaximumRole == role)
+    {
+      return m_scenarioList->at(index.row())->getMaximumPlayers();
+    }
+    else if(ScenarioModel::MinimumRole == role)
+    {
+      return m_scenarioList->at(index.row())->getMinimumPlayers();
+    }
+    else if(ScenarioModel::CurrentPlayerRole == role)
+    {
+      return m_scenarioList->at(index.row())->getCurrentPlayers();
+    }
+    else if(ScenarioModel::GameTitleRole == role)
+    {
+        QString id = m_scenarioList->at(index.row())->getGameId();
+        Game* tmp  = m_list[id];
+        if(tmp!=NULL)
+            return tmp->getTitle();
+        else
+            return QVariant();
+    }
     else if(Qt::UserRole == role)
     {
-
         QVariant var;
         Scenario* tmp = m_scenarioList->at(index.row());
         var.setValue(*tmp);
@@ -133,7 +170,7 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
           emit dataChanged(index,index);
           return result;
     }
-    else if(ScenarioModel::INCREASE_CURRENT == role)
+    else if(ScenarioModel::IncreaseRole == role)
     {
 
         if(current->getMaximumPlayers()>=current->getCurrentPlayers()+value.toInt())
@@ -147,7 +184,7 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
             return false;
         }
     }
-    else if(ScenarioModel::DECREASE_CURRENT == role)
+    else if(ScenarioModel::DecreaseRole == role)
     {
 
         int valueInt = current->getCurrentPlayers()-value.toInt();
@@ -256,4 +293,18 @@ void ScenarioModel::timeOut()
     {
        emit dataChanged(createIndex(0,0),createIndex(m_scenarioList->size(),0));
     }
+}
+ QHash<int, QByteArray>  ScenarioModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[GameIdRole] = "GameId";
+    roles[GameMasterIdRole] = "GameMasterId";
+    roles[DurationRole] = "Duration";
+    roles[MinimumRole] = "MinimumPlayer";
+    roles[MaximumRole] = "MaximumPlayer";
+    roles[DescriptionRole] = "Description";
+    roles[CurrentPlayerRole] = "CurrentPlayer";
+    roles[TitleRole] = "Title";
+    roles[GameTitleRole] = "GameTitle";
+    return roles;
 }

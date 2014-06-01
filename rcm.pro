@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui qml quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -49,3 +49,9 @@ FORMS    += mainwindow.ui \
     gamedialog.ui \
     customerview.ui \
     scenarioeditordialog.ui
+
+OTHER_FILES += \
+    listView.qml
+
+RESOURCES += \
+    resources.qrc

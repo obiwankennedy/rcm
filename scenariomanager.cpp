@@ -33,9 +33,9 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
 {
 
     //model
-    m_availableScenarioModel = new ScenarioModel(Scenario::AVAILABLE);
-    m_runningScenarioModel = new ScenarioModel(Scenario::RUNNING);
-    m_doneScenarioModel = new ScenarioModel(Scenario::DONE);
+    m_availableScenarioModel = new ScenarioModel(m_list,Scenario::AVAILABLE);
+    m_runningScenarioModel = new ScenarioModel(m_list,Scenario::RUNNING);
+    m_doneScenarioModel = new ScenarioModel(m_list,Scenario::DONE);
 
 
     m_customerView = new CustomerView(m_availableScenarioModel,map,mastermap);
@@ -181,7 +181,7 @@ void ScenarioManager::increaseCurrentPlayerCount()
         Scenario sce = var.value<Scenario>();
         //
         ScenarioModel* model = getRightModel(sce.getState());
-        model->setData(index,1,ScenarioModel::INCREASE_CURRENT);
+        model->setData(index,1,ScenarioModel::IncreaseRole);
     }
 }
 void ScenarioManager::decreaseCurrentPlayerCount()
@@ -194,7 +194,7 @@ void ScenarioManager::decreaseCurrentPlayerCount()
         Scenario sce = var.value<Scenario>();
         //
         ScenarioModel* model = getRightModel(sce.getState());
-        model->setData(index,1,ScenarioModel::DECREASE_CURRENT);
+        model->setData(index,1,ScenarioModel::DecreaseRole);
     }
 }
 void ScenarioManager::startScenario()

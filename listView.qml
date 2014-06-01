@@ -9,21 +9,29 @@ Item {
         id:listView
         model: _myModel
         delegate: scenarioDelegate
-        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+        highlight: Rectangle {
+            height: 60
+            width: parent.width
+            color: "lightsteelblue";
+            radius: 5 }
         focus: true
 
     }
     Component {
         id: scenarioDelegate
         Item {
-            height: 40
+            height: 60
             width: parent.width
             Rectangle {
+                id:rect
+                state: CurrentPlayer == 0 ? "" : CurrentPlayer == MaximumPlayer ? "ready" : "wip"
+                property int rotationValue: 0
+//
                 anchors.fill: parent
-                //color: "#d7b1b1"
-                radius: 2
-                border.width: 2
-
+                color: ColorRole
+                radius: 5
+                border.width: 1
+                transform: Rotation { origin.x: rect.width/2; origin.y: rect.height/2; axis { x: 1; y: 0; z: 0 } angle: rect.rotationValue}
 
 
                 Text {
@@ -44,15 +52,40 @@ Item {
                     anchors.top: parent.top
                     anchors.right: parent.right
                 }
+                Text {
+                    id:durationId
+                    text: qsTr("Duration:") + Duration
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                }
+                Text {
+                    id:gmId
+                    text: qsTr("GM:") + GMName
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                }
+
+                Behavior on state  {
+                    SequentialAnimation {
+                      PropertyAnimation { target: rect; property: "rotationValue"; to: 800 }//Easing.OutQuart
+                      PropertyAnimation { target: rect; property: "rotationValue"; to: 0 }
+                    }
+                }
+
+                states: [
+                    State {
+                        name: ""
+                    },
+                    State {
+                        name: "wip"
+                    },
+                    State {
+                        name: "ready"
+                    }
+
+                ]
+
             }
         }
     }
-
-    //    Rectangle {
-    //        anchors.fill: parent
-    //        color:"red"
-    //    }
-
-    // Text { text: "Scenario: " + Title + ", " + CurrentPlayer }
-
 }

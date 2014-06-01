@@ -24,7 +24,7 @@
 #include <QDebug>
 
 
-GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QWidget *parent) :
+GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lst,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::GameMasterDialog)
 {
@@ -34,7 +34,7 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QWidget *parent) :
     m_addGameAct=new QAction(tr("Add Game"),this);
 
     ui->setupUi(this);
-    m_model = new ScenarioModel(l,Scenario::AVAILABLE);
+    m_model = new ScenarioModel(l,lst,Scenario::AVAILABLE);
     ui->m_scenarioTable->setModel(m_model);
     ui->m_deleteButton->setDefaultAction(m_delScenarioAct);
     ui->m_newButton->setDefaultAction(m_addScenarioAct);

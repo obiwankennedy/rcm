@@ -23,6 +23,7 @@
 #include <QPainter>
 
 #include "scenarioitemdelegate.h"
+#include "scenariomodel.h"
 #include <QDebug>
 
 #define FACTOR_SIZE 3
@@ -61,66 +62,44 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
 
 
-
-        if(Scenario::AVAILABLE == m_state)
-        {
-            qreal a = (qreal)tmp.getCurrentPlayers()/(qreal)tmp.getMaximumPlayers();
-            QColor green(0,255,0);
-            QColor startColor(237,127,16);
-            QColor result;
-            qreal bleu = startColor.blue() + (a*(green.blue()-startColor.blue()));
-            qreal red = startColor.red() + (a*(green.red()-startColor.red()));
-            qreal greenValue = startColor.green() + (a*(green.green()-startColor.green()));
-
-
-            painter->save();
-            if( option.state & QStyle::State_Selected )
-            {
-                QColor bis = option.palette.highlight().color();
-                painter->fillRect(itemRect, bis);
-            }
-            else
-            {
-                result.setBlue(bleu);
-                result.setGreen(greenValue);
-                result.setRed(red);
-
-                painter->fillRect(itemRect,result);
-            }
-            painter->restore();
-
-
-        }
-        else if( option.state & QStyle::State_Selected )
+        if( option.state & QStyle::State_Selected )
         {
 
             painter->fillRect(itemRect, option.palette.highlight());
         }
-
-
-
-
-
-
-
-
-        if(Scenario::AVAILABLE == m_state)
+        else if(Scenario::AVAILABLE == m_state)
         {
+            QVariant var = index.data(ScenarioModel::ColorRole);
+            QColor statusColor= var.value<QColor>();
 
-
-
-            QString str=minutesToHours(tmp.getDuration(),tr("Duration"));
-            style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
-
-
-
+            painter->fillRect(itemRect, statusColor);
         }
-        else if(Scenario::RUNNING == m_state)
-        {
-            QString str=minutesToHours(tmp.getRestingTime(),tr("End in"));
-            style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
 
-             QStyleOptionProgressBarV2 progressBarStyleOption;
+
+
+
+
+
+
+
+
+            if(Scenario::AVAILABLE == m_state)
+            {
+
+
+
+                QString str=minutesToHours(tmp.getDuration(),tr("Duration"));
+                style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+
+
+
+            }
+            else if(Scenario::RUNNING == m_state)
+            {
+                QString str=minutesToHours(tmp.getRestingTime(),tr("End in"));
+                style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
+
+                QStyleOptionProgressBarV2 progressBarStyleOption;
                 QRect progressBarRect;
 
                 progressBarRect.setY(2*option.rect.height()/3);
@@ -147,7 +126,7 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
 
 
-        }
+            }
 
         GameMaster* myGameMaster = m_masterlist[tmp.getGameMasterId()];
         if(!m_private)

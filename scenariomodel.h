@@ -29,14 +29,16 @@
 
 #include "scenario.h"
 #include "game.h"
+#include "gamemaster.h"
 
 class ScenarioModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum CustomRole {IncreaseRole = Qt::UserRole+1,DecreaseRole,GameIdRole,GameMasterIdRole,DurationRole,MinimumRole,MaximumRole,DescriptionRole,CurrentPlayerRole,TitleRole,GameTitleRole};
+    enum CustomRole {IncreaseRole = Qt::UserRole+1,DecreaseRole,GameIdRole,GameMasterIdRole,DurationRole,MinimumRole,
+                     MaximumRole,DescriptionRole,CurrentPlayerRole,TitleRole,GameTitleRole,GameMasterNameRole,ColorRole};
 
-    explicit ScenarioModel(QMap<QString,Game*>& l,Scenario::STATE m,QObject *parent = 0);
+    explicit ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent = 0);
     int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
     int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
@@ -66,6 +68,7 @@ private:
     QList<Scenario*>* m_scenarioList;
     QList<Game*>* m_gameList;/// @brief no longer needed i think
     QMap<QString,Game*>& m_list;
+    QMap<QString,GameMaster*>& m_gameMasterMap;
     QString m_uuid;//isolate
     bool m_isFiltered;
     QStringList m_columns;

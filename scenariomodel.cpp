@@ -21,9 +21,10 @@
 ***************************************************************************/
 #include "scenariomodel.h"
 #include <QDebug>
+#include <QColor>
 
-ScenarioModel::ScenarioModel(QMap<QString,Game*>& l,Scenario::STATE m,QObject *parent) :
-    QAbstractListModel(parent),m_state(m),m_list(l)
+ScenarioModel::ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent) :
+    QAbstractListModel(parent),m_state(m),m_list(l),m_gameMasterMap(lstGm)
 {
     m_scenarioList = new QList<Scenario*>();
     m_columns << tr("Game")<< tr("Title")<< tr("Duration")<< tr("Level")<< tr("Min")<< tr("Max")<< tr("Description");
@@ -114,6 +115,36 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
             return tmp->getTitle();
         else
             return QVariant();
+    }
+    else if(ScenarioModel::GameMasterNameRole == role)
+    {
+        QString id = m_scenarioList->at(index.row())->getGameMasterId();
+        GameMaster* tmp  = m_gameMasterMap[id];
+        if(tmp!=NULL)
+            return tmp->getNickName();
+        else
+            return QVariant();
+    }
+    else if(ScenarioModel::ColorRole == role)
+    {
+        int current = m_scenarioList->at(index.row())->getCurrentPlayers();
+        int max = m_scenarioList->at(index.row())->getMaximumPlayers();
+
+        qreal a = (qreal)current/(qreal)max;
+        QColor endColor(0,255,0);
+        //QColor startColor(237,127,16);
+        QColor startColor(255,0,0);
+        QColor result;
+        qreal bleu = startColor.blue() + (a*(endColor.blue()-startColor.blue()));
+        qreal red = startColor.red() + (a*(endColor.red()-startColor.red()));
+        qreal green = startColor.green() + (a*(endColor.green()-startColor.green()));
+
+        result.setBlue(bleu);
+        result.setGreen(green);
+        result.setRed(red);
+        result.setAlpha(128);
+
+       return result;
     }
     else if(Qt::UserRole == role)
     {
@@ -306,5 +337,7 @@ void ScenarioModel::timeOut()
     roles[CurrentPlayerRole] = "CurrentPlayer";
     roles[TitleRole] = "Title";
     roles[GameTitleRole] = "GameTitle";
+    roles[GameMasterNameRole] = "GMName";
+    roles[ColorRole] = "ColorRole";
     return roles;
 }

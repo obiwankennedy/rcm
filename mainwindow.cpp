@@ -295,7 +295,7 @@ void MainWindow::addRecentFile()
 }
 void MainWindow::addGameMasterDialog()
 {
-    GameMasterDialog dialog(m_gameModel->getGameMap());
+    GameMasterDialog dialog(m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
     connect(&dialog,SIGNAL(addGame()),this,SLOT(addGameDialog()));
     dialog.setWindowFlags(Qt::Window );
 
@@ -373,7 +373,7 @@ void MainWindow::editGameMaster(const QModelIndex& index)
     if(index.isValid())
     {
         GameMaster* tmp = m_gameMasterModel->getMasterList().at(index.row());
-        GameMasterDialog dialog(m_gameModel->getGameMap());
+        GameMasterDialog dialog(m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
         connect(&dialog,SIGNAL(addGame()),this,SLOT(addGameDialog()));
 
         dialog.setName(tmp->getName());

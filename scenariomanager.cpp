@@ -33,12 +33,12 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
 {
 
     //model
-    m_availableScenarioModel = new ScenarioModel(m_list,Scenario::AVAILABLE);
-    m_runningScenarioModel = new ScenarioModel(m_list,Scenario::RUNNING);
-    m_doneScenarioModel = new ScenarioModel(m_list,Scenario::DONE);
+    m_availableScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::AVAILABLE);
+    m_runningScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::RUNNING);
+    m_doneScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::DONE);
 
 
-    m_customerView = new CustomerView(m_availableScenarioModel,map,mastermap);
+    m_customerView = new CustomerView(m_availableScenarioModel);
 
     //view
     m_ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
@@ -271,7 +271,7 @@ bool ScenarioManager::eventFilterForAvailable( QEvent *event)
         return false;
     }
 }
-bool ScenarioManager::eventFilterForDone(QEvent * ent)
+bool ScenarioManager::eventFilterForDone(QEvent * /*ent*/)
 {
     return false;
 }
@@ -303,6 +303,7 @@ bool ScenarioManager::eventFilterForRunning(QEvent * event)
         showContextMenu(menuEvent,Scenario::RUNNING);
         return true;
     }
+    return false;
 }
 void ScenarioManager::scenarioIsDone()
 {
@@ -349,4 +350,5 @@ QListView* ScenarioManager::getFocusedListView()
     {
         return m_ui->m_scenarioRunningView;
     }
+    return NULL;
 }

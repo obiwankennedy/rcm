@@ -24,7 +24,7 @@
 
 #include <QQuickView>
 
-CustomerView::CustomerView(ScenarioModel* model,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QWindow* parent) :
+CustomerView::CustomerView(ScenarioModel* model,QWindow* parent) :
     QQuickView(parent),
     m_model(model)
 {

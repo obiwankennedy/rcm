@@ -31,7 +31,7 @@ class CustomerView : public QQuickView
     Q_OBJECT
     
 public:
-    explicit CustomerView(ScenarioModel* model,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, QWindow *parent = 0);
+    explicit CustomerView(ScenarioModel* model, QWindow *parent = 0);
     ~CustomerView();
     
 private:

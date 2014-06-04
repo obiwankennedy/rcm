@@ -71,7 +71,7 @@ public:
     QDateTime getDateTime() const;
     QString getScenarioId() const;
 
-    quint32 getRestingTime() const;
+    quint32 getRestingTimeInSecond() const;
 
 
 

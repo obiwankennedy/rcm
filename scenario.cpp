@@ -237,11 +237,11 @@ void Scenario::setScenarioId(QString m)
 {
     m_scenarioId = m;
 }
-quint32 Scenario::getRestingTime() const
+quint32 Scenario::getRestingTimeInSecond() const
 {
     QDateTime now(QDateTime::currentDateTime());
     int seconds = m_startTime.secsTo(now);
-    int min = m_duration-(seconds/60);
+    int min = m_duration*60-seconds;
 
     return min < 0 ? 0 : min;
 }

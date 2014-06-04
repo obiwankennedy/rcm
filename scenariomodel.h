@@ -30,8 +30,9 @@
 #include "scenario.h"
 #include "game.h"
 #include "gamemaster.h"
+#include "serializable.h"
 
-class ScenarioModel : public QAbstractListModel
+class ScenarioModel : public QAbstractListModel, public Serialisable
 {
     Q_OBJECT
 public:
@@ -58,6 +59,10 @@ public:
     QList<Scenario*>* getScenarioList();
 
      QHash<int, QByteArray>  roleNames() const;
+
+     virtual void readFromData(QDataStream&);
+     virtual void writeToData(QDataStream&) const;
+
 signals:
     void updateHeader();
     void addedData();

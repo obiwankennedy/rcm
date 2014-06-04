@@ -37,8 +37,14 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
     m_runningScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::RUNNING);
     m_doneScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::DONE);
 
-
+#ifdef __QT_QUICK_2_
     m_customerView = new CustomerView(m_availableScenarioModel);
+    m_ui->m_customerViewDisplayAct->setEnabled(true);
+    m_ui->m_customerViewDisplayAct->setVisible(true);
+#else
+    m_ui->m_customerViewDisplayAct->setEnabled(false);
+    m_ui->m_customerViewDisplayAct->setVisible(false);
+#endif
 
     //view
     m_ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
@@ -112,7 +118,9 @@ ScenarioModel* ScenarioManager::getRightModel(Scenario::STATE m)
 }
 void ScenarioManager::showCustomView(bool b)
 {
+    #ifdef __QT_QUICK_2_
     m_customerView->setVisible(b);
+    #endif
 }
 void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 {
@@ -351,4 +359,12 @@ QListView* ScenarioManager::getFocusedListView()
         return m_ui->m_scenarioRunningView;
     }
     return NULL;
+}
+void ScenarioManager::readFromData(QDataStream& from)
+{
+    m_doneScenarioModel->readFromData(from);
+}
+void ScenarioManager::writeToData(QDataStream& to) const
+{
+    m_doneScenarioModel->writeToData(to);
 }

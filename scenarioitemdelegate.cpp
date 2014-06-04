@@ -96,13 +96,15 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             }
             else if(Scenario::RUNNING == m_state)
             {
-                QString str=minutesToHours(tmp.getRestingTime(),tr("End in"));
+                QString str=minutesToHours(tmp.getRestingTimeInSecond()/60,tr("End in"));
                 style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
 
                 QStyleOptionProgressBarV2 progressBarStyleOption;
                 QRect progressBarRect;
 
-                progressBarRect.setY(2*option.rect.height()/3);
+
+                progressBarRect.setY(option.rect.y()+2*option.rect.height()/3);
+
                 progressBarRect.setX(option.rect.width()/4);
                 progressBarRect.setHeight(option.rect.height()/3);
                 progressBarRect.setWidth(option.rect.width()/2);
@@ -111,9 +113,11 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
                 progressBarStyleOption.rect = progressBarRect;
 
 
-                const int progress = 100*tmp.getRestingTime()/tmp.getDuration();
+                const int progress = 100*(tmp.getRestingTimeInSecond())/(tmp.getDuration()*60);
 
-                progressBarStyleOption.minimum = 0;
+                qDebug() << "progress " <<100-progress;
+
+                progressBarStyleOption.minimum = 1;
                 progressBarStyleOption.state = option.state;
                 progressBarStyleOption.maximum = 100;
                 progressBarStyleOption.textAlignment = Qt::AlignHCenter | Qt::AlignBottom;

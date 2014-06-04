@@ -43,6 +43,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
+    enum TAB {DATA,SCENARIO};
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -60,6 +61,7 @@ public slots:
     void addGameMasterDialog();
     void addGmScenarioListToGlobalList(GameMaster* l);
     void statusGmHasChanged(GameMaster* l,bool);
+    void ensureTabVisible(TAB);
 
 protected:
     void closeEvent ( QCloseEvent * event );

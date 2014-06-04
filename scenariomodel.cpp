@@ -59,29 +59,29 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     {
         switch(index.column())
         {
-            case 0:
-                return m_scenarioList->at(index.row())->getGameId();
-            case 1:
-                return m_scenarioList->at(index.row())->getTitle();
-            case 2:
-                return m_scenarioList->at(index.row())->getDuration();
-            case 3:
-                return m_scenarioList->at(index.row())->getLevel();
-            case 4:
-                return m_scenarioList->at(index.row())->getMinimumPlayers();
-            case 5:
-                return m_scenarioList->at(index.row())->getMaximumPlayers();
-            case 6:
-                return m_scenarioList->at(index.row())->getDescription();
+        case 0:
+            return m_scenarioList->at(index.row())->getGameId();
+        case 1:
+            return m_scenarioList->at(index.row())->getTitle();
+        case 2:
+            return m_scenarioList->at(index.row())->getDuration();
+        case 3:
+            return m_scenarioList->at(index.row())->getLevel();
+        case 4:
+            return m_scenarioList->at(index.row())->getMinimumPlayers();
+        case 5:
+            return m_scenarioList->at(index.row())->getMaximumPlayers();
+        case 6:
+            return m_scenarioList->at(index.row())->getDescription();
         }
     }
     else if(ScenarioModel::TitleRole == role)
     {
-       return m_scenarioList->at(index.row())->getTitle();
+        return m_scenarioList->at(index.row())->getTitle();
     }
     else if(ScenarioModel::GameIdRole == role)
     {
-       return m_scenarioList->at(index.row())->getGameId();
+        return m_scenarioList->at(index.row())->getGameId();
     }
     else if(ScenarioModel::GameMasterIdRole == role)
     {
@@ -89,23 +89,23 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     }
     else if(ScenarioModel::DurationRole == role)
     {
-     return m_scenarioList->at(index.row())->getDuration();
+        return m_scenarioList->at(index.row())->getDuration();
     }
     else if(ScenarioModel::CurrentPlayerRole == role)
     {
-      return m_scenarioList->at(index.row())->getCurrentPlayers();
+        return m_scenarioList->at(index.row())->getCurrentPlayers();
     }
     else if(ScenarioModel::MaximumRole == role)
     {
-      return m_scenarioList->at(index.row())->getMaximumPlayers();
+        return m_scenarioList->at(index.row())->getMaximumPlayers();
     }
     else if(ScenarioModel::MinimumRole == role)
     {
-      return m_scenarioList->at(index.row())->getMinimumPlayers();
+        return m_scenarioList->at(index.row())->getMinimumPlayers();
     }
     else if(ScenarioModel::CurrentPlayerRole == role)
     {
-      return m_scenarioList->at(index.row())->getCurrentPlayers();
+        return m_scenarioList->at(index.row())->getCurrentPlayers();
     }
     else if(ScenarioModel::GameTitleRole == role)
     {
@@ -144,7 +144,7 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
         result.setRed(red);
         result.setAlpha(128);
 
-       return result;
+        return result;
     }
     else if(Qt::UserRole == role)
     {
@@ -168,38 +168,38 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
         bool result=false;
         switch(index.column())
         {
-            case 0:
-                current->setGameId(value.toString());
-                result = true;
-                break;
-            case 1:
-                current->setTitle(value.toString());
-                result = true;
-                break;
-            case 2:
-                current->setDuration(value.toInt());
-                result = true;
-                break;
-            case 3:
-                current->setLevel((Scenario::LEVEL)value.toInt());
-                result = true;
-                break;
-            case 4:
-                current->setMinimumPlayer(value.toInt());
-                result = true;
-                break;
-            case 5:
-                 current->setMaximumPlayer(value.toInt());
-                result = true;
-                break;
-            case 6:
-               current->setDescription(value.toString());
-                result = true;
-                break;
+        case 0:
+            current->setGameId(value.toString());
+            result = true;
+            break;
+        case 1:
+            current->setTitle(value.toString());
+            result = true;
+            break;
+        case 2:
+            current->setDuration(value.toInt());
+            result = true;
+            break;
+        case 3:
+            current->setLevel((Scenario::LEVEL)value.toInt());
+            result = true;
+            break;
+        case 4:
+            current->setMinimumPlayer(value.toInt());
+            result = true;
+            break;
+        case 5:
+            current->setMaximumPlayer(value.toInt());
+            result = true;
+            break;
+        case 6:
+            current->setDescription(value.toString());
+            result = true;
+            break;
         }
-          emit updateHeader();
-          emit dataChanged(index,index);
-          return result;
+        emit updateHeader();
+        emit dataChanged(index,index);
+        return result;
     }
     else if(ScenarioModel::IncreaseRole == role)
     {
@@ -322,10 +322,10 @@ void ScenarioModel::timeOut()
 {
     if(!m_scenarioList->isEmpty())
     {
-       emit dataChanged(createIndex(0,0),createIndex(m_scenarioList->size(),0));
+        emit dataChanged(createIndex(0,0),createIndex(m_scenarioList->size(),0));
     }
 }
- QHash<int, QByteArray>  ScenarioModel::roleNames() const
+QHash<int, QByteArray>  ScenarioModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[GameIdRole] = "GameId";
@@ -340,4 +340,26 @@ void ScenarioModel::timeOut()
     roles[GameMasterNameRole] = "GMName";
     roles[ColorRole] = "ColorRole";
     return roles;
+}
+void  ScenarioModel::readFromData(QDataStream& from)
+{
+    int size;
+    from >> size;
+    for(int i = 0; i < size;++i)
+    {
+        Scenario* tmp = new Scenario();
+        tmp->readFromData(from);
+        appendScenario(tmp);
+        //emit gmHasBeenAdded(tmp);
+    }
+}
+void  ScenarioModel::writeToData(QDataStream& to) const
+{
+    to << m_scenarioList->count();
+
+    foreach(Scenario* tmp,*m_scenarioList)
+    {
+        tmp->writeToData(to);
+    }
+
 }

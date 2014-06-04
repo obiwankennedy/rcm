@@ -30,14 +30,18 @@
 #include "scenario.h"
 #include "scenariomodel.h"
 #include "scenarioitemdelegate.h"
+#ifdef __QT_QUICK_2_
 #include "customerview.h"
+#endif
 #include "gamemaster.h"
+
+#include "serializable.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class ScenarioManager : public QObject
+class ScenarioManager : public QObject, public Serialisable
 {
     Q_OBJECT
 public:
@@ -52,6 +56,10 @@ public:
     
     ScenarioModel* getRightModel(Scenario::STATE m);
     QListView* getFocusedListView();
+
+
+    virtual void readFromData(QDataStream&);
+    virtual void writeToData(QDataStream&) const;
     
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
@@ -88,9 +96,9 @@ private:
     
     QMap<QString,Game*>& m_list;
     QMap<QString,GameMaster*>& m_masterList;
-    
+    #ifdef __QT_QUICK_2_
     CustomerView* m_customerView;
-    
+    #endif
     
     //Actions
     QAction* m_increasePlayersCount;

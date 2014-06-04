@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui qml quick
+QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets qml quick
 
 TARGET = rcm
 TEMPLATE = app
@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     scenariomodel.cpp \
     gameeditordelegate.cpp \
     scenariomanager.cpp \
-    customerview.cpp \
     scenarioitemdelegate.cpp \
     scenarioeditordialog.cpp
 
@@ -40,7 +39,6 @@ HEADERS  += mainwindow.h \
     scenariomodel.h \
     gameeditordelegate.h \
     scenariomanager.h \
-    customerview.h \
     scenarioitemdelegate.h \
     scenarioeditordialog.h
 
@@ -55,3 +53,14 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
+
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+message("qt5")
+    SOURCES+=customerview.cpp \
+
+
+    HEADERS+=customerview.h \
+
+DEFINES+=__QT_QUICK_2_
+}

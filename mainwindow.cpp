@@ -161,8 +161,9 @@ void MainWindow::readFile()
         QDataStream in(&file);
         m_gameModel->readFromData(in);
         m_gameMasterModel->readFromData(in);
+        m_scenarioManager->readFromData(in);
         file.close();
-
+        ensureTabVisible(DATA);
     }
 }
 void MainWindow::saveData()
@@ -188,7 +189,7 @@ void MainWindow::saveData()
         // write data
         m_gameModel->writeToData(in);
         m_gameMasterModel->writeToData(in);
-
+        m_scenarioManager->writeToData(in);
         file.close();
     }
 }
@@ -428,4 +429,8 @@ void MainWindow::refreshOpenedFile()
         connect(m_recentFileActions->at(i),SIGNAL(triggered()),this,SLOT(openRecentFile()));
     }
 
+}
+void MainWindow::ensureTabVisible(TAB a)
+{
+    ui->m_tabWidget->setCurrentIndex(a);
 }

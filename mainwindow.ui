@@ -180,11 +180,25 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuImport">
+     <property name="title">
+      <string>Import</string>
+     </property>
+     <addaction name="m_importXMLAct"/>
+    </widget>
+    <widget class="QMenu" name="menuExport">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <addaction name="m_exportXMLAct"/>
+    </widget>
     <addaction name="m_newAct"/>
     <addaction name="m_openAct"/>
     <addaction name="m_saveAct"/>
     <addaction name="m_saveAsAct"/>
     <addaction name="separator"/>
+    <addaction name="menuImport"/>
+    <addaction name="menuExport"/>
     <addaction name="separator"/>
     <addaction name="m_quitAct"/>
    </widget>
@@ -270,6 +284,16 @@
    </property>
    <property name="shortcut">
     <string>Alt+G</string>
+   </property>
+  </action>
+  <action name="m_importXMLAct">
+   <property name="text">
+    <string>XML</string>
+   </property>
+  </action>
+  <action name="m_exportXMLAct">
+   <property name="text">
+    <string>XML</string>
    </property>
   </action>
  </widget>

@@ -363,3 +363,17 @@ void  ScenarioModel::writeToData(QDataStream& to) const
     }
 
 }
+QDomElement& ScenarioModel::writeDataToXml(QDomDocument& to)
+{
+    //to << m_scenarioList->count();
+
+    foreach(Scenario* tmp,*m_scenarioList)
+    {
+        tmp->writeDataToXml(to);
+    }
+}
+
+void ScenarioModel::readDataFromXml(QDomDocument&)
+{
+
+}

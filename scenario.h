@@ -79,6 +79,9 @@ public:
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
 
+    virtual QDomElement& writeDataToXml(QDomDocument&);
+    virtual void readDataFromXml(QDomDocument&) ;
+
     friend QDataStream &operator<<(QDataStream &out, const Scenario &myObj);
     friend QDataStream &operator>>(QDataStream &in, Scenario &myObj);
 

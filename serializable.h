@@ -24,6 +24,7 @@
 
 #include <QSettings>
 #include <QTextStream>
+#include <QDomDocument>
 
 class SettingsUser
 {
@@ -37,6 +38,9 @@ class Serialisable
 public:
     virtual void readFromData(QDataStream&) = 0;
     virtual void writeToData(QDataStream&) const = 0;
+
+    virtual QDomElement& writeDataToXml(QDomDocument&) = 0 ;
+    virtual void readDataFromXml(QDomDocument&) = 0 ;
 };
 
 #endif // SERIALIZABLE_H

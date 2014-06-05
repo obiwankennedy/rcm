@@ -44,7 +44,15 @@ void Game::writeToData(QDataStream& to) const
     to << m_uuid;
 
 }
+QDomElement& Game::writeDataToXml(QDomDocument&)
+{
 
+}
+
+void Game::readDataFromXml(QDomDocument&)
+{
+
+}
 
 void Game::setTitle(QString title)
 {

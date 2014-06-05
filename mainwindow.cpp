@@ -98,6 +98,10 @@ void MainWindow::initActions()
 
 
 
+
+
+
+
     // init menu
     connect(ui->m_openAct,SIGNAL(triggered()),this,SLOT(openData()));
     connect(ui->m_quitAct,SIGNAL(triggered()),this,SLOT(close()));
@@ -107,6 +111,8 @@ void MainWindow::initActions()
 
     connect(ui->m_newGameAct,SIGNAL(triggered()),this,SLOT(addGameDialog()));
     connect(ui->m_newGmAct,SIGNAL(triggered()),this,SLOT(addGameMasterDialog()));
+
+    connect(ui->m_exportXMLAct,SIGNAL(triggered()),this,SLOT(saveDataToXml()));
 
     connect(ui->m_customerViewDisplayAct,SIGNAL(triggered(bool)),m_scenarioManager,SLOT(showCustomView(bool)));
 
@@ -433,4 +439,34 @@ void MainWindow::refreshOpenedFile()
 void MainWindow::ensureTabVisible(TAB a)
 {
     ui->m_tabWidget->setCurrentIndex(a);
+}
+void MainWindow::saveDataToXml()
+{
+
+    QString fileExport = QFileDialog::getSaveFileName(this, tr("Save Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("XML Rolisteam Conv Database (*.xml)"));
+    if(!fileExport.isNull())
+    {
+        QFile file(fileExport);
+
+        QFileInfo fileinfo(file);
+        //m_preferences->registerValue("dataDirectory",fileinfo.absoluteDir().canonicalPath());
+
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QDomDocument doc;
+            doc.appendChild(m_scenarioManager->writeDataToXml(doc));
+            doc.appendChild(m_gameModel->writeDataToXml(doc));
+            doc.appendChild(m_gameMasterModel->writeDataToXml(doc));
+
+
+            QTextStream in(&file);
+            // write data
+
+            doc.save(in,4);
+            file.close();
+
+        }
+
+    }
+
 }

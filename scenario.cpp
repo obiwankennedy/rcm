@@ -245,3 +245,85 @@ quint32 Scenario::getRestingTimeInSecond() const
 
     return min < 0 ? 0 : min;
 }
+QDomElement& Scenario::writeDataToXml(QDomDocument& t)
+{
+
+    qDebug() << "write data";
+    /*
+     *    QString m_gameId;
+    QString m_gameMasterId;
+    QString m_scenarioId;
+    quint64 m_duration;//minutes
+    quint32 m_tableNumber;
+    QDateTime m_startTime;
+    LEVEL m_level;
+    quint32 m_maximumPlayers;
+    quint32 m_minimumPlayers;
+    quint32 m_currentPlayers;
+    QString m_title;
+    QString m_description;
+    STATE m_state;
+    */
+    QDomDocument doc;
+    QDomElement parent = doc.createElement("scenerio");
+    QDomElement gameIdF = doc.createElement("gameId");
+    gameIdF.appendChild(doc.createTextNode(m_gameId));
+
+    QDomElement gameMasterIdF = doc.createElement("gameMasterId");
+    gameMasterIdF.appendChild(doc.createTextNode(m_gameMasterId));
+
+    QDomElement durationF = doc.createElement("duration");
+    durationF.appendChild(doc.createTextNode(QString().setNum(m_duration)));
+
+    QDomElement tableNumberF = doc.createElement("tableNumber");
+    tableNumberF.appendChild(doc.createTextNode(QString().setNum(m_tableNumber)));
+
+    QDomElement startTimeF = doc.createElement("startTime");
+    startTimeF.appendChild(doc.createTextNode(m_startTime.toString("dd.MM.yyyy:hh:mm:ss")));
+
+    QDomElement levelF = doc.createElement("level");
+    levelF.appendChild(doc.createTextNode(QString().setNum(m_level)));
+
+    QDomElement maxF = doc.createElement("maximumPlayers");
+    maxF.appendChild(doc.createTextNode(QString().setNum(m_maximumPlayers)));
+
+    QDomElement minF = doc.createElement("minimumPlayers");
+    minF.appendChild(doc.createTextNode(QString().setNum(m_minimumPlayers)));
+
+    QDomElement titleF = doc.createElement("title");
+    titleF.appendChild(doc.createTextNode(m_title));
+
+    QDomElement descriptionF = doc.createElement("description");
+    descriptionF.appendChild(doc.createTextNode(m_description));
+
+    QDomElement currentF = doc.createElement("currentPlayers");
+    currentF.appendChild(doc.createTextNode(QString().setNum(m_currentPlayers)));
+
+    QDomElement stateF = doc.createElement("state");
+    stateF.appendChild(doc.createTextNode(QString().setNum(m_state)));
+
+
+    parent.appendChild(gameIdF);
+    parent.appendChild(gameMasterIdF);
+    parent.appendChild(durationF);
+    parent.appendChild(tableNumberF);
+    parent.appendChild(levelF);
+    parent.appendChild(maxF);
+    parent.appendChild(minF);
+    parent.appendChild(titleF);
+    parent.appendChild(descriptionF);
+    parent.appendChild(currentF);
+    parent.appendChild(stateF);
+
+    //doc.appendChild(parent);
+
+    return parent;
+
+
+
+}
+
+void Scenario::readDataFromXml(QDomDocument& t)
+{
+
+}

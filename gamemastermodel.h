@@ -42,6 +42,10 @@ public:
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
 
+    virtual QDomElement& writeDataToXml(QDomDocument&);
+    virtual void readDataFromXml(QDomDocument&);
+
+
     QMap<QString,GameMaster*>& getMasterMap();
     QList<GameMaster*>& getMasterList();
 

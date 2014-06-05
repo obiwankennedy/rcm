@@ -98,3 +98,12 @@ void GameModel::removeItem(QModelIndex& index)
     m_gameList.removeAll(tmp);
     endRemoveRows();
 }
+QDomElement& GameModel::writeDataToXml(QDomDocument&)
+{
+
+}
+
+void GameModel::readDataFromXml(QDomDocument&)
+{
+
+}

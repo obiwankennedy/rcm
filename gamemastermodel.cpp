@@ -132,3 +132,12 @@ void GameMasterModel::removeItem(QModelIndex& index)
     emit gameMasterStatusHasChanged(tmp,false);
     endRemoveRows();
 }
+QDomElement& GameMasterModel::writeDataToXml(QDomDocument&)
+{
+
+}
+
+void GameMasterModel::readDataFromXml(QDomDocument&)
+{
+
+}

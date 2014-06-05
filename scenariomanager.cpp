@@ -368,3 +368,13 @@ void ScenarioManager::writeToData(QDataStream& to) const
 {
     m_doneScenarioModel->writeToData(to);
 }
+
+QDomElement& ScenarioManager::writeDataToXml(QDomDocument& t)
+{
+    return m_doneScenarioModel->writeDataToXml(t);
+}
+
+void ScenarioManager::readDataFromXml(QDomDocument& t)
+{
+    m_doneScenarioModel->readDataFromXml(t);
+}

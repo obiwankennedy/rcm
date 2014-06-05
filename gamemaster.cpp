@@ -126,7 +126,15 @@ void GameMaster::writeToData(QDataStream& to) const
 
 
 }
+QDomElement& GameMaster::writeDataToXml(QDomDocument&)
+{
 
+}
+
+void GameMaster::readDataFromXml(QDomDocument&)
+{
+
+}
 int GameMaster::getScenarioCount() const
 {
    return m_scenarioList->count();

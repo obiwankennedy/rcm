@@ -132,8 +132,14 @@ void GameMasterModel::removeItem(QModelIndex& index)
     emit gameMasterStatusHasChanged(tmp,false);
     endRemoveRows();
 }
-QDomElement& GameMasterModel::writeDataToXml(QDomDocument&)
+QDomElement GameMasterModel::writeDataToXml(QDomDocument& doc)
 {
+    QDomElement gmList = doc.createElement("GameMasterList");
+    foreach(GameMaster* tmp,m_gameMasterList)
+    {
+        gmList.appendChild(tmp->writeDataToXml(doc));
+    }
+    return gmList;
 
 }
 

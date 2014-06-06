@@ -44,8 +44,30 @@ void Game::writeToData(QDataStream& to) const
     to << m_uuid;
 
 }
-QDomElement& Game::writeDataToXml(QDomDocument&)
+QDomElement Game::writeDataToXml(QDomDocument& doc)
 {
+    QDomElement parent = doc.createElement("game");
+    QDomElement gameIdF = doc.createElement("gameId");
+    gameIdF.appendChild(doc.createTextNode(m_uuid));
+
+    QDomElement titleF = doc.createElement("title");
+    titleF.appendChild(doc.createTextNode(m_title));
+
+
+    QDomElement punchF = doc.createElement("punchline");
+    punchF.appendChild(doc.createTextNode(m_punchLine));
+
+    QDomElement descriptionF = doc.createElement("description");
+    descriptionF.appendChild(doc.createTextNode(m_description));
+
+    parent.appendChild(gameIdF);
+    parent.appendChild(titleF);
+    parent.appendChild(punchF);
+    parent.appendChild(descriptionF);
+
+
+    return parent;
+
 
 }
 

@@ -36,7 +36,7 @@ public:
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
 
-    virtual QDomElement& writeDataToXml(QDomDocument&)  ;
+    virtual QDomElement writeDataToXml(QDomDocument&)  ;
     virtual void readDataFromXml(QDomDocument&) ;
 
     //

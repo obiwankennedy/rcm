@@ -70,6 +70,7 @@ protected:
 private slots:
     void saveData();
     void saveDataToXml();
+    void importDataFromXml();
     void readFile();
     bool maybeSave();
     void saveAsData();

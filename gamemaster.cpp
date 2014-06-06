@@ -126,9 +126,47 @@ void GameMaster::writeToData(QDataStream& to) const
 
 
 }
-QDomElement& GameMaster::writeDataToXml(QDomDocument&)
+QDomElement GameMaster::writeDataToXml(QDomDocument& doc)
 {
+    QDomElement parent = doc.createElement("GameMaster");
+    QDomElement idF = doc.createElement("gameMasterId");
+    idF.appendChild(doc.createTextNode(m_id));
 
+    QDomElement nameF = doc.createElement("name");
+    nameF.appendChild(doc.createTextNode(m_name));
+
+    QDomElement phoneNumberF = doc.createElement("phoneNumber");
+    phoneNumberF.appendChild(doc.createTextNode(m_phoneNumber));
+
+    QDomElement firstnameF = doc.createElement("firstname");
+    firstnameF.appendChild(doc.createTextNode(m_firstName));
+
+    QDomElement nickNameF = doc.createElement("nickname");
+    nickNameF.appendChild(doc.createTextNode(m_nickname));
+
+    QDomElement mailF = doc.createElement("mail");
+    mailF.appendChild(doc.createTextNode(m_mailAddress));
+
+    QDomElement isPresentF = doc.createElement("present");
+    isPresentF.appendChild(doc.createTextNode(m_isPresent ? "y":"n"));
+
+
+
+    parent.appendChild(idF);
+    parent.appendChild(nameF);
+    parent.appendChild(phoneNumberF);
+    parent.appendChild(firstnameF);
+    parent.appendChild(nickNameF);
+    parent.appendChild(mailF);
+    parent.appendChild(isPresentF);
+
+    foreach(Scenario* tmp,*m_scenarioList)
+    {
+        parent.appendChild(tmp->writeDataToXml(doc));
+    }
+
+
+    return parent;
 }
 
 void GameMaster::readDataFromXml(QDomDocument&)

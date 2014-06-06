@@ -245,7 +245,7 @@ quint32 Scenario::getRestingTimeInSecond() const
 
     return min < 0 ? 0 : min;
 }
-QDomElement& Scenario::writeDataToXml(QDomDocument& t)
+QDomElement Scenario::writeDataToXml(QDomDocument& t)
 {
 
     qDebug() << "write data";

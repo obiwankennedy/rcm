@@ -98,12 +98,26 @@ void GameModel::removeItem(QModelIndex& index)
     m_gameList.removeAll(tmp);
     endRemoveRows();
 }
-QDomElement& GameModel::writeDataToXml(QDomDocument&)
+QDomElement GameModel::writeDataToXml(QDomDocument& doc)
 {
-
+    QDomElement gameList = doc.createElement("GamList");
+    foreach(Game* tmp,m_gameList)
+    {
+        gameList.appendChild(tmp->writeDataToXml(doc));
+    }
+    return gameList;
 }
 
-void GameModel::readDataFromXml(QDomDocument&)
+void GameModel::readDataFromXml(QDomDocument& doc)
 {
+
+   QDomElement gameList = doc.elementById("GamList");
+   QDomElement elt = root.firstChildElement("game");
+    for (; !elt.isNull(); elt = elt.nextSiblingElement("game"))
+    {
+        Game* tmp = new Game();
+        tmp->readDataFromXml(from);
+        append(tmp);
+    }
 
 }

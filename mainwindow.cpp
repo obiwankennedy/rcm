@@ -443,7 +443,7 @@ void MainWindow::ensureTabVisible(TAB a)
 void MainWindow::saveDataToXml()
 {
 
-    QString fileExport = QFileDialog::getSaveFileName(this, tr("Save Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("XML Rolisteam Conv Database (*.xml)"));
+    QString fileExport = QFileDialog::getSaveFileName(this, tr("Export Data as XML"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("XML Rolisteam Conv Database (*.xml)"));
     if(!fileExport.isNull())
     {
         QFile file(fileExport);
@@ -454,10 +454,13 @@ void MainWindow::saveDataToXml()
         if (file.open(QIODevice::WriteOnly))
         {
             QDomDocument doc;
-            doc.appendChild(m_scenarioManager->writeDataToXml(doc));
-            doc.appendChild(m_gameModel->writeDataToXml(doc));
-            doc.appendChild(m_gameMasterModel->writeDataToXml(doc));
+            QDomElement data = doc.createElement("data");
 
+            data.appendChild(m_gameModel->writeDataToXml(doc));
+            data.appendChild(m_gameMasterModel->writeDataToXml(doc));
+            data.appendChild(m_scenarioManager->writeDataToXml(doc));
+
+            doc.appendChild(data);
 
             QTextStream in(&file);
             // write data
@@ -469,4 +472,24 @@ void MainWindow::saveDataToXml()
 
     }
 
+}
+void MainWindow::importDataFromXml()
+{
+     QString fileImport = QFileDialog::getOpenFileName(this, tr("Open XML Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("XML Rolisteam Conv Database (*.xml)"));
+    if(!fileImport.isNull())
+    {
+
+        QFile file(fileImport);
+        if (file.open(QIODevice::ReadOnly))
+        {
+            QDomDocument doc;
+            if(doc.setContent(file))
+            {
+                m_gameModel->readDataFromXml(doc);
+                m_gameMasterModel->readDataFromXml(doc);
+                m_scenarioManager->readDataFromXml(doc);
+            }
+        }
+
+    }
 }

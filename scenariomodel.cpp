@@ -374,7 +374,7 @@ QDomElement ScenarioModel::writeDataToXml(QDomDocument& to)
     return scenarioModel;
 }
 
-void ScenarioModel::readDataFromXml(QDomDocument&)
+void ScenarioModel::readDataFromXml(QDomNode&)
 {
 
 }

@@ -143,7 +143,15 @@ QDomElement GameMasterModel::writeDataToXml(QDomDocument& doc)
 
 }
 
-void GameMasterModel::readDataFromXml(QDomDocument&)
+void GameMasterModel::readDataFromXml(QDomNode& node)
 {
-
+    QDomElement gameList = node.firstChildElement("GameMasterList");
+    QDomElement elt = gameList.firstChildElement("GameMaster");
+     for (; !elt.isNull(); elt = elt.nextSiblingElement("GameMaster"))
+     {
+         GameMaster* tmp = new GameMaster();
+         tmp->readDataFromXml(elt);
+         append(tmp);
+         emit gmHasBeenAdded(tmp);
+     }
 }

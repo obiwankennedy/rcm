@@ -62,7 +62,7 @@ public:
     virtual void writeToData(QDataStream&) const;
 
     virtual QDomElement writeDataToXml(QDomDocument&);
-    virtual void readDataFromXml(QDomDocument&);
+    virtual void readDataFromXml(QDomNode&);
 
     
 protected:

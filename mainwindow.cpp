@@ -113,8 +113,11 @@ void MainWindow::initActions()
     connect(ui->m_newGmAct,SIGNAL(triggered()),this,SLOT(addGameMasterDialog()));
 
     connect(ui->m_exportXMLAct,SIGNAL(triggered()),this,SLOT(saveDataToXml()));
+    connect(ui->m_importXMLAct,SIGNAL(triggered()),this,SLOT(importDataFromXml()));
+
 
     connect(ui->m_customerViewDisplayAct,SIGNAL(triggered(bool)),m_scenarioManager,SLOT(showCustomView(bool)));
+
 
     //edit game and game master
     connect(ui->m_gameView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGame(QModelIndex)));
@@ -483,11 +486,12 @@ void MainWindow::importDataFromXml()
         if (file.open(QIODevice::ReadOnly))
         {
             QDomDocument doc;
-            if(doc.setContent(file))
+            if(doc.setContent(&file))
             {
-                m_gameModel->readDataFromXml(doc);
-                m_gameMasterModel->readDataFromXml(doc);
-                m_scenarioManager->readDataFromXml(doc);
+                QDomElement data = doc.firstChildElement("data");
+                m_gameModel->readDataFromXml(data);
+                m_gameMasterModel->readDataFromXml(data);
+                m_scenarioManager->readDataFromXml(data);
             }
         }
 

@@ -71,8 +71,17 @@ QDomElement Game::writeDataToXml(QDomDocument& doc)
 
 }
 
-void Game::readDataFromXml(QDomDocument&)
+void Game::readDataFromXml(QDomNode& node)
 {
+    QDomElement tmpElement = node.firstChildElement("gameId");
+    m_uuid = tmpElement.text();
+    tmpElement = node.firstChildElement("title");
+    m_title =tmpElement.text();
+    tmpElement = node.firstChildElement("punchline");
+    m_punchLine = tmpElement.text();
+    tmpElement = node.firstChildElement("description");
+    m_description = tmpElement.text();
+
 
 }
 

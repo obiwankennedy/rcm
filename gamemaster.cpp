@@ -169,8 +169,32 @@ QDomElement GameMaster::writeDataToXml(QDomDocument& doc)
     return parent;
 }
 
-void GameMaster::readDataFromXml(QDomDocument&)
+void GameMaster::readDataFromXml(QDomNode& node)
 {
+    QDomElement tmpElement = node.firstChildElement("gameMasterId");
+    m_id = tmpElement.text();
+    tmpElement = node.firstChildElement("name");
+    m_name =tmpElement.text();
+    tmpElement = node.firstChildElement("phoneNumber");
+    m_phoneNumber = tmpElement.text();
+    tmpElement = node.firstChildElement("firstname");
+    m_firstName = tmpElement.text();
+    tmpElement = node.firstChildElement("nickname");
+    m_nickname = tmpElement.text();
+    tmpElement = node.firstChildElement("mail");
+    m_mailAddress = tmpElement.text();
+    tmpElement = node.firstChildElement("present");
+    m_isPresent = tmpElement.text() == "y" ? true : false;
+
+
+    QDomElement elt = node.firstChildElement("scenerio");
+     for (; !elt.isNull(); elt = elt.nextSiblingElement("scenerio"))
+     {
+         Scenario* tmp = new Scenario();
+         tmp->readDataFromXml(elt);
+         insertScenario(tmp);
+     }
+
 
 }
 int GameMaster::getScenarioCount() const

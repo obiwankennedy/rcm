@@ -376,7 +376,7 @@ QDomElement ScenarioManager::writeDataToXml(QDomDocument& t)
     return scenarioList;
 }
 
-void ScenarioManager::readDataFromXml(QDomDocument& t)
+void ScenarioManager::readDataFromXml(QDomNode& t)
 {
     m_doneScenarioModel->readDataFromXml(t);
 }

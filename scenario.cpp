@@ -323,7 +323,31 @@ QDomElement Scenario::writeDataToXml(QDomDocument& t)
 
 }
 
-void Scenario::readDataFromXml(QDomDocument& t)
+void Scenario::readDataFromXml(QDomNode& node)
 {
+    QDomElement tmpElement = node.firstChildElement("gameMasterId");
+    m_gameMasterId = tmpElement.text();
+    tmpElement = node.firstChildElement("gameId");
+    m_gameId =tmpElement.text();
+    tmpElement = node.firstChildElement("duration");
+    m_duration = tmpElement.text().toInt();
+    tmpElement = node.firstChildElement("level");
+    m_level = (LEVEL)tmpElement.text().toInt();
+    tmpElement = node.firstChildElement("maximumPlayers");
+    m_maximumPlayers = tmpElement.text().toInt();
+    tmpElement = node.firstChildElement("minimumPlayers");
+    m_minimumPlayers = tmpElement.text().toInt();
+    tmpElement = node.firstChildElement("title");
+    m_title = tmpElement.text();
+    tmpElement = node.firstChildElement("description");
+    m_description = tmpElement.text();
+    tmpElement = node.firstChildElement("currentPlayers");
+    m_currentPlayers = tmpElement.text().toInt();
+    tmpElement = node.firstChildElement("state");
+    m_state = (STATE)tmpElement.text().toInt();
+    tmpElement = node.firstChildElement("startTime");
+    m_startTime = QDateTime::fromString(tmpElement.text(),"dd.MM.yyyy:hh:mm:ss");
+    tmpElement = node.firstChildElement("tableNumber");
+    m_tableNumber = tmpElement.text().toInt();
 
 }

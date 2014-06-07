@@ -108,15 +108,15 @@ QDomElement GameModel::writeDataToXml(QDomDocument& doc)
     return gameList;
 }
 
-void GameModel::readDataFromXml(QDomDocument& doc)
+void GameModel::readDataFromXml(QDomNode& doc)
 {
 
-   QDomElement gameList = doc.elementById("GamList");
-   QDomElement elt = root.firstChildElement("game");
+   QDomElement gameList = doc.firstChildElement("GamList");
+   QDomElement elt = gameList.firstChildElement("game");
     for (; !elt.isNull(); elt = elt.nextSiblingElement("game"))
     {
         Game* tmp = new Game();
-        tmp->readDataFromXml(from);
+        tmp->readDataFromXml(elt);
         append(tmp);
     }
 

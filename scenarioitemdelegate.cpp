@@ -67,12 +67,24 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
             painter->fillRect(itemRect, option.palette.highlight());
         }
-        else if(Scenario::AVAILABLE == m_state)
+
+        if(Scenario::AVAILABLE == m_state)
         {
             QVariant var = index.data(ScenarioModel::ColorRole);
             QColor statusColor= var.value<QColor>();
+            if(!(option.state & QStyle::State_Selected) )
+            {
+                painter->fillRect(itemRect, statusColor);
+            }
 
-            painter->fillRect(itemRect, statusColor);
+
+            QDateTime tmpDate = tmp.getAvailableTime();
+            if(!tmpDate.isNull())
+            {
+                QString str=minutesToHours((QDateTime::currentDateTime ().secsTo(tmpDate)/60),tr("Available"));
+
+                style->drawItemText(painter,itemRect,Qt::AlignLeft | Qt::AlignTop ,option.palette,true,str);
+            }
         }
 
 

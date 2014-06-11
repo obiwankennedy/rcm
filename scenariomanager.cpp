@@ -217,11 +217,53 @@ void ScenarioManager::startScenario()
 
         ScenarioModel* model = getRightModel(sce.getState());
         Scenario* mySce = model->getScenarioById(sce.getScenarioId());
+        //model->removeScenario(mySce);
+        Scenario* myNewSce = new Scenario();
+        myNewSce->setReferenceScenario(mySce);
+        mySce->reset();
+        myNewSce->setState(Scenario::RUNNING);
+        model = getRightModel(myNewSce->getState());
+        model->appendScenario(myNewSce);
+
+
+        GameMaster* gamemaster = getGameMasterFromId(myNewSce->getGameMasterId());
+
+        QDateTime time = QDateTime::currentDateTime();
+
+
+        gamemaster->setBackTime(time.addSecs(myNewSce->getDuration()*60));
+        gamemaster->setBusy(true);
+
+
+    }
+}
+void ScenarioManager::scenarioIsDone()
+{
+    QModelIndex index = getFocusedListView()->currentIndex();
+
+    if(index.isValid())
+    {
+        QVariant var = index.data(Qt::UserRole);
+        Scenario sce = var.value<Scenario>();
+        //
+        ScenarioModel* model = getRightModel(sce.getState());
+        ////////////////////////
+
+
+        Scenario* mySce = model->getScenarioById(sce.getScenarioId());
+        //Scenario* myNewSce = new Scenario();
+
+        //myNewSce->setReferenceScenario(mySce);
+
+
         model->removeScenario(mySce);
-        mySce->setState(Scenario::RUNNING);
+        //mySce->setState(Scenario::AVAILABLE);
+        //mySce->reset();
+
+
+        mySce->setState(Scenario::DONE);
         model = getRightModel(mySce->getState());
         model->appendScenario(mySce);
-
     }
 }
 void ScenarioManager::editScenario()
@@ -313,36 +355,7 @@ bool ScenarioManager::eventFilterForRunning(QEvent * event)
     }
     return false;
 }
-void ScenarioManager::scenarioIsDone()
-{
-    QModelIndex index = getFocusedListView()->currentIndex();
 
-    if(index.isValid())
-    {
-        QVariant var = index.data(Qt::UserRole);
-        Scenario sce = var.value<Scenario>();
-        //
-        ScenarioModel* model = getRightModel(sce.getState());
-        ////////////////////////
-
-
-        Scenario* mySce = model->getScenarioById(sce.getScenarioId());
-        Scenario* myNewSce = new Scenario();
-
-        myNewSce->setReferenceScenario(mySce);
-
-
-        model->removeScenario(mySce);
-        //mySce->setState(Scenario::AVAILABLE);
-        mySce->reset();
-        model = getRightModel(mySce->getState());
-        model->appendScenario(mySce);
-
-        myNewSce->setState(Scenario::DONE);
-        model = getRightModel(myNewSce->getState());
-        model->appendScenario(myNewSce);
-    }
-}
 QListView* ScenarioManager::getFocusedListView()
 {
 
@@ -379,4 +392,8 @@ QDomElement ScenarioManager::writeDataToXml(QDomDocument& t)
 void ScenarioManager::readDataFromXml(QDomNode& t)
 {
     m_doneScenarioModel->readDataFromXml(t);
+}
+GameMaster* ScenarioManager::getGameMasterFromId(QString id)
+{
+    return m_masterList[id];
 }

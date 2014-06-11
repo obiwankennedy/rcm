@@ -249,21 +249,7 @@ QDomElement Scenario::writeDataToXml(QDomDocument& t)
 {
 
     qDebug() << "write data";
-    /*
-     *    QString m_gameId;
-    QString m_gameMasterId;
-    QString m_scenarioId;
-    quint64 m_duration;//minutes
-    quint32 m_tableNumber;
-    QDateTime m_startTime;
-    LEVEL m_level;
-    quint32 m_maximumPlayers;
-    quint32 m_minimumPlayers;
-    quint32 m_currentPlayers;
-    QString m_title;
-    QString m_description;
-    STATE m_state;
-    */
+
     QDomDocument doc;
     QDomElement parent = doc.createElement("scenerio");
     QDomElement gameIdF = doc.createElement("gameId");
@@ -350,4 +336,12 @@ void Scenario::readDataFromXml(QDomNode& node)
     tmpElement = node.firstChildElement("tableNumber");
     m_tableNumber = tmpElement.text().toInt();
 
+}
+void Scenario::setAvailableTime(QDateTime a)
+{
+    m_availableTime = a;
+}
+QDateTime Scenario::getAvailableTime() const
+{
+    return m_availableTime;
 }

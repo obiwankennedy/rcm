@@ -225,3 +225,25 @@ void  GameMaster::setGMScenario(QList<Scenario*>* l)
 {
     m_scenarioList = l;
 }
+void GameMaster::setBusy(bool t)
+{
+    m_busy = t;
+    foreach(Scenario* tmp, *m_scenarioList)
+    {
+        tmp->setAvailableTime(m_backTime);
+    }
+}
+
+void GameMaster::setBackTime(QDateTime t)
+{
+    m_backTime = t;
+}
+bool GameMaster::isBusy()
+{
+    return m_busy;
+}
+
+QDateTime GameMaster::getBackTime()
+{
+    return m_backTime;
+}

@@ -42,6 +42,8 @@ public:
     void setNickName(QString fn);
     void setPhoneNumber(QString pn);
     void setMailAddress(QString pn);
+    void setBusy(bool t);
+    void setBackTime(QDateTime );
 
     QString getName() const ;
     QString getFirstName()const ;
@@ -49,6 +51,8 @@ public:
     QString getPhoneNumber()const ;
     QString getMailAddress()const ;
     QString getId() const;
+    bool isBusy();
+    QDateTime getBackTime();
 
 
     QList<Scenario*>* getGMScenarios() const;
@@ -77,6 +81,8 @@ private:
     QList<Scenario*>* m_scenarioList;
 
     bool m_isPresent;
+    bool m_busy;
+    QDateTime m_backTime;
 };
 
 #endif // GAMEMASTER_H

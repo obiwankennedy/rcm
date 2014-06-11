@@ -55,6 +55,8 @@ public:
 
     void setReferenceScenario(const Scenario*);
 
+    void setAvailableTime(QDateTime);
+
 
 //gets
     Scenario::LEVEL getLevel() const;
@@ -72,6 +74,7 @@ public:
     QString getScenarioId() const;
 
     quint32 getRestingTimeInSecond() const;
+    QDateTime getAvailableTime()const;
 
 
 
@@ -95,6 +98,7 @@ private:
     quint64 m_duration;//minutes
     quint32 m_tableNumber;
     QDateTime m_startTime;
+    QDateTime m_availableTime;
     LEVEL m_level;
     quint32 m_maximumPlayers;
     quint32 m_minimumPlayers;

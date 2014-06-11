@@ -64,6 +64,8 @@ public:
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
 
+
+    GameMaster* getGameMasterFromId(QString id);
     
 protected:
     bool eventFilter(QObject *obj, QEvent *event);

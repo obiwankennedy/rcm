@@ -27,7 +27,7 @@ ScenarioModel::ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& l
     QAbstractListModel(parent),m_state(m),m_list(l),m_gameMasterMap(lstGm)
 {
     m_scenarioList = new QList<Scenario*>();
-    m_columns << tr("Game")<< tr("Title")<< tr("Duration")<< tr("Level")<< tr("Min")<< tr("Max")<< tr("Description");
+    m_columns << tr("Game")<< tr("Title")<< tr("Duration")<< tr("Level")<< tr("Min")<< tr("Max")<< tr("Description")<< tr("Current Players")<< tr("Available")<< tr("State")<< tr("Table Number");
 
     qRegisterMetaType<Scenario>("Scenario");
     qRegisterMetaTypeStreamOperators<Scenario>("Scenario");
@@ -72,7 +72,14 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
         case 5:
             return m_scenarioList->at(index.row())->getMaximumPlayers();
         case 6:
-            return m_scenarioList->at(index.row())->getDescription();
+            return m_scenarioList->at(index.row())->getCurrentPlayers();
+        case 7:
+            return m_scenarioList->at(index.row())->getAvailableTime();
+        case 8:
+            return m_scenarioList->at(index.row())->getState();
+        case 9:
+            return m_scenarioList->at(index.row())->getTableNumber();
+
         }
     }
     else if(ScenarioModel::TitleRole == role)

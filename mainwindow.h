@@ -62,9 +62,11 @@ public slots:
     void addGmScenarioListToGlobalList(GameMaster* l);
     void statusGmHasChanged(GameMaster* l,bool);
     void ensureTabVisible(TAB);
+    void makeGameMasterUnavailable();
 
 protected:
     void closeEvent ( QCloseEvent * event );
+    bool eventFilter(QObject *obj, QEvent *event);
 
 
 private slots:
@@ -89,6 +91,7 @@ private slots:
 
 private:
     void initActions();
+    void contextMenuForGameMaster(QContextMenuEvent* event);
 
 private:
     Ui::MainWindow *ui;
@@ -104,6 +107,7 @@ private:
     QAction* m_removeGameAct;
     QAction* m_removeGMAct;
     QAction* m_addGMAct;
+    QAction* m_makeGMGoneAct;
     QMenu* m_recentFile;
     QList<QAction*>* m_recentFileActions;
 

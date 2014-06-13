@@ -32,7 +32,7 @@ GameMaster::GameMaster()
 
 void GameMaster::insertScenario(Scenario* game)
 {
-   m_scenarioList->append(game);
+    m_scenarioList->append(game);
 
 }
 
@@ -89,23 +89,23 @@ QString GameMaster::getMailAddress()const
 }
 void GameMaster::readFromData(QDataStream& from)
 {
-   from >> m_name;
-   from >> m_phoneNumber;
-   from >> m_firstName;
-   from >> m_nickname;
-   from >> m_mailAddress;
-   from >> m_isPresent;
-   from >> m_id;
+    from >> m_name;
+    from >> m_phoneNumber;
+    from >> m_firstName;
+    from >> m_nickname;
+    from >> m_mailAddress;
+    from >> m_isPresent;
+    from >> m_id;
 
-   m_isPresent = false;
-   int size;
-   from >> size;
-   for(int i = 0; i<size;++i)
-   {
-       Scenario* tmp = new Scenario();
-       tmp->readFromData(from);
-       insertScenario(tmp);
-   }
+    m_isPresent = false;
+    int size;
+    from >> size;
+    for(int i = 0; i<size;++i)
+    {
+        Scenario* tmp = new Scenario();
+        tmp->readFromData(from);
+        insertScenario(tmp);
+    }
 }
 
 void GameMaster::writeToData(QDataStream& to) const
@@ -188,18 +188,18 @@ void GameMaster::readDataFromXml(QDomNode& node)
 
 
     QDomElement elt = node.firstChildElement("scenerio");
-     for (; !elt.isNull(); elt = elt.nextSiblingElement("scenerio"))
-     {
-         Scenario* tmp = new Scenario();
-         tmp->readDataFromXml(elt);
-         insertScenario(tmp);
-     }
+    for (; !elt.isNull(); elt = elt.nextSiblingElement("scenerio"))
+    {
+        Scenario* tmp = new Scenario();
+        tmp->readDataFromXml(elt);
+        insertScenario(tmp);
+    }
 
 
 }
 int GameMaster::getScenarioCount() const
 {
-   return m_scenarioList->count();
+    return m_scenarioList->count();
 }
 
 
@@ -225,9 +225,9 @@ void  GameMaster::setGMScenario(QList<Scenario*>* l)
 {
     m_scenarioList = l;
 }
-void GameMaster::setBusy(bool t)
+void GameMaster::setCurrentActivity(GameMaster::Activity t)
 {
-    m_busy = t;
+    m_currentActivity = t;
     foreach(Scenario* tmp, *m_scenarioList)
     {
         tmp->setAvailableTime(m_backTime);
@@ -238,9 +238,9 @@ void GameMaster::setBackTime(QDateTime t)
 {
     m_backTime = t;
 }
-bool GameMaster::isBusy()
+GameMaster::Activity GameMaster::getCurrentActivity()
 {
-    return m_busy;
+    return m_currentActivity;
 }
 
 QDateTime GameMaster::getBackTime()

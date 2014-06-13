@@ -73,6 +73,21 @@ bool GameMasterModel::setData(const QModelIndex & index, const QVariant & value,
           emit gameMasterStatusHasChanged(m_gameMasterList[index.row()],m_gameMasterList[index.row()]->isPresent());
           return true;
     }
+    else if(role == GameMasterModel::BackTime)
+    {
+
+        QDateTime time = QDateTime::currentDateTime();
+        time.addSecs(value.toInt()*60);
+        m_gameMasterList[index.row()]->setBackTime(time);
+        emit dataChanged(index,index);
+        return true;
+    }
+    else if(GameMasterModel::ActivityRole==role)
+    {
+        m_gameMasterList[index.row()]->setCurrentActivity((GameMaster::Activity)value.toInt());
+        emit dataChanged(index,index);
+        return true;
+    }
     return false;
 
 }

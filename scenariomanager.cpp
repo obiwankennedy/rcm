@@ -232,7 +232,7 @@ void ScenarioManager::startScenario()
 
 
         gamemaster->setBackTime(time.addSecs(myNewSce->getDuration()*60));
-        gamemaster->setBusy(true);
+        gamemaster->setCurrentActivity(GameMaster::INGAME);
 
 
     }
@@ -251,19 +251,17 @@ void ScenarioManager::scenarioIsDone()
 
 
         Scenario* mySce = model->getScenarioById(sce.getScenarioId());
-        //Scenario* myNewSce = new Scenario();
-
-        //myNewSce->setReferenceScenario(mySce);
-
-
         model->removeScenario(mySce);
-        //mySce->setState(Scenario::AVAILABLE);
-        //mySce->reset();
-
-
         mySce->setState(Scenario::DONE);
         model = getRightModel(mySce->getState());
         model->appendScenario(mySce);
+
+        GameMaster* gamemaster = getGameMasterFromId(mySce->getGameMasterId());
+
+        QDateTime time;
+        gamemaster->setBackTime(time);
+        gamemaster->setCurrentActivity(GameMaster::FREE);
+
     }
 }
 void ScenarioManager::editScenario()

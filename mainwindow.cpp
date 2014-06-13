@@ -24,7 +24,7 @@
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QCloseEvent>
-
+#include <QInputDialog>
 
 
 #include "mainwindow.h"
@@ -65,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_fileMenu->insertMenu(ui->m_quitAct,m_recentFile);
     ui->m_fileMenu->insertSeparator(ui->m_quitAct);
 
+    ui->m_masterView->installEventFilter(this);
+
 
 }
 
@@ -78,6 +80,8 @@ void MainWindow::initActions()
     m_removeGameAct= new QAction(tr("Del"),this);
     m_removeGMAct= new QAction(tr("Del"),this);
     m_addGMAct= new QAction(tr("Add"),this);
+    m_makeGMGoneAct = new QAction(tr("GM is leaving"),this);
+    connect(m_makeGMGoneAct,SIGNAL(triggered()),this,SLOT(makeGameMasterUnavailable()));
 
     ui->m_addGameButton->setDefaultAction(m_addGameAct);
     ui->m_addGMButton->setDefaultAction(m_addGMAct);
@@ -125,6 +129,30 @@ void MainWindow::initActions()
 
 
 }
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+ {
+     if (event->type() == QEvent::ContextMenu)
+     {
+         QContextMenuEvent *keyEvent = static_cast<QContextMenuEvent *>(event);
+         contextMenuForGameMaster(keyEvent);
+         return true;
+     }
+     else
+     {
+         // standard event processing
+         return QObject::eventFilter(obj, event);
+     }
+ }
+void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
+{
+    QMenu menu;
+
+    menu.addAction(m_makeGMGoneAct);
+
+
+    menu.exec(event->globalPos());
+}
+
 void  MainWindow::addGameDialog()
 {
     GameDialog dialog;
@@ -495,5 +523,15 @@ void MainWindow::importDataFromXml()
             }
         }
 
+    }
+}
+void MainWindow::makeGameMasterUnavailable()
+{
+    int i = QInputDialog::getInteger(this,tr("How long this GM will be gone ?"),tr("busy time (in mins):"),0,0,500);
+    QModelIndex tmp = ui->m_masterView->currentIndex();
+    if(tmp.isValid())
+    {
+        m_gameMasterModel->setData(tmp,i,GameMasterModel::BackTime);
+        //model->setData(index,1,ScenarioModel::DecreaseRole);
     }
 }

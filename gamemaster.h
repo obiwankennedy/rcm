@@ -32,6 +32,7 @@
 class GameMaster : public Serialisable
 {
 public:
+    enum Activity {FREE,INGAME,GONE};
     GameMaster();
 
     void insertScenario(Scenario*);
@@ -42,7 +43,7 @@ public:
     void setNickName(QString fn);
     void setPhoneNumber(QString pn);
     void setMailAddress(QString pn);
-    void setBusy(bool t);
+    void setCurrentActivity(GameMaster::Activity t);
     void setBackTime(QDateTime );
 
     QString getName() const ;
@@ -51,7 +52,7 @@ public:
     QString getPhoneNumber()const ;
     QString getMailAddress()const ;
     QString getId() const;
-    bool isBusy();
+    GameMaster::Activity getCurrentActivity();
     QDateTime getBackTime();
 
 
@@ -81,7 +82,7 @@ private:
     QList<Scenario*>* m_scenarioList;
 
     bool m_isPresent;
-    bool m_busy;
+    Activity m_currentActivity;
     QDateTime m_backTime;
 };
 

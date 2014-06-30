@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>GameDialog</class>
+ <class>AddGameDialog</class>
  <widget class="QDialog" name="AddGameDialog">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
@@ -22,7 +22,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Titre:</string>
+        <string>Title:</string>
        </property>
       </widget>
      </item>
@@ -32,7 +32,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Phrase D'accroche</string>
+        <string>Catch Phrase</string>
        </property>
       </widget>
      </item>

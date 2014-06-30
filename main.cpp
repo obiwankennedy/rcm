@@ -21,10 +21,21 @@
 ***************************************************************************/
 #include "mainwindow.h"
 #include <QApplication>
+#include <QTranslator>
+
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QString locale = QLocale::system().name();
+
+
+    QTranslator rcmTranslator;
+    rcmTranslator.load(":/rcm_" + locale);
+    a.installTranslator(&rcmTranslator);
+
+
     MainWindow w;
     w.show();
     

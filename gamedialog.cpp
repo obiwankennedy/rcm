@@ -24,7 +24,7 @@
 
 GameDialog::GameDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::GameDialog)
+    ui(new Ui::AddGameDialog)
 {
     ui->setupUi(this);
 }

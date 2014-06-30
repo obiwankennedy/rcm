@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>listView.qml</file>
+        <file>rcm_fr.qm</file>
     </qresource>
 </RCC>

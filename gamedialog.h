@@ -25,7 +25,7 @@
 #include <QDialog>
 
 namespace Ui {
-class GameDialog;
+class AddGameDialog;
 }
 
 class GameDialog : public QDialog
@@ -47,7 +47,7 @@ public:
 
     
 private:
-    Ui::GameDialog *ui;
+    Ui::AddGameDialog *ui;
 };
 
 #endif // ADDGAMEDIALOG_H

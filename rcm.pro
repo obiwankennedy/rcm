@@ -55,7 +55,7 @@ RESOURCES += \
     resources.qrc
 
 ## Translation
-TRANSLATIONS =  rolisteam_fr.ts
+TRANSLATIONS =  rcm_fr.ts
 
 
 CODECFORTR = UTF-8

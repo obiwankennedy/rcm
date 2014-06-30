@@ -2,34 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
+    <name>AddGameDialog</name>
+    <message>
+        <location filename="gamedialog.ui" line="17"/>
+        <source>Add Game</source>
+        <translation>Ajouter un jeu</translation>
+    </message>
+    <message>
+        <location filename="gamedialog.ui" line="25"/>
+        <source>Title:</source>
+        <translation>Titre:</translation>
+    </message>
+    <message>
+        <location filename="gamedialog.ui" line="35"/>
+        <source>Catch Phrase</source>
+        <translation>Phrase d&apos;accroche</translation>
+    </message>
+    <message>
+        <location filename="gamedialog.ui" line="45"/>
+        <source>Description</source>
+        <translation>Description</translation>
+    </message>
+</context>
+<context>
     <name>CustomerView</name>
     <message>
         <location filename="customerview.ui" line="14"/>
-        <source>Parties Disponibles</source>
-        <translation type="unfinished"></translation>
+        <source>Available Games</source>
+        <translation>Parties Disponibles</translation>
     </message>
 </context>
 <context>
     <name>GameDialog</name>
     <message>
-        <location filename="gamedialog.ui" line="17"/>
         <source>Add Game</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="gamedialog.ui" line="25"/>
-        <source>Titre:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="gamedialog.ui" line="35"/>
-        <source>Phrase D&apos;accroche</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="gamedialog.ui" line="45"/>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Ajouter un jeu</translation>
     </message>
 </context>
 <context>
@@ -37,58 +44,60 @@
     <message>
         <location filename="gamemasterdialog.ui" line="17"/>
         <source>Maître de jeu</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="gamemasterdialog.ui" line="25"/>
-        <source>Nom</source>
-        <translation type="unfinished"></translation>
+        <source>Name:</source>
+        <translation>Nom:</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.ui" line="35"/>
-        <source>Prénom</source>
-        <translation type="unfinished"></translation>
+        <source>FirstName:</source>
+        <translation>Prénom:</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.ui" line="45"/>
-        <source>Pseudo</source>
-        <translation type="unfinished"></translation>
+        <source>Nickname</source>
+        <translation>Pseudo</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.ui" line="55"/>
-        <source>Courriel</source>
-        <translation type="unfinished"></translation>
+        <source>Email</source>
+        <translation>Courriel</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.ui" line="65"/>
-        <source>téléphone</source>
-        <translation type="unfinished"></translation>
+        <source>Phone</source>
+        <oldsource>téléphone</oldsource>
+        <translation>Téléphone</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.ui" line="77"/>
-        <source>Scénarios:</source>
-        <translation type="unfinished"></translation>
+        <source>Scenario List</source>
+        <oldsource>Scénarios:</oldsource>
+        <translation>Liste de scénarios</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.ui" line="95"/>
         <location filename="gamemasterdialog.ui" line="102"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.cpp" line="32"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.cpp" line="33"/>
         <source>Del</source>
-        <translation type="unfinished"></translation>
+        <translation>Suppression</translation>
     </message>
     <message>
         <location filename="gamemasterdialog.cpp" line="34"/>
         <source>Add Game</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un jeu</translation>
     </message>
 </context>
 <context>
@@ -97,229 +106,229 @@
         <location filename="mainwindow.ui" line="14"/>
         <location filename="mainwindow.cpp" line="43"/>
         <source>%1[*] - Rolisteam Convention Manager</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="31"/>
+        <location filename="mainwindow.ui" line="40"/>
         <source>Data</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="37"/>
-        <source>Jeux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="48"/>
-        <location filename="mainwindow.ui" line="91"/>
+        <location filename="mainwindow.ui" line="57"/>
+        <location filename="mainwindow.ui" line="100"/>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="68"/>
-        <location filename="mainwindow.ui" line="111"/>
+        <location filename="mainwindow.ui" line="77"/>
+        <location filename="mainwindow.ui" line="120"/>
         <source>-</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="80"/>
-        <source>Mj</source>
-        <translation type="unfinished"></translation>
+        <location filename="mainwindow.ui" line="46"/>
+        <source>Games</source>
+        <translation>Jeux</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="124"/>
+        <location filename="mainwindow.ui" line="89"/>
+        <source>GM</source>
+        <translation>MJ</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="133"/>
         <source>Scenarios</source>
-        <translation type="unfinished"></translation>
+        <translation>Scénarios</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="134"/>
+        <location filename="mainwindow.ui" line="143"/>
         <source>Availables</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponibles</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="144"/>
+        <location filename="mainwindow.ui" line="153"/>
         <source>Running</source>
-        <translation type="unfinished"></translation>
+        <translation>En cours</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="154"/>
+        <location filename="mainwindow.ui" line="163"/>
         <source>Done</source>
-        <translation type="unfinished"></translation>
+        <translation>Fini</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="181"/>
+        <location filename="mainwindow.ui" line="190"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="185"/>
+        <location filename="mainwindow.ui" line="194"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="191"/>
+        <location filename="mainwindow.ui" line="200"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="207"/>
+        <location filename="mainwindow.ui" line="216"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="213"/>
+        <location filename="mainwindow.ui" line="222"/>
         <source>Action</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="224"/>
+        <location filename="mainwindow.ui" line="233"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="227"/>
+        <location filename="mainwindow.ui" line="236"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="232"/>
+        <location filename="mainwindow.ui" line="241"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="235"/>
+        <location filename="mainwindow.ui" line="244"/>
         <source>Ctrl+N</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="240"/>
+        <location filename="mainwindow.ui" line="249"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarder</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="243"/>
+        <location filename="mainwindow.ui" line="252"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="248"/>
+        <location filename="mainwindow.ui" line="257"/>
         <source>Save As</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarder Sous</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="251"/>
+        <location filename="mainwindow.ui" line="260"/>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="256"/>
+        <location filename="mainwindow.ui" line="265"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="259"/>
+        <location filename="mainwindow.ui" line="268"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="267"/>
+        <location filename="mainwindow.ui" line="276"/>
         <source>Scenarios List</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste de scénarios</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="270"/>
+        <location filename="mainwindow.ui" line="279"/>
         <source>Alt+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="275"/>
+        <location filename="mainwindow.ui" line="284"/>
         <source>New Game</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau Jeu</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="278"/>
+        <location filename="mainwindow.ui" line="287"/>
         <source>Alt+N</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="283"/>
+        <location filename="mainwindow.ui" line="292"/>
         <source>New Gm</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau MJ</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="286"/>
+        <location filename="mainwindow.ui" line="295"/>
         <source>Alt+G</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="291"/>
-        <location filename="mainwindow.ui" line="296"/>
+        <location filename="mainwindow.ui" line="300"/>
+        <location filename="mainwindow.ui" line="305"/>
         <source>XML</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="63"/>
         <source>Recent Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers Récents</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="79"/>
         <location filename="mainwindow.cpp" line="82"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="80"/>
         <location filename="mainwindow.cpp" line="81"/>
         <source>Del</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="83"/>
         <source>GM is leaving</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mj part</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="235"/>
         <source>Save Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarder les données</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="235"/>
         <location filename="mainwindow.cpp" line="243"/>
         <source>Rolisteam Conv Database (*.rcdb)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="243"/>
         <source>Open Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir Données</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="477"/>
         <source>Export Data as XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter les données en XML</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="477"/>
         <location filename="mainwindow.cpp" line="509"/>
         <source>XML Rolisteam Conv Database (*.xml)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="509"/>
         <source>Open XML Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir les données XML</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="530"/>
         <source>How long this GM will be gone ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Combien de temps le MJ sera absent ?</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="530"/>
         <source>busy time (in mins):</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps d&apos;absence (en mins):</translation>
     </message>
 </context>
 <context>
@@ -327,7 +336,7 @@
     <message>
         <location filename="scenarioeditordialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditer le scénario </translation>
     </message>
 </context>
 <context>
@@ -335,37 +344,37 @@
     <message>
         <location filename="scenarioitemdelegate.cpp" line="84"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponible</translation>
     </message>
     <message>
         <location filename="scenarioitemdelegate.cpp" line="103"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Durée</translation>
     </message>
     <message>
         <location filename="scenarioitemdelegate.cpp" line="111"/>
         <source>End in</source>
-        <translation type="unfinished"></translation>
+        <translation>Fini dans</translation>
     </message>
     <message>
         <location filename="scenarioitemdelegate.cpp" line="150"/>
         <source>GM:%1, phone:%2</source>
-        <translation type="unfinished"></translation>
+        <translation>MJ:%1, phone:%2</translation>
     </message>
     <message>
         <location filename="scenarioitemdelegate.cpp" line="155"/>
         <source>GM:%1</source>
-        <translation type="unfinished"></translation>
+        <translation>MJ:%1</translation>
     </message>
     <message>
         <location filename="scenarioitemdelegate.cpp" line="162"/>
         <source>Players: %1/%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Joueurs: %1/%2</translation>
     </message>
     <message>
         <location filename="scenarioitemdelegate.cpp" line="176"/>
         <source>%3: %1:%2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -373,27 +382,27 @@
     <message>
         <location filename="scenariomanager.cpp" line="58"/>
         <source>+1 player</source>
-        <translation type="unfinished"></translation>
+        <translation>+1 joueur</translation>
     </message>
     <message>
         <location filename="scenariomanager.cpp" line="61"/>
         <source>-1 player</source>
-        <translation type="unfinished"></translation>
+        <translation>-1 joueur</translation>
     </message>
     <message>
         <location filename="scenariomanager.cpp" line="64"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer</translation>
     </message>
     <message>
         <location filename="scenariomanager.cpp" line="65"/>
         <source>Edit...</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditer…</translation>
     </message>
     <message>
         <location filename="scenariomanager.cpp" line="67"/>
         <source>Finish</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminer</translation>
     </message>
 </context>
 <context>
@@ -401,57 +410,57 @@
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Game</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeu</translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Durée</translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau</translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Min</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Max</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Current Players</source>
-        <translation type="unfinished"></translation>
+        <translation>Joueurs Inscrits</translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponible</translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>État</translation>
     </message>
     <message>
         <location filename="scenariomodel.cpp" line="30"/>
         <source>Table Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Numéro de table</translation>
     </message>
 </context>
 </TS>

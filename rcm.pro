@@ -58,6 +58,7 @@ RESOURCES += \
 TRANSLATIONS =  rcm_fr.ts
 
 
+
 CODECFORTR = UTF-8
 
 isEmpty(QMAKE_LRELEASE) {

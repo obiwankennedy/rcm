@@ -527,7 +527,7 @@ void MainWindow::importDataFromXml()
 }
 void MainWindow::makeGameMasterUnavailable()
 {
-    int i = QInputDialog::getInteger(this,tr("How long this GM will be gone ?"),tr("busy time (in mins):"),0,0,500);
+    int i = QInputDialog::getInt(this,tr("How long this GM will be gone ?"),tr("busy time (in mins):"),0,0,500);
     QModelIndex tmp = ui->m_masterView->currentIndex();
     if(tmp.isValid())
     {

@@ -26,6 +26,7 @@ Item {
                 id:rect
                 state: CurrentPlayer == 0 ? "" : CurrentPlayer == MaximumPlayer ? "ready" : "wip"
                 property int rotationValue: 0
+                property int playerCount: CurrentPlayer
 //
                 anchors.fill: parent
                 color: ColorRole
@@ -47,7 +48,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 Text {
-                    id:playerCount
+                    id:playerCountTxt
                     text: CurrentPlayer +'/'+ MaximumPlayer
                     anchors.top: parent.top
                     anchors.right: parent.right
@@ -65,7 +66,7 @@ Item {
                     anchors.left: parent.left
                 }
 
-                Behavior on state  {
+                Behavior on playerCount  {
                     SequentialAnimation {
                       PropertyAnimation { target: rect; property: "rotationValue"; to: 800 }//Easing.OutQuart
                       PropertyAnimation { target: rect; property: "rotationValue"; to: 0 }

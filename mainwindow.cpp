@@ -34,6 +34,7 @@
 #include "gamemaster.h"
 
 #include "gamemasterdialog.h"
+#include "localisation/localisationview.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -67,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_masterView->installEventFilter(this);
 
+    ui->m_tabWidget->addTab(new LocalisationView(),tr("Tables"));
 
 }
 

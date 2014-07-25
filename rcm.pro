@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     gameeditordelegate.cpp \
     scenariomanager.cpp \
     scenarioitemdelegate.cpp \
-    scenarioeditordialog.cpp
+    scenarioeditordialog.cpp \
+    localisation/localisationview.cpp
 
 HEADERS  += mainwindow.h \
     gamemaster.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     gameeditordelegate.h \
     scenariomanager.h \
     scenarioitemdelegate.h \
-    scenarioeditordialog.h
+    scenarioeditordialog.h \
+    localisation/localisationview.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

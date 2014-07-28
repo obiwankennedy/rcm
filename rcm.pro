@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     scenariomanager.cpp \
     scenarioitemdelegate.cpp \
     scenarioeditordialog.cpp \
-    localisation/localisationview.cpp
+    localisation/localisationview.cpp \
+    localisation/tableswizard.cpp \
+    localisation/table.cpp
 
 HEADERS  += mainwindow.h \
     gamemaster.h \
@@ -42,13 +44,16 @@ HEADERS  += mainwindow.h \
     scenariomanager.h \
     scenarioitemdelegate.h \
     scenarioeditordialog.h \
-    localisation/localisationview.h
+    localisation/localisationview.h \
+    localisation/tableswizard.h \
+    localisation/table.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \
     gamedialog.ui \
     customerview.ui \
-    scenarioeditordialog.ui
+    scenarioeditordialog.ui \
+    localisation/tableswizard.ui
 
 OTHER_FILES += \
     listView.qml

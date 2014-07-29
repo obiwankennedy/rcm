@@ -6,7 +6,7 @@ RoomModel::RoomModel(int roomCount,QObject *parent) :
     m_roomMap = new QMap<QString,int>();
     for(int i = 0; i<roomCount; ++i)
     {
-        m_roomMap->insert(tr("Room %1").arg(i),0);
+        m_roomMap->insert(tr("Room %1").arg(i+1),0);
     }
 }
 QVariant RoomModel::data(const QModelIndex &index, int role) const

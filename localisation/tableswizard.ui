@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Wizard</string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <widget class="QWizardPage" name="m_roomPage">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>

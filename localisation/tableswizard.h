@@ -22,8 +22,9 @@ public slots:
     void currentPageChanged(int i);
     void manageRoomPage();
     void manageTableInRooms();
-    void managePersonPerTable();
+   // void managePersonPerTable();
 
+    void currentRoomCount(int);
 private:
     Ui::TablesWizard *ui;
 

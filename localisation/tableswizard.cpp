@@ -1,11 +1,19 @@
 #include "tableswizard.h"
 #include "ui_tableswizard.h"
 
+#include <QDebug>
 TablesWizard::TablesWizard(QWidget *parent) :
     QWizard(parent),
     ui(new Ui::TablesWizard)
 {
     ui->setupUi(this);
+
+
+    connect(ui->m_roomCountSpin,SIGNAL(valueChanged(int)),this,SLOT(currentRoomCount(int)));
+
+    ui->m_roomCountSpin->setKeyboardTracking(true);
+
+
     connect(this,SIGNAL(currentIdChanged(int)),this,SLOT(currentPageChanged(int)));
 }
 
@@ -20,13 +28,13 @@ void TablesWizard::currentPageChanged(int i)
     switch(i)
     {
     case 0:
-        manageRoomPage();
+
         break;
     case 1:
-        manageTableInRooms();
+        manageRoomPage();
         break;
     case 2:
-        managePersonPerTable();
+        manageTableInRooms();
         break;
     }
 }
@@ -34,8 +42,10 @@ void TablesWizard::currentPageChanged(int i)
 
 void TablesWizard::manageRoomPage()
 {
-    m_roomCount = ui->m_roomCountSpin->value();
-    ui->m_roomTableView->setModel(new RoomModel(m_roomCount));
+     ui->m_roomCountSpin->clearFocus();
+     m_roomCount = ui->m_roomCountSpin->value();
+     ui->m_roomTableView->setModel(new RoomModel(m_roomCount));
+
 
 }
 void TablesWizard::manageTableInRooms()
@@ -43,7 +53,7 @@ void TablesWizard::manageTableInRooms()
 
 }
 
-void TablesWizard::managePersonPerTable()
+void TablesWizard::currentRoomCount(int a)
 {
-
+    m_roomCount = a;
 }

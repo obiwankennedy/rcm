@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Wizard</string>
   </property>
-  <widget class="QWizardPage" name="wizardPage1">
+  <widget class="QWizardPage" name="m_roomPage">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QGroupBox" name="groupBox">
@@ -38,7 +38,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox"/>
+          <widget class="QSpinBox" name="m_roomCountSpin"/>
          </item>
         </layout>
        </item>
@@ -47,7 +47,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="wizardPage_2">
+  <widget class="QWizardPage" name="m_tableCountPage">
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <widget class="QGroupBox" name="groupBox_2">
@@ -63,7 +63,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="wizardPage">
+  <widget class="QWizardPage" name="m_personPerTable">
    <layout class="QVBoxLayout" name="verticalLayout_6">
     <item>
      <widget class="QGroupBox" name="groupBox_3">

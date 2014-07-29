@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     scenarioeditordialog.cpp \
     localisation/localisationview.cpp \
     localisation/tableswizard.cpp \
-    localisation/table.cpp
+    localisation/table.cpp \
+    localisation/roommodel.cpp
 
 HEADERS  += mainwindow.h \
     gamemaster.h \
@@ -46,7 +47,8 @@ HEADERS  += mainwindow.h \
     scenarioeditordialog.h \
     localisation/localisationview.h \
     localisation/tableswizard.h \
-    localisation/table.h
+    localisation/table.h \
+    localisation/roommodel.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

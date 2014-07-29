@@ -29,6 +29,7 @@ private:
     Ui::TablesWizard *ui;
 
     int m_roomCount;
+    RoomModel* m_modelRoom;
 };
 
 #endif // TABLESWIZARD_H

@@ -3,7 +3,7 @@
 #include "localisationview.h"
 
 LocalisationView::LocalisationView(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent),m_wizzard(NULL)
 {
     QVBoxLayout* myBoxLayout = new QVBoxLayout();
 
@@ -23,5 +23,11 @@ LocalisationView::LocalisationView(QWidget *parent) :
 
 void LocalisationView::startWizzard()
 {
-
+    if(NULL!=m_wizzard)
+    {
+        delete m_wizzard;
+        m_wizzard = NULL;
+    }
+    m_wizzard = new TablesWizard();
+    m_wizzard->show();
 }

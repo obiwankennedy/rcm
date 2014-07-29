@@ -12,7 +12,7 @@ public:
     void setRoomName(QString);
     void setDescription(QString);
     void setId(int);
-    void setCapacity();
+    void setCapacity(int c);
     void setState( bool);
 
 

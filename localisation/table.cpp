@@ -6,7 +6,7 @@ Table::Table()
 }
 void Table::setRoomName(QString str)
 {
-    m_id = str;
+    m_roomName = str;
 }
 
 void Table::setDescription(QString str)

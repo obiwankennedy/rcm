@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QGraphicsView>
 
+#include "tableswizard.h"
+
 class LocalisationView : public QWidget
 {
     Q_OBJECT
@@ -20,6 +22,9 @@ private:
     QPushButton* m_startWizzard;
     QGraphicsView* m_view;
     QGraphicsScene* m_scene;
+
+
+    TablesWizard* m_wizzard;
 };
 
 #endif // LOCALISATIONVIEW_H

@@ -3,13 +3,13 @@
 RoomModel::RoomModel(int roomCount,QObject *parent) :
     QAbstractListModel(parent)
 {
-    m_roomMap = new QMap<Qstring,int>();
+    m_roomMap = new QMap<QString,int>();
     for(int i = 0; i<roomCount; ++i)
     {
         m_roomMap->insert(tr("Room %1").arg(i),0);
     }
 }
-void RoomModel::data(const QModelIndex &index, int role) const
+QVariant RoomModel::data(const QModelIndex &index, int role) const
 {
     if(!index.isValid())
         return QVariant();
@@ -33,7 +33,7 @@ void RoomModel::data(const QModelIndex &index, int role) const
     return QVariant();
 
 }
-void RoomModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool RoomModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     QString key = m_roomMap->keys()[index.row()];
     if(Qt::EditRole == role || Qt::DisplayRole == role)
@@ -52,11 +52,11 @@ void RoomModel::setData(const QModelIndex &index, const QVariant &value, int rol
     }
 }
 
-void RoomModel::rowCount(const QModelIndex &parent) const
+int RoomModel::rowCount(const QModelIndex &parent) const
 {
     return m_roomMap->size();
 }
-void RoomModel::columnCount(const QModelIndex &parent) const
+int RoomModel::columnCount(const QModelIndex &parent) const
 {
     return 2;
 }

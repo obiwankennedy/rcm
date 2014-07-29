@@ -3,6 +3,9 @@
 
 #include <QWizard>
 
+
+#include "roommodel.h"
+
 namespace Ui {
 class TablesWizard;
 }
@@ -16,8 +19,6 @@ public:
     ~TablesWizard();
 
 public slots:
-    void currentPageChanged(int i);
-
     void currentPageChanged(int i);
     void manageRoomPage();
     void manageTableInRooms();

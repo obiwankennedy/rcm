@@ -35,6 +35,7 @@ void TablesWizard::currentPageChanged(int i)
 void TablesWizard::manageRoomPage()
 {
     m_roomCount = ui->m_roomCountSpin->value();
+    ui->m_roomTableView->setModel(new RoomModel(m_roomCount));
 
 }
 void TablesWizard::manageTableInRooms()

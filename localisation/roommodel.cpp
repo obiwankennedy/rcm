@@ -60,3 +60,7 @@ int RoomModel::columnCount(const QModelIndex &parent) const
 {
     return 2;
 }
+QMap<QString,int>* RoomModel::getDataMap()
+{
+    return m_roomMap;
+}

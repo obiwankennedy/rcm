@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     localisation/localisationview.cpp \
     localisation/tableswizard.cpp \
     localisation/table.cpp \
-    localisation/roommodel.cpp
+    localisation/roommodel.cpp \
+    localisation/tablemodel.cpp
 
 HEADERS  += mainwindow.h \
     gamemaster.h \
@@ -48,7 +49,8 @@ HEADERS  += mainwindow.h \
     localisation/localisationview.h \
     localisation/tableswizard.h \
     localisation/table.h \
-    localisation/roommodel.h
+    localisation/roommodel.h \
+    localisation/tablemodel.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

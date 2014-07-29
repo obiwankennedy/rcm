@@ -1,6 +1,6 @@
 #include "tablemodel.h"
 
-TableModel::TableModel(QObject *parent) :
+TableModel::TableModel(QMap<QString,int>* data,QObject *parent) :
     QAbstractListModel(parent)
 {
 }

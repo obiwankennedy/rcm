@@ -5,6 +5,7 @@
 
 
 #include "roommodel.h"
+#include "tablemodel.h"
 
 namespace Ui {
 class TablesWizard;
@@ -30,6 +31,7 @@ private:
 
     int m_roomCount;
     RoomModel* m_modelRoom;
+    TableModel* m_modelTable;
 };
 
 #endif // TABLESWIZARD_H

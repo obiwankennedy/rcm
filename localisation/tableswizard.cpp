@@ -46,12 +46,14 @@ void TablesWizard::manageRoomPage()
      m_roomCount = ui->m_roomCountSpin->value();
      m_modelRoom = new RoomModel(m_roomCount);
      ui->m_roomTableView->setModel(m_modelRoom);
-
-
 }
 void TablesWizard::manageTableInRooms()
 {
     QMap<QString,int>* data = m_modelRoom->getDataMap();
+
+    m_modelTable = new TableModel(data);
+
+    ui->m_tablePersonView->setModel(m_modelTable);
 }
 
 void TablesWizard::currentRoomCount(int a)

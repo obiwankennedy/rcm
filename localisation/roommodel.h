@@ -16,6 +16,8 @@ public:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
 
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+
     QMap<QString,int>* getDataMap();
 
 signals:

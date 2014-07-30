@@ -64,3 +64,14 @@ QMap<QString,int>* RoomModel::getDataMap()
 {
     return m_roomMap;
 }
+Qt::ItemFlags  RoomModel::flags(const QModelIndex &index) const
+{
+    if(index.column()>0)
+    {
+        return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled;
+    }
+    else
+    {
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    }
+}

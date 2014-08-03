@@ -21,6 +21,18 @@ TableModel::TableModel(QMap<QString,int>* data,QObject *parent) :
             m_tableList->append(tmp);
         }
     }
+    m_header << tr("Number")<< tr("Description")<< tr("Capacity")<< tr("CurrentState")<< tr("RoomName");
+}
+QVariant TableModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if(Qt::EditRole == role || Qt::DisplayRole == role)
+    {
+        if(orientation==Qt::Horizontal)
+        {
+            return m_header[section];
+        }
+    }
+    return QVariant();
 }
 QVariant TableModel::data(const QModelIndex &index, int role) const
 {

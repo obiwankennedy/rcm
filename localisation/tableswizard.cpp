@@ -60,3 +60,11 @@ void TablesWizard::currentRoomCount(int a)
 {
     m_roomCount = a;
 }
+QList<Table*>* TablesWizard::getData()
+{
+    return m_modelTable->getDataList();
+}
+int TablesWizard::getRoomCount() const
+{
+    return m_roomCount;
+}

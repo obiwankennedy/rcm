@@ -18,6 +18,7 @@ public:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QList<Table*>* getDataList();
 
 private:
     QList<Table*>* m_tableList;

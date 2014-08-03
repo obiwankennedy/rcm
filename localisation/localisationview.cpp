@@ -29,5 +29,17 @@ void LocalisationView::startWizzard()
         m_wizzard = NULL;
     }
     m_wizzard = new TablesWizard();
-    m_wizzard->show();
+    m_wizzard->setModal(true);
+    if(m_wizzard->exec())
+    {
+
+        m_data = m_wizzard->getData();
+        m_roomCount = m_wizzard->getRoomCount();
+
+        addItemToScene();
+    }
+}
+void LocalisationView::addItemToScene()
+{
+
 }

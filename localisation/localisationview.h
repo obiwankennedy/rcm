@@ -17,6 +17,7 @@ signals:
 
 public slots:
     void startWizzard();
+    void addItemToScene();
 
 private:
     QPushButton* m_startWizzard;
@@ -25,6 +26,9 @@ private:
 
 
     TablesWizard* m_wizzard;
+    QList<Table*>* m_data;
+    int m_roomCount;
+
 };
 
 #endif // LOCALISATIONVIEW_H

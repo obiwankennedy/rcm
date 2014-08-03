@@ -26,6 +26,9 @@ public slots:
    // void managePersonPerTable();
 
     void currentRoomCount(int);
+    QList<Table*>* getData();
+    int getRoomCount()const;
+
 private:
     Ui::TablesWizard *ui;
 

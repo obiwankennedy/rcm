@@ -5,9 +5,9 @@
 
 class TableItem : public QGraphicsItem
 {
-    Q_OBJECT
+
 public:
-    explicit TableItem(QObject *parent = 0);
+    explicit TableItem();
 
 signals:
 

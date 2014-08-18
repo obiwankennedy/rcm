@@ -7,6 +7,8 @@ class RoomItem : public QGraphicsItem
 {
 public:
     RoomItem();
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget);
 
 private:
     QString m_id;

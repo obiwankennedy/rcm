@@ -1,4 +1,5 @@
 #include "roomitem.h"
+#include <QPainter>
 
 RoomItem::RoomItem()
 {

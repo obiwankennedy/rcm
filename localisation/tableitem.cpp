@@ -1,6 +1,6 @@
 #include "tableitem.h"
 
-TableItem::TableItem(QObject *parent) :
-    QGraphicsItem(parent)
+TableItem::TableItem() :
+    QGraphicsItem()
 {
 }

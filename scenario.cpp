@@ -59,6 +59,7 @@ Scenario::~Scenario()
 
 void Scenario::setGameId(QString id)
 {
+    qDebug() << id<< "setGameId";
     m_gameId = id;
 }
 

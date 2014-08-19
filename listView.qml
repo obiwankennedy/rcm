@@ -7,6 +7,7 @@ Item {
     ListView {
         anchors.fill: parent
         id:listView
+        highlightFollowsCurrentItem :  true
         model: _myModel
         delegate: scenarioDelegate
         highlight: Rectangle {
@@ -15,6 +16,7 @@ Item {
             color: "lightsteelblue";
             radius: 5 }
         focus: true
+
 
     }
     Component {
@@ -28,6 +30,7 @@ Item {
                 property int rotationValue: 0
                 property int playerCount: CurrentPlayer
 //
+                height: listView.currentIndex == index ? 120 : 60
                 anchors.fill: parent
                 color: ColorRole
                 radius: 5
@@ -55,7 +58,7 @@ Item {
                 }
                 Text {
                     id:durationId
-                    text: qsTr("Duration:") + Duration
+                    text: qsTr("Duration: ") + Duration
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
                 }
@@ -65,6 +68,17 @@ Item {
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                 }
+                Image {
+                    id: image
+                    source: "image://game/"+PixmapRole
+                    cache: false
+
+                    fillMode: Image.PreserveAspectFit
+                    anchors.top: parent.top
+                    anchors.left: gmId.right
+                    anchors.leftMargin: 5
+                    anchors.bottom: parent.bottom
+                }
 
                 Behavior on playerCount  {
                     SequentialAnimation {
@@ -73,6 +87,12 @@ Item {
                     }
                 }
 
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        listView.currentIndex = index;
+                    }
+                }
                 states: [
                     State {
                         name: ""

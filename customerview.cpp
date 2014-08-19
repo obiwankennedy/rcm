@@ -24,7 +24,7 @@
 
 #include <QQuickView>
 
-CustomerView::CustomerView(ScenarioModel* model,QWindow* parent) :
+CustomerView::CustomerView(GameImageProvider* gameImgProvider,ScenarioModel* model,QWindow* parent) :
     QQuickView(parent),
     m_model(model)
 {
@@ -33,6 +33,8 @@ CustomerView::CustomerView(ScenarioModel* model,QWindow* parent) :
     //ui->listView->setItemDelegate(m_scenarioDelegate);
     //ui->listView->setModel(m_model);
     rootContext()->setContextProperty("_myModel",m_model);
+    QQmlEngine* myEngine =engine();
+    myEngine->addImageProvider(QString("game"), gameImgProvider);
     setSource(QUrl("qrc:/listView.qml"));
 
     setResizeMode(QQuickView::SizeRootObjectToView);

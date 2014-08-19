@@ -19,14 +19,22 @@
 * Free Software Foundation, Inc.,                                          *
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
+#include <QNetworkReply>
+
 #include "gamedialog.h"
 #include "ui_gamedialog.h"
+
+
 
 GameDialog::GameDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddGameDialog)
 {
     ui->setupUi(this);
+    connect(ui->m_urlEdit,SIGNAL(editingFinished()),this,SLOT(uriChanged()));
+    m_manager = new QNetworkAccessManager(this);
+    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(replyFinished(QNetworkReply*)));
 }
 
 GameDialog::~GameDialog()
@@ -63,3 +71,41 @@ void GameDialog::setDescription(QString str)
     ui->m_descriptionEdit->setText(str);
 }
 
+void GameDialog::uriChanged()
+{
+   m_manager->get(QNetworkRequest(QUrl(ui->m_urlEdit->text())));
+}
+void GameDialog::replyFinished(QNetworkReply* reply)
+{
+    QByteArray data = reply->readAll();
+
+    m_pix.loadFromData(data);
+
+    ui->m_picture->setPixmap(m_pix);
+}
+QString GameDialog::getGameType()
+{
+    return ui->m_typeEdit->text();
+}
+
+const QPixmap* GameDialog::getPixmap()
+{
+    return ui->m_picture->pixmap();
+}
+void GameDialog::setGameType(QString str)
+{
+    ui->m_typeEdit->setText(str);
+}
+
+void GameDialog::setImage(QPixmap pix)
+{
+    ui->m_picture->setPixmap(pix);
+}
+ QString GameDialog::getPixmapUrl()
+ {
+     return ui->m_urlEdit->text();
+ }
+void GameDialog::setPixmapUrl(QString str)
+{
+    return ui->m_urlEdit->setText(str);
+}

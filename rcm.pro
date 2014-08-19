@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     localisation/roommodel.cpp \
     localisation/tablemodel.cpp \
     localisation/tableitem.cpp \
-    localisation/roomitem.cpp
+    localisation/roomitem.cpp \
+    gameimageprovider.cpp
 
 HEADERS  += mainwindow.h \
     gamemaster.h \
@@ -54,7 +55,8 @@ HEADERS  += mainwindow.h \
     localisation/roommodel.h \
     localisation/tablemodel.h \
     localisation/tableitem.h \
-    localisation/roomitem.h
+    localisation/roomitem.h \
+    gameimageprovider.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

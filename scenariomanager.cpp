@@ -28,7 +28,7 @@
 #include <QContextMenuEvent>
 
 
-ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, QObject *parent ) :
+ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, GameImageProvider* gameImgProvider,QObject *parent ) :
     QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap)
 {
 
@@ -38,7 +38,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
     m_doneScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::DONE);
 
 #ifdef __QT_QUICK_2_
-    m_customerView = new CustomerView(m_availableScenarioModel);
+    m_customerView = new CustomerView(gameImgProvider,m_availableScenarioModel);
     m_ui->m_customerViewDisplayAct->setEnabled(true);
     m_ui->m_customerViewDisplayAct->setVisible(true);
 #else
@@ -118,9 +118,9 @@ ScenarioModel* ScenarioManager::getRightModel(Scenario::STATE m)
 }
 void ScenarioManager::showCustomView(bool b)
 {
-    #ifdef __QT_QUICK_2_
+#ifdef __QT_QUICK_2_
     m_customerView->setVisible(b);
-    #endif
+#endif
 }
 void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 {
@@ -136,7 +136,7 @@ bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == m_ui->m_scenarioAvailabeView)
     {
-       return eventFilterForAvailable(event);
+        return eventFilterForAvailable(event);
     }
     else if(obj == m_ui->m_scenarioRunningView)
     {
@@ -154,7 +154,11 @@ bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
 //slots to perform action
 void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m)
 {
+    QModelIndex index = getFocusedListView()->indexAt(event->pos());
+
     QMenu menu;
+
+
 
     menu.addAction(m_increasePlayersCount);
     menu.addAction(m_decreasePlayersCount);
@@ -176,6 +180,23 @@ void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m
 
     menu.addSeparator();
     menu.addAction(m_editScenario);
+
+    if(!index.isValid())
+    {
+       m_increasePlayersCount->setEnabled(false);
+       m_decreasePlayersCount->setEnabled(false);
+       m_startScenario->setEnabled(false);
+       m_scenarioIsFinished->setEnabled(false);
+       m_editScenario->setEnabled(false);
+    }
+    else
+    {
+        m_increasePlayersCount->setEnabled(true);
+        m_decreasePlayersCount->setEnabled(true);
+        m_startScenario->setEnabled(true);
+        m_scenarioIsFinished->setEnabled(true);
+        m_editScenario->setEnabled(true);
+    }
 
     menu.exec(event->globalPos());
 }
@@ -285,7 +306,6 @@ bool ScenarioManager::eventFilterForAvailable( QEvent *event)
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        qDebug() << "Ate key press" << keyEvent->key();
         switch(keyEvent->key())
         {
         case Qt::Key_Plus:

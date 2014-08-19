@@ -35,18 +35,21 @@
 
 #include "gamemasterdialog.h"
 #include "localisation/localisationview.h"
+#include "gameimageprovider.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_gameImgProvider = new GameImageProvider();
+
     m_title=tr("%1[*] - Rolisteam Convention Manager");
     m_recentFileActions = new QList<QAction*>();
 
     setWindowTitle(m_title.arg("Unkown"));
 
-    m_gameModel = new GameModel();
+    m_gameModel = new GameModel(m_gameImgProvider);
     m_gameMasterModel = new GameMasterModel();
     //m_gameMasterPresenceModel = new GameMasterModel();
 
@@ -54,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
-    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
+    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
     initActions();
 
     ui->m_gameView->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -162,9 +165,12 @@ void  MainWindow::addGameDialog()
     if(dialog.exec())
     {
         Game* tmp = new Game();
+        connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
         tmp->setTitle(dialog.getTitle());
         tmp->setPunchLine(dialog.getPunchLine());
         tmp->setDescription(dialog.getDescription());
+        tmp->setType(dialog.getGameType());
+        tmp->setImageUrl(dialog.getPixmapUrl());
 
         m_gameModel->append(tmp);
 
@@ -392,6 +398,8 @@ void MainWindow::editGame(const QModelIndex& index)
         dialog.setTitle(tmp->getTitle());
         dialog.setDescription(tmp->getDescription());
         dialog.setPunchLine(tmp->getPunchLine());
+        dialog.setGameType(tmp->getType());
+        dialog.setPixmapUrl(tmp->getImageUrl());
 
         if(dialog.exec())
         {
@@ -399,8 +407,10 @@ void MainWindow::editGame(const QModelIndex& index)
             tmp->setTitle(dialog.getTitle());
             tmp->setPunchLine(dialog.getPunchLine());
             tmp->setDescription(dialog.getDescription());
+            tmp->setImageUrl(dialog.getPixmapUrl());
+            tmp->setType(dialog.getGameType());
 
-            m_gameModel->append(tmp);
+            //m_gameModel->append(tmp);
 
         }
 

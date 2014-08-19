@@ -25,13 +25,14 @@
 #include <QQuickView>
 #include "scenarioitemdelegate.h"
 #include "scenariomodel.h"
+#include "gameimageprovider.h"
 
 class CustomerView : public QQuickView
 {
     Q_OBJECT
     
 public:
-    explicit CustomerView(ScenarioModel* model, QWindow *parent = 0);
+    explicit CustomerView(GameImageProvider* gameImgProvider,ScenarioModel* model, QWindow *parent = 0);
     ~CustomerView();
     
 private:

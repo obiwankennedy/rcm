@@ -88,7 +88,9 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     }
     else if(ScenarioModel::GameIdRole == role)
     {
-        return m_scenarioList->at(index.row())->getGameId();
+        QVariant var(m_scenarioList->at(index.row())->getGameId());
+
+        return var;
     }
     else if(ScenarioModel::GameMasterIdRole == role)
     {
@@ -159,6 +161,12 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
         Scenario* tmp = m_scenarioList->at(index.row());
         var.setValue(*tmp);
         return var;
+    }
+    else if(ScenarioModel::PixmapRole == role)
+    {
+        QString id = m_scenarioList->at(index.row())->getGameId();
+        Game* tmp  = m_list[id];
+        return tmp->getIdImage();
     }
 
     return QVariant();
@@ -346,6 +354,7 @@ QHash<int, QByteArray>  ScenarioModel::roleNames() const
     roles[GameTitleRole] = "GameTitle";
     roles[GameMasterNameRole] = "GMName";
     roles[ColorRole] = "ColorRole";
+    roles[PixmapRole] = "PixmapRole";
     return roles;
 }
 void  ScenarioModel::readFromData(QDataStream& from)

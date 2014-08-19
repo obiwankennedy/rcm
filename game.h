@@ -23,12 +23,15 @@
 #define GAME_H
 
 #include <QString>
+#include <QPixmap>
+#include <QNetworkAccessManager>
 
 #include "serializable.h"
 
-class Game : public Serialisable
-{
 
+class Game : public QObject,public Serialisable
+{
+    Q_OBJECT
 public:
     enum LEVEL {BEGINNER,AVERAGE,EXPERIMENTED};
 
@@ -43,6 +46,9 @@ public:
     void setTitle(QString title);
     void setPunchLine(QString title);
     void setDescription(QString title);
+    void setPixmap(QPixmap* title);
+    void setType(QString type);
+    void setImageUrl(QString url);
     void setUuid(QString id);
 
 
@@ -52,6 +58,15 @@ public:
     QString getPunchLine() const;
     QString getDescription() const;
     QString getUuid() const;
+    QString getIdImage() const;
+    QPixmap* getPixmap( )const;
+    QString getType( )const;
+    QString getImageUrl( )const;
+signals:
+    void pixmapChanged(QString,QPixmap*);
+
+public slots:
+    void replyFinished(QNetworkReply* reply);
 
 
 private:
@@ -59,8 +74,12 @@ private:
     QString m_title;
     QString m_description;
     QString m_punchLine;
+    QString m_type;
+    QString m_imageUrl;
+    QPixmap* m_image;
     /**/
 
+    QNetworkAccessManager * m_manager;
 };
 
 #endif // GAME_H

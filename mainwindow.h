@@ -33,6 +33,7 @@
 
 #include "preferences/preferencesmanager.h"
 #include "serializable.h"
+#include "gameimageprovider.h"
 
 namespace Ui {
 class MainWindow;
@@ -120,6 +121,8 @@ private:
     ScenarioManager* m_scenarioManager;
 
     QString m_title;
+
+    GameImageProvider* m_gameImgProvider;
 };
 
 #endif // MAINWINDOW_H

@@ -21,12 +21,18 @@
 ***************************************************************************/
 #include "game.h"
 #include <QUuid>
+#include <QUrl>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+
 
 Game::Game()
     : m_uuid(QUuid::createUuid().toString())
 {
-
-
+    m_manager = new QNetworkAccessManager();
+    m_image = new QPixmap();
+    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(replyFinished(QNetworkReply*)));
 }
 void Game::readFromData(QDataStream& from)
 {
@@ -34,6 +40,10 @@ void Game::readFromData(QDataStream& from)
     from >> m_punchLine;
     from >> m_description;
     from >> m_uuid;
+    from >> m_type;
+    from >> m_imageUrl;
+    setImageUrl(m_imageUrl);
+
 }
 
 void Game::writeToData(QDataStream& to) const
@@ -42,6 +52,9 @@ void Game::writeToData(QDataStream& to) const
     to << m_punchLine;
     to << m_description;
     to << m_uuid;
+    to << m_type;
+    to << m_imageUrl;
+
 
 }
 QDomElement Game::writeDataToXml(QDomDocument& doc)
@@ -60,11 +73,18 @@ QDomElement Game::writeDataToXml(QDomDocument& doc)
     QDomElement descriptionF = doc.createElement("description");
     descriptionF.appendChild(doc.createTextNode(m_description));
 
+    QDomElement typeF = doc.createElement("type");
+    typeF.appendChild(doc.createTextNode(m_type));
+
+    QDomElement imageUrlF = doc.createElement("imageUrl");
+    imageUrlF.appendChild(doc.createTextNode(m_imageUrl));
+
     parent.appendChild(gameIdF);
     parent.appendChild(titleF);
     parent.appendChild(punchF);
     parent.appendChild(descriptionF);
-
+    parent.appendChild(typeF);
+    parent.appendChild(imageUrlF);
 
     return parent;
 
@@ -81,6 +101,12 @@ void Game::readDataFromXml(QDomNode& node)
     m_punchLine = tmpElement.text();
     tmpElement = node.firstChildElement("description");
     m_description = tmpElement.text();
+    tmpElement = node.firstChildElement("type");
+    m_type = tmpElement.text();
+    tmpElement = node.firstChildElement("imageUrl");
+    setImageUrl(tmpElement.text());
+
+
 
 
 }
@@ -121,4 +147,45 @@ QString Game::getDescription() const
 QString Game::getUuid() const
 {
     return m_uuid;
+}
+void  Game::setPixmap(QPixmap* title)
+{
+   m_image = title;
+   emit pixmapChanged(getIdImage(),m_image);
+}
+
+void  Game::setType(QString type)
+{
+    m_type = type;
+}
+
+void  Game::setImageUrl(QString url)
+{
+    m_imageUrl = url;
+    m_manager->get(QNetworkRequest(QUrl(m_imageUrl)));
+}
+void Game::replyFinished(QNetworkReply* reply)
+{
+    QByteArray data = reply->readAll();
+
+    m_image->loadFromData(data);
+    emit pixmapChanged(getIdImage(),m_image);
+}
+QPixmap* Game::getPixmap( )const
+{
+    return m_image;
+}
+QString Game::getType( )const
+{
+    return m_type;
+}
+QString Game::getImageUrl( )const
+{
+    return m_imageUrl;
+}
+QString  Game::getIdImage() const
+{
+    QString id = m_uuid.mid(1);
+    return id.mid(0,id.size()-1);
+
 }

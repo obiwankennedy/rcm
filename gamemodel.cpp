@@ -24,8 +24,8 @@
 #include <QDataStream>
 #include <QDebug>
 
-GameModel::GameModel(QObject *parent) :
-    QAbstractListModel(parent)
+GameModel::GameModel(GameImageProvider* gameImageProvider, QObject *parent) :
+    QAbstractListModel(parent),m_gameImgProvider(gameImageProvider)
 {
 }
 int GameModel::rowCount ( const QModelIndex &  ) const
@@ -50,9 +50,12 @@ QVariant GameModel::data ( const QModelIndex & index, int role ) const
 void GameModel::append(Game* tmp)
 {
     beginInsertRows(QModelIndex(),m_gameList.size(),m_gameList.size());
+    QObject::connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
 
     m_gameList.append(tmp);
     m_gameMap.insert(tmp->getUuid(),tmp);
+
+    m_gameImgProvider->insertPixmap(tmp->getIdImage(),tmp->getPixmap());
 
     endInsertRows();
 

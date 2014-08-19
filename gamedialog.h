@@ -23,7 +23,13 @@
 #define ADDGAMEDIALOG_H
 
 #include <QDialog>
+#include <QNetworkAccessManager>
 
+//QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+//connect(manager, SIGNAL(finished(QNetworkReply*)),
+//        this, SLOT(replyFinished(QNetworkReply*)));
+
+//manager->get(QNetworkRequest(QUrl("http://qt-project.org")));
 namespace Ui {
 class AddGameDialog;
 }
@@ -39,15 +45,25 @@ public:
     QString getTitle();
     QString getPunchLine();
     QString getDescription();
+    QString getGameType();
+    QString getPixmapUrl();
+    const QPixmap* getPixmap();
 
     void setTitle(QString);
     void setPunchLine(QString);
     void setDescription(QString);
+    void setGameType(QString);
+    void setPixmapUrl(QString);
+    void setImage(QPixmap);
 
-
+public slots:
+    void uriChanged();
+    void replyFinished(QNetworkReply*);
     
 private:
     Ui::AddGameDialog *ui;
+    QNetworkAccessManager * m_manager;
+    QPixmap m_pix;
 };
 
 #endif // ADDGAMEDIALOG_H

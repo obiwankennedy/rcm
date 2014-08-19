@@ -36,6 +36,7 @@
 #include "gamemaster.h"
 
 #include "serializable.h"
+#include "gameimageprovider.h"
 
 namespace Ui {
 class MainWindow;
@@ -45,7 +46,7 @@ class ScenarioManager : public QObject, public Serialisable
 {
     Q_OBJECT
 public:
-    explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent = 0);
+    explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,GameImageProvider* gameImgProvider,QObject *parent = 0);
     
     
     void addScenarios(QList<Scenario*>* l,Scenario::STATE s = Scenario::AVAILABLE);

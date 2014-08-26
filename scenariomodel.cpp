@@ -72,12 +72,14 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
         case 5:
             return m_scenarioList->at(index.row())->getMaximumPlayers();
         case 6:
-            return m_scenarioList->at(index.row())->getCurrentPlayers();
+            return m_scenarioList->at(index.row())->getDescription();
         case 7:
-            return m_scenarioList->at(index.row())->getAvailableTime();
+            return m_scenarioList->at(index.row())->getCurrentPlayers();
         case 8:
-            return m_scenarioList->at(index.row())->getState();
+            return m_scenarioList->at(index.row())->getAvailableTime();
         case 9:
+            return m_scenarioList->at(index.row())->getState();
+        case 10:
             return m_scenarioList->at(index.row())->getTableNumber();
 
         }

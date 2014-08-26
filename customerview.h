@@ -36,7 +36,7 @@ public:
     ~CustomerView();
 
 public slots:
-    void setSelectionIndex(QModelIndex index);
+    void setSelectionIndex(const QModelIndex& index);
     
 private:
     ScenarioItemDelegate* m_scenarioDelegate;

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml
+QT       += core gui xml network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets qml quick
 
@@ -33,7 +33,7 @@ SOURCES += main.cpp\
     localisation/tablemodel.cpp \
     localisation/tableitem.cpp \
     localisation/roomitem.cpp \
-    gameimageprovider.cpp
+
 
 HEADERS  += mainwindow.h \
     gamemaster.h \
@@ -55,8 +55,7 @@ HEADERS  += mainwindow.h \
     localisation/roommodel.h \
     localisation/tablemodel.h \
     localisation/tableitem.h \
-    localisation/roomitem.h \
-    gameimageprovider.h
+    localisation/roomitem.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \
@@ -105,9 +104,10 @@ PRE_TARGETDEPS += compiler_updateqm_make_all
 greaterThan(QT_MAJOR_VERSION, 4) {
 message("qt5")
     SOURCES+=customerview.cpp \
-
+    gameimageprovider.cpp
 
     HEADERS+=customerview.h \
+    gameimageprovider.h
 
 DEFINES+=__QT_QUICK_2_
 }

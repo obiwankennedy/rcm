@@ -15,7 +15,7 @@ TableModel::TableModel(QMap<QString,int>* data,QObject *parent) :
             Table* tmp = new Table();
             tmp->setCapacity(0);
             tmp->setRoomName(key);
-            tmp->setId(j);
+            tmp->setId(j+1);
             tmp->setState(true);
             ++j;
             m_tableList->append(tmp);

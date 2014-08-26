@@ -43,13 +43,15 @@ bool RoomModel::setData(const QModelIndex &index, const QVariant &value, int rol
             int valueOld=m_roomMap->value(key);
             m_roomMap->remove(key);
             m_roomMap->insert(value.toString(),valueOld);
-
+            return true;
         }
         else
         {
             m_roomMap->insert(key,value.toInt());
+            return true;
         }
     }
+    return false;
 }
 
 int RoomModel::rowCount(const QModelIndex &parent) const

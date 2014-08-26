@@ -46,3 +46,9 @@ CustomerView::~CustomerView()
 {
 
 }
+
+
+void CustomerView::setSelectionIndex(int index)
+{
+/// @todo send selection to QML World
+}

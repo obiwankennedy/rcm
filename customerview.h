@@ -34,6 +34,9 @@ class CustomerView : public QQuickView
 public:
     explicit CustomerView(GameImageProvider* gameImgProvider,ScenarioModel* model, QWindow *parent = 0);
     ~CustomerView();
+
+public slots:
+    void setSelectionIndex(QModelIndex index);
     
 private:
     ScenarioItemDelegate* m_scenarioDelegate;

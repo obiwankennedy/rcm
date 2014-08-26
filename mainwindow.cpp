@@ -35,21 +35,25 @@
 
 #include "gamemasterdialog.h"
 #include "localisation/localisationview.h"
-#include "gameimageprovider.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+#ifdef __QT_QUICK_2_
     m_gameImgProvider = new GameImageProvider();
-
+#endif
     m_title=tr("%1[*] - Rolisteam Convention Manager");
     m_recentFileActions = new QList<QAction*>();
 
     setWindowTitle(m_title.arg("Unkown"));
-
+#ifdef __QT_QUICK_2_
     m_gameModel = new GameModel(m_gameImgProvider);
+#else
+    m_gameModel = new GameModel();
+#endif
     m_gameMasterModel = new GameMasterModel();
     //m_gameMasterPresenceModel = new GameMasterModel();
 
@@ -57,7 +61,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
+    #ifdef __QT_QUICK_2_
     m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
+#else
+    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
+#endif
+
     initActions();
 
     ui->m_gameView->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -135,19 +144,19 @@ void MainWindow::initActions()
 
 }
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
- {
-     if (event->type() == QEvent::ContextMenu)
-     {
-         QContextMenuEvent *keyEvent = static_cast<QContextMenuEvent *>(event);
-         contextMenuForGameMaster(keyEvent);
-         return true;
-     }
-     else
-     {
-         // standard event processing
-         return QObject::eventFilter(obj, event);
-     }
- }
+{
+    if (event->type() == QEvent::ContextMenu)
+    {
+        QContextMenuEvent *keyEvent = static_cast<QContextMenuEvent *>(event);
+        contextMenuForGameMaster(keyEvent);
+        return true;
+    }
+    else
+    {
+        // standard event processing
+        return QObject::eventFilter(obj, event);
+    }
+}
 void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
 {
     QMenu menu;
@@ -165,7 +174,9 @@ void  MainWindow::addGameDialog()
     if(dialog.exec())
     {
         Game* tmp = new Game();
+        #ifdef __QT_QUICK_2_
         connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
+#endif
         tmp->setTitle(dialog.getTitle());
         tmp->setPunchLine(dialog.getPunchLine());
         tmp->setDescription(dialog.getDescription());
@@ -518,7 +529,7 @@ void MainWindow::saveDataToXml()
 }
 void MainWindow::importDataFromXml()
 {
-     QString fileImport = QFileDialog::getOpenFileName(this, tr("Open XML Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("XML Rolisteam Conv Database (*.xml)"));
+    QString fileImport = QFileDialog::getOpenFileName(this, tr("Open XML Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("XML Rolisteam Conv Database (*.xml)"));
     if(!fileImport.isNull())
     {
 

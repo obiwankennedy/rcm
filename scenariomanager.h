@@ -32,11 +32,12 @@
 #include "scenarioitemdelegate.h"
 #ifdef __QT_QUICK_2_
 #include "customerview.h"
+#include "gameimageprovider.h"
 #endif
 #include "gamemaster.h"
 
 #include "serializable.h"
-#include "gameimageprovider.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -46,7 +47,11 @@ class ScenarioManager : public QObject, public Serialisable
 {
     Q_OBJECT
 public:
+    #ifdef __QT_QUICK_2_
     explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,GameImageProvider* gameImgProvider,QObject *parent = 0);
+#else
+    explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent = 0);
+#endif
     
     
     void addScenarios(QList<Scenario*>* l,Scenario::STATE s = Scenario::AVAILABLE);

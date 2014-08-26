@@ -23,9 +23,13 @@
 
 #include <QDataStream>
 #include <QDebug>
-
+#ifdef __QT_QUICK_2_
 GameModel::GameModel(GameImageProvider* gameImageProvider, QObject *parent) :
     QAbstractListModel(parent),m_gameImgProvider(gameImageProvider)
+  #else
+GameModel::GameModel(QObject *parent) :
+    QAbstractListModel(parent)
+#endif
 {
 }
 int GameModel::rowCount ( const QModelIndex &  ) const
@@ -50,13 +54,16 @@ QVariant GameModel::data ( const QModelIndex & index, int role ) const
 void GameModel::append(Game* tmp)
 {
     beginInsertRows(QModelIndex(),m_gameList.size(),m_gameList.size());
+    #ifdef __QT_QUICK_2_
     QObject::connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
+#endif
 
     m_gameList.append(tmp);
     m_gameMap.insert(tmp->getUuid(),tmp);
 
+    #ifdef __QT_QUICK_2_
     m_gameImgProvider->insertPixmap(tmp->getIdImage(),tmp->getPixmap());
-
+#endif
     endInsertRows();
 
 }

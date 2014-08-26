@@ -26,14 +26,19 @@
 
 #include "game.h"
 #include "serializable.h"
+#ifdef __QT_QUICK_2_
 #include "gameimageprovider.h"
+#endif
 
 class GameModel : public QAbstractListModel, public Serialisable
 {
     Q_OBJECT
 public:
+    #ifdef __QT_QUICK_2_
     explicit GameModel(GameImageProvider* gameImageProvider,QObject *parent = 0);
-    
+#else
+    explicit GameModel(QObject *parent = 0);
+#endif
     int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 
@@ -58,8 +63,9 @@ public:
 private:
     QList<Game*> m_gameList;
     QMap<QString,Game*> m_gameMap;
+    #ifdef __QT_QUICK_2_
     GameImageProvider* m_gameImgProvider;
-    
+#endif
 };
 
 #endif // GAMEMODEL_H

@@ -27,8 +27,11 @@
 #include <QDebug>
 #include <QContextMenuEvent>
 
-
+#ifdef __QT_QUICK_2_
 ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, GameImageProvider* gameImgProvider,QObject *parent ) :
+    #else
+ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent ) :
+#endif
     QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap)
 {
 
@@ -41,6 +44,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
     m_customerView = new CustomerView(gameImgProvider,m_availableScenarioModel);
     m_ui->m_customerViewDisplayAct->setEnabled(true);
     m_ui->m_customerViewDisplayAct->setVisible(true);
+    connect(m_ui->m_scenarioAvailabeView,SIGNAL(clicked(QModelIndex)),m_customerView,SLOT(setSelectionIndex(QModelIndex)));
 #else
     m_ui->m_customerViewDisplayAct->setEnabled(false);
     m_ui->m_customerViewDisplayAct->setVisible(false);
@@ -48,7 +52,9 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
 
     //view
     m_ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
+
     m_ui->m_scenarioAvailabeView->installEventFilter(this);
+
     m_ui->m_scenarioRunningView->setModel(m_runningScenarioModel);
     m_ui->m_scenarioRunningView->installEventFilter(this);
     m_ui->m_scenarioDoneView->setModel(m_doneScenarioModel);

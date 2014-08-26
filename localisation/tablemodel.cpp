@@ -109,3 +109,14 @@ int TableModel::columnCount(const QModelIndex &parent) const
 {
     return m_header.size();
 }
+Qt::ItemFlags  TableModel::flags(const QModelIndex &index) const
+{
+    if(index.column()>0)
+    {
+        return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled;
+    }
+    else
+    {
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    }
+}

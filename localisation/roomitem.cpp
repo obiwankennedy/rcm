@@ -1,15 +1,31 @@
 #include "roomitem.h"
 #include <QPainter>
+#include <QDebug>
 
+#define RADIUS 10
 RoomItem::RoomItem()
 {
+    m_w=800;
+    m_h=400;
 }
 QRectF RoomItem::boundingRect() const
 {
-    return QRectF(0,0,400,800);
+    return QRectF(0,0,m_w,m_h);
 }
 
 void RoomItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget)
 {
-    painter->drawRoundedRect(-10, -10, 20, 20, 5, 5);
+    painter->drawRoundedRect(boundingRect(),RADIUS,RADIUS);
+    painter->drawText(RADIUS,RADIUS,m_id);
+}
+void RoomItem::setSize(int w, int h)
+{
+    m_w=w;
+    m_h=h;
+
+    qDebug() << "RoomItem size:" <<m_h << m_w;
+}
+void RoomItem::setName(QString str)
+{
+    m_id = str;
 }

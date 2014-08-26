@@ -42,12 +42,11 @@ Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Network.dll"; DestDir: "{ap
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5OpenGL.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Qml.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Quick.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5WebKit.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5XmlPatterns.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\plugins\imageformats"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs

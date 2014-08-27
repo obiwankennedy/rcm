@@ -21,7 +21,8 @@
 ***************************************************************************/
 #include "customerview.h"
 #include <QQmlContext>
-
+#include <QDebug>
+#include <QQuickItem>
 #include <QQuickView>
 
 CustomerView::CustomerView(GameImageProvider* gameImgProvider,ScenarioModel* model,QWindow* parent) :
@@ -50,5 +51,15 @@ CustomerView::~CustomerView()
 
 void CustomerView::setSelectionIndex(const QModelIndex& index)
 {
+
+    QQuickItem* object = rootObject();
+    QObject* listview = object->findChild<QObject*>("listView");
+    if(NULL!=listview)
+    {
+        qDebug() << "S" << index.row();
+
+        listview->setProperty("currentIndex ",index.row());
+    }
+
 /// @todo send selection to QML World
 }

@@ -4,12 +4,20 @@ Item {
     id: root
     width: 400
     height: 400
+
+
+
     ListView {
         anchors.fill: parent
         id:listView
+        objectName:"listView"
         highlightFollowsCurrentItem :  true
         model: _myModel
         delegate: scenarioDelegate
+        currentIndex: -1
+        onCurrentIndexChanged: {
+            console.log("change on currentIndex"+currentIndex);
+        }
         highlight: Rectangle {
             height: 60
             width: parent.width
@@ -22,7 +30,7 @@ Item {
     Component {
         id: scenarioDelegate
         Item {
-            height: 60
+            height: listView.currentIndex == index ? 120 : 60
             width: parent.width
             Rectangle {
                 id:rect
@@ -30,8 +38,10 @@ Item {
                 property int rotationValue: 0
                 property int playerCount: CurrentPlayer
 //
-                height: listView.currentIndex == index ? 120 : 60
+
+
                 anchors.fill: parent
+                height: parent.height
                 color: ColorRole
                 radius: 5
                 border.width: 1

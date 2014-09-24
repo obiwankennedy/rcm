@@ -26,7 +26,7 @@
 #include "scenario.h"
 
 Scenario::Scenario()
-    : m_scenarioId(QUuid::createUuid().toString()),m_duration(60),m_level(BEGINNER),m_maximumPlayers(6),m_minimumPlayers(2),m_currentPlayers(0)
+    : m_scenarioId(QUuid::createUuid().toString()),m_duration(60),m_level(BEGINNER),m_maximumPlayers(6),m_minimumPlayers(2),m_currentPlayers(0),m_tableNumber(0)
 {
 
 }

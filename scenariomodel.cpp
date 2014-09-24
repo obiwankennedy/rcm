@@ -213,6 +213,22 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
             current->setDescription(value.toString());
             result = true;
             break;
+        case 7:
+            current->setCurrentPlayers(value.toInt());
+            result=true;
+            break;
+        case 8:
+            current->setAvailableTime(value.toDateTime());
+            result=true;
+            break;
+        case 9:
+            current->setState((Scenario::STATE)value.toInt());
+            result=true;
+            break;
+        case 10:
+            current->setTableNumber(value.toInt());
+            result=true;
+            break;
         }
         emit updateHeader();
         emit dataChanged(index,index);

@@ -170,7 +170,10 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
         Game* tmp  = m_list[id];
         return tmp->getIdImage();
     }
-
+    else if(ScenarioModel::LevelRole == role)
+    {
+        return m_scenarioList->at(index.row())->getLevel();
+    }
     return QVariant();
 }
 bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, int role)
@@ -373,6 +376,7 @@ QHash<int, QByteArray>  ScenarioModel::roleNames() const
     roles[GameMasterNameRole] = "GMName";
     roles[ColorRole] = "ColorRole";
     roles[PixmapRole] = "PixmapRole";
+    roles[LevelRole] = "Level";
     return roles;
 }
 void  ScenarioModel::readFromData(QDataStream& from)

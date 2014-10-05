@@ -47,6 +47,9 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaste
     ui->m_scenarioTable->setItemDelegateForColumn(0,m_gameDelegate);
     ui->m_scenarioTable->setItemDelegateForColumn(3,new LevelDelegateItem());
 
+    ui->m_scenarioTable->hideColumn(8);
+    ui->m_scenarioTable->hideColumn(9);
+    ui->m_scenarioTable->hideColumn(10);
 #if QT_VERSION >= 0x050000
     ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 #else

@@ -61,6 +61,12 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 Text {
+                    id:levelid
+                    text:Level
+                    anchors.top: gametitleLabel.top
+                    anchors.right: gametitleLabel.left
+                }
+                Text {
                     id:playerCountTxt
                     text: CurrentPlayer +'/'+ MaximumPlayer
                     anchors.top: parent.top

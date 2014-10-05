@@ -62,9 +62,11 @@ Item {
                 }
                 Text {
                     id:levelid
-                    text:Level
+                    text: "("+Level+")"
                     anchors.top: gametitleLabel.top
-                    anchors.right: gametitleLabel.left
+                    anchors.left: gametitleLabel.right
+                    width: 100
+                    height:20
                 }
                 Text {
                     id:playerCountTxt
@@ -88,6 +90,8 @@ Item {
                     id: image
                     source: "image://game/"+PixmapRole
                     cache: false
+
+                    visible:PixmapRole.length>0
 
                     fillMode: Image.PreserveAspectFit
                     anchors.top: parent.top

@@ -50,6 +50,7 @@ public:
     void setType(QString type);
     void setImageUrl(QString url);
     void setUuid(QString id);
+    bool hasPicture();
 
 
 

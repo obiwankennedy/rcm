@@ -166,9 +166,14 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     }
     else if(ScenarioModel::PixmapRole == role)
     {
+
         QString id = m_scenarioList->at(index.row())->getGameId();
         Game* tmp  = m_list[id];
-        return tmp->getIdImage();
+
+        if(tmp->hasPicture())
+            return tmp->getIdImage();
+        else
+            return QString();
     }
     else if(ScenarioModel::LevelRole == role)
     {

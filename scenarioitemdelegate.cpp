@@ -145,7 +145,7 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             }
 
         GameMaster* myGameMaster = m_masterlist[tmp.getGameMasterId()];
-        if(!m_private)
+        if((!m_private)||(Scenario::RUNNING != m_state))
         {
             QString gmStr = tr("GM:%1, phone:%2");
             style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()).arg(myGameMaster->getPhoneNumber()));

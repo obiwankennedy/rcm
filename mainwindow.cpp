@@ -500,9 +500,15 @@ void MainWindow::saveDataToXml()
     QString fileExport = QFileDialog::getSaveFileName(this, tr("Export Data as XML"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("XML Rolisteam Conv Database (*.xml)"));
     if(!fileExport.isNull())
     {
-        QFile file(fileExport);
 
-        QFileInfo fileinfo(file);
+
+        QFileInfo fileinfo(fileExport);
+        if(fileinfo.suffix()==".xml")
+        {
+            fileExport+=".xml";
+        }
+
+         QFile file(fileExport);
         //m_preferences->registerValue("dataDirectory",fileinfo.absoluteDir().canonicalPath());
 
         if (file.open(QIODevice::WriteOnly))

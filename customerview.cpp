@@ -56,10 +56,7 @@ void CustomerView::setSelectionIndex(const QModelIndex& index)
     QObject* listview = object->findChild<QObject*>("listView");
     if(NULL!=listview)
     {
-        qDebug() << "S" << index.row();
-
-        listview->setProperty("currentIndex ",index.row());
+        listview->setProperty("currentIndex",index.row());
     }
 
-/// @todo send selection to QML World
 }

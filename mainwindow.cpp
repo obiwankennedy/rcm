@@ -503,7 +503,7 @@ void MainWindow::saveDataToXml()
 
 
         QFileInfo fileinfo(fileExport);
-        if(fileinfo.suffix()==".xml")
+        if(fileinfo.suffix()!="xml")
         {
             fileExport+=".xml";
         }

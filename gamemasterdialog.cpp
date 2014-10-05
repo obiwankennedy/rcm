@@ -23,6 +23,7 @@
 #include "ui_gamemasterdialog.h"
 #include <QDebug>
 
+#include "leveldelegateitem.h"
 
 GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lst,QWidget *parent) :
     QDialog(parent),
@@ -44,6 +45,7 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaste
     m_gameDelegate = new GameEditorDelegate(l);
 
     ui->m_scenarioTable->setItemDelegateForColumn(0,m_gameDelegate);
+    ui->m_scenarioTable->setItemDelegateForColumn(3,new LevelDelegateItem());
 
 #if QT_VERSION >= 0x050000
     ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);

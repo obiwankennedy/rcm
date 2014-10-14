@@ -187,5 +187,8 @@ QString  Game::getIdImage() const
 {
     QString id = m_uuid.mid(1);
     return id.mid(0,id.size()-1);
-
+}
+bool Game::hasPicture()
+{
+    return !m_imageUrl.isEmpty();
 }

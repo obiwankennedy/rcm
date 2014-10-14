@@ -33,6 +33,7 @@ SOURCES += main.cpp\
     localisation/tablemodel.cpp \
     localisation/tableitem.cpp \
     localisation/roomitem.cpp \
+    leveldelegateitem.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -55,7 +56,8 @@ HEADERS  += mainwindow.h \
     localisation/roommodel.h \
     localisation/tablemodel.h \
     localisation/tableitem.h \
-    localisation/roomitem.h
+    localisation/roomitem.h \
+    leveldelegateitem.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

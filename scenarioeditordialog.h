@@ -6,6 +6,7 @@
 
 #include "scenariomodel.h"
 #include "gameeditordelegate.h"
+#include "leveldelegateitem.h"
 
 namespace Ui {
 class ScenarioEditorDialog;
@@ -24,6 +25,7 @@ public:
 private:
     Ui::ScenarioEditorDialog *ui;
     GameEditorDelegate* m_gameDelegate;
+    LevelDelegateItem* m_levelDelegate;
 };
 
 #endif // SCENARIOEDITORDIALOG_H

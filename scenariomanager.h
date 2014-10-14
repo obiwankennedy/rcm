@@ -82,6 +82,7 @@ protected:
     
 public slots:
     void showCustomView(bool);
+    void setCustomViewFullScreen(bool);
     void increaseCurrentPlayerCount();
     void decreaseCurrentPlayerCount();
     void startScenario();

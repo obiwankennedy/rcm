@@ -61,6 +61,14 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 Text {
+                    id:levelid
+                    text: "("+Level+")"
+                    anchors.top: gametitleLabel.top
+                    anchors.left: gametitleLabel.right
+                    width: 100
+                    height:20
+                }
+                Text {
                     id:playerCountTxt
                     text: CurrentPlayer +'/'+ MaximumPlayer
                     anchors.top: parent.top
@@ -82,6 +90,8 @@ Item {
                     id: image
                     source: "image://game/"+PixmapRole
                     cache: false
+
+                    visible:PixmapRole.length>0
 
                     fillMode: Image.PreserveAspectFit
                     anchors.top: parent.top

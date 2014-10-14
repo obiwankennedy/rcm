@@ -28,28 +28,76 @@
 
 #include "serializable.h"
 
-
+/**
+ * @brief The Game class
+ */
 class Game : public QObject,public Serialisable
 {
     Q_OBJECT
 public:
     enum LEVEL {BEGINNER,AVERAGE,EXPERIMENTED};
-
+    /**
+     * @brief Game
+     */
     Game();
+    /**
+     * @brief readFromData
+     */
     virtual void readFromData(QDataStream&);
+    /**
+     * @brief writeToData
+     */
     virtual void writeToData(QDataStream&) const;
-
+    /**
+     * @brief writeDataToXml
+     * @return
+     */
     virtual QDomElement writeDataToXml(QDomDocument&)  ;
+    /**
+     * @brief readDataFromXml
+     */
     virtual void readDataFromXml(QDomNode&) ;
 
-    //
+    /**
+     * @brief setTitle
+     * @param title
+     */
     void setTitle(QString title);
+    /**
+     * @brief setPunchLine
+     * @param title
+     */
     void setPunchLine(QString title);
+    /**
+     * @brief setDescription
+     * @param title
+     */
     void setDescription(QString title);
+    /**
+     * @brief setPixmap
+     * @param title
+     */
     void setPixmap(QPixmap* title);
+    /**
+     * @brief setType
+     * @param type
+     */
     void setType(QString type);
+    /**
+     * @brief setImageUrl
+     * @param url
+     */
     void setImageUrl(QString url);
+    /**
+     * @brief setUuid
+     * @param id
+     */
     void setUuid(QString id);
+    /**
+     * @brief hasPicture
+     * @return
+     */
+    bool hasPicture();
 
 
 
@@ -63,9 +111,16 @@ public:
     QString getType( )const;
     QString getImageUrl( )const;
 signals:
+    /**
+     * @brief pixmapChanged
+     */
     void pixmapChanged(QString,QPixmap*);
 
 public slots:
+    /**
+     * @brief replyFinished
+     * @param reply
+     */
     void replyFinished(QNetworkReply* reply);
 
 

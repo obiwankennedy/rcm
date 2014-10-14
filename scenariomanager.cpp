@@ -131,6 +131,12 @@ void ScenarioManager::showCustomView(bool b)
     m_customerView->setVisible(b);
 #endif
 }
+void ScenarioManager::setCustomViewFullScreen(bool b)
+{
+#ifdef __QT_QUICK_2_
+    m_customerView->setVisible(b);
+#endif
+}
 void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 {
     foreach(Scenario* tmp,*l)

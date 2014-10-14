@@ -59,7 +59,6 @@ Scenario::~Scenario()
 
 void Scenario::setGameId(QString id)
 {
-    qDebug() << id<< "setGameId";
     m_gameId = id;
 }
 
@@ -248,9 +247,6 @@ quint32 Scenario::getRestingTimeInSecond() const
 }
 QDomElement Scenario::writeDataToXml(QDomDocument& t)
 {
-
-    qDebug() << "write data";
-
     QDomDocument doc;
     QDomElement parent = doc.createElement("scenerio");
     QDomElement gameIdF = doc.createElement("gameId");

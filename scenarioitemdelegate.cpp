@@ -61,12 +61,12 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         style->drawPrimitive(QStyle::PE_PanelItemViewRow,&option,painter);
 
 
-
         if( option.state & QStyle::State_Selected )
         {
 
             painter->fillRect(itemRect, option.palette.highlight());
         }
+
 
         if(Scenario::AVAILABLE == m_state)
         {
@@ -90,7 +90,13 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
 
 
-
+            if(Scenario::DONE == m_state)
+            {
+                if(!(option.state & QStyle::State_Selected) )
+                {
+                    painter->drawRect(itemRect);
+                }
+            }
 
 
 
@@ -108,6 +114,12 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             }
             else if(Scenario::RUNNING == m_state)
             {
+
+                if(!(option.state & QStyle::State_Selected) )
+                {
+                    painter->drawRect(itemRect);
+                }
+
                 QString str=minutesToHours(tmp.getRestingTimeInSecond()/60,tr("End in"));
                 style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
 

@@ -87,7 +87,7 @@ public slots:
     void startScenario();
     void editScenario();
     void scenarioIsDone();
-    
+    void resetData();
     
     
 private:

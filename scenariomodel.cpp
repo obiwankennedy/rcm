@@ -24,7 +24,7 @@
 #include <QColor>
 
 ScenarioModel::ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent) :
-    QAbstractListModel(parent),m_state(m),m_list(l),m_gameMasterMap(lstGm)
+    QAbstractListModel(parent),m_state(m),m_list(l),m_gameMasterMap(lstGm),m_edition(true)
 {
     m_scenarioList = new QList<Scenario*>();
     m_columns << tr("Game")<< tr("Title")<< tr("Duration")<< tr("Level")<< tr("Min")<< tr("Max")<< tr("Description")<< tr("Current Players")<< tr("Available")<< tr("State")<< tr("Table Number");
@@ -173,6 +173,11 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
 
     return QVariant();
 }
+void ScenarioModel::disableEdition()
+{
+    m_edition = false;
+}
+
 bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
     if(!index.isValid())
@@ -269,6 +274,11 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
 
 Qt::ItemFlags ScenarioModel::flags ( const QModelIndex & index ) const
 {
+    if(!m_edition)
+    {
+        return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    }
+
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
@@ -295,6 +305,7 @@ void ScenarioModel::appendScenario(Scenario* a)
     m_scenarioList->append(a);
     emit addedData();
     emit updateHeader();
+
     endInsertRows();
 
 }
@@ -411,4 +422,10 @@ QDomElement ScenarioModel::writeDataToXml(QDomDocument& to)
 void ScenarioModel::readDataFromXml(QDomNode&)
 {
 
+}
+void ScenarioModel::resetData()
+{
+    beginResetModel();
+    m_scenarioList->clear();
+    endResetModel();
 }

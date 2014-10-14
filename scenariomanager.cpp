@@ -37,8 +37,11 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
 
     //model
     m_availableScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::AVAILABLE);
+    m_availableScenarioModel->disableEdition();
     m_runningScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::RUNNING);
+    m_runningScenarioModel->disableEdition();
     m_doneScenarioModel = new ScenarioModel(m_list,m_masterList,Scenario::DONE);
+    m_doneScenarioModel->disableEdition();
 
 #ifdef __QT_QUICK_2_
     m_customerView = new CustomerView(gameImgProvider,m_availableScenarioModel);
@@ -140,19 +143,21 @@ void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 
 bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
 {
+    bool retValue=false;
     if (obj == m_ui->m_scenarioAvailabeView)
     {
-        return eventFilterForAvailable(event);
+        retValue = eventFilterForAvailable(event);
     }
     else if(obj == m_ui->m_scenarioRunningView)
     {
-        return eventFilterForRunning(event);
+        retValue =  eventFilterForRunning(event);
     }
     else if(obj == m_ui->m_scenarioDoneView)
     {
-        return eventFilterForDone(event);
+        retValue =  eventFilterForDone(event);
     }
-    else
+
+    if(!retValue)
     {
         return QObject::eventFilter(obj, event);
     }
@@ -194,6 +199,7 @@ void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m
        m_startScenario->setEnabled(false);
        m_scenarioIsFinished->setEnabled(false);
        m_editScenario->setEnabled(false);
+       getFocusedListView()->clearSelection();
     }
     else
     {
@@ -420,4 +426,15 @@ void ScenarioManager::readDataFromXml(QDomNode& t)
 GameMaster* ScenarioManager::getGameMasterFromId(QString id)
 {
     return m_masterList[id];
+}
+void ScenarioManager::resetData()
+{
+    m_availableScenarioModel->resetData();
+    m_doneScenarioModel->resetData();
+    m_runningScenarioModel->resetData();
+
+    m_list.clear();
+    m_masterList.clear();
+
+
 }

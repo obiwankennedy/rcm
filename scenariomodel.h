@@ -65,6 +65,13 @@ public:
      virtual QDomElement writeDataToXml(QDomDocument&);
      virtual void readDataFromXml(QDomNode&);
 
+     /**
+      * @brief disableEdition allows the view to change the data.
+      */
+     void disableEdition();
+
+     void resetData();
+
 signals:
     void updateHeader();
     void addedData();
@@ -82,6 +89,7 @@ private:
     Scenario::STATE m_state;
     /// @todo there may be a way to place this in manager/controler
     QTimer* m_timer;
+    bool m_edition;
 };
 
 #endif // SCENARIOMODEL_H

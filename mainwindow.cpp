@@ -25,7 +25,7 @@
 #include <QFileDialog>
 #include <QCloseEvent>
 #include <QInputDialog>
-
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
-    #ifdef __QT_QUICK_2_
+#ifdef __QT_QUICK_2_
     m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
 #else
     m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
@@ -81,6 +81,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_masterView->installEventFilter(this);
 
     ui->m_tabWidget->addTab(new LocalisationView(),tr("Tables"));
+
+
+    //clear selection connect
+    connect(ui->m_gameView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
+    connect(ui->m_masterView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
+    connect(ui->m_scenarioAvailabeView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
+    connect(ui->m_scenarioDoneView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
+     connect(ui->m_scenarioRunningView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
 
 }
 
@@ -121,6 +129,7 @@ void MainWindow::initActions()
 
 
     // init menu
+    connect(ui->m_newAct,SIGNAL(triggered()),this,SLOT(resetData()));
     connect(ui->m_openAct,SIGNAL(triggered()),this,SLOT(openData()));
     connect(ui->m_quitAct,SIGNAL(triggered()),this,SLOT(close()));
     connect(ui->m_saveAct,SIGNAL(triggered()),this,SLOT(saveData()));
@@ -174,7 +183,7 @@ void  MainWindow::addGameDialog()
     if(dialog.exec())
     {
         Game* tmp = new Game();
-        #ifdef __QT_QUICK_2_
+#ifdef __QT_QUICK_2_
         connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
 #endif
         tmp->setTitle(dialog.getTitle());
@@ -266,7 +275,7 @@ void MainWindow::openData()
         {
             m_currentDataPath += ".rcdb";
         }
-
+        resetData();
         readFile();
         addRecentFile();
     }
@@ -556,5 +565,44 @@ void MainWindow::makeGameMasterUnavailable()
     {
         m_gameMasterModel->setData(tmp,i,GameMasterModel::BackTime);
         //model->setData(index,1,ScenarioModel::DecreaseRole);
+    }
+}
+
+void MainWindow::resetData()
+{
+    int ret;
+    if(m_gameModel->rowCount()>0)
+    {
+        QMessageBox box(QMessageBox::Warning,tr("Do you confirm?"),tr("You are about to clear all the data.\nAll unsaved changes will be lost.\nDo you want to continue?"),QMessageBox::Cancel | QMessageBox::Yes,this);
+
+        ret = box.exec();
+    }
+    else
+    {
+        ret= (int) QMessageBox::Yes;
+    }
+
+    switch (ret)
+    {
+    case QMessageBox::Yes:
+        m_scenarioManager->resetData();
+        m_gameModel->resetData();
+        m_gameMasterModel->resetData();
+        break;
+    case QMessageBox::Cancel:
+        break;
+    default:
+        break;
+    }
+
+}
+void MainWindow::clearSelection( QModelIndex index)
+{
+    QAbstractItemView* view = qobject_cast<QAbstractItemView*>(sender());
+   // qDebug() << "view" << view << index.isValid();
+
+    if((NULL!=view)&&(!index.isValid()))
+    {
+        view->clearSelection();
     }
 }

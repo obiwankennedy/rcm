@@ -52,6 +52,7 @@ public:
     QList<GameMaster*>& getMasterList();
 
     virtual void removeItem(QModelIndex&);
+    void resetData();
 signals:
     void gameMasterStatusHasChanged(GameMaster*,bool);
     void gmHasBeenAdded(GameMaster*);

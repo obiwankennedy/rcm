@@ -131,3 +131,13 @@ void GameModel::readDataFromXml(QDomNode& doc)
     }
 
 }
+void GameModel::resetData()
+{
+    beginResetModel();
+    m_gameList.clear();
+    m_gameMap.clear();
+    #ifdef __QT_QUICK_2_
+    m_gameImgProvider->resetData();
+    #endif
+    endResetModel();
+}

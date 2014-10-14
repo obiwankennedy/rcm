@@ -20,3 +20,7 @@ void GameImageProvider::insertPixmap(QString str,QPixmap* map)
 {
     m_map->insert(str,map);
 }
+void GameImageProvider::resetData()
+{
+    m_map->clear();
+}

@@ -80,6 +80,7 @@ private slots:
     bool maybeSave();
     void saveAsData();
     void openData();
+    void resetData();
 
 
     //edition
@@ -91,7 +92,7 @@ private slots:
     void removeGameMaster();
 
     void openRecentFile();
-
+    void clearSelection(QModelIndex index);
 private:
     void initActions();
     void contextMenuForGameMaster(QContextMenuEvent* event);

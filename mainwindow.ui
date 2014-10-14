@@ -33,7 +33,7 @@
     <item>
      <widget class="QTabWidget" name="m_tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -174,7 +174,11 @@
              <number>2</number>
             </property>
             <item>
-             <widget class="QListView" name="m_scenarioAvailabeView"/>
+             <widget class="QListView" name="m_scenarioAvailabeView">
+              <property name="uniformItemSizes">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>

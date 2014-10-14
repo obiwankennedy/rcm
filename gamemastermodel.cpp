@@ -170,3 +170,10 @@ void GameMasterModel::readDataFromXml(QDomNode& node)
          emit gmHasBeenAdded(tmp);
      }
 }
+void GameMasterModel::resetData()
+{
+    beginResetModel();
+    m_gameMasterList.clear();
+    m_gameMasterMap.clear();
+    endResetModel();
+}

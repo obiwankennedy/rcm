@@ -56,7 +56,7 @@ public:
     QList<Game*>& getGameList();
 
     virtual void removeItem(QModelIndex&);
-    
+    void resetData();
 
 
 

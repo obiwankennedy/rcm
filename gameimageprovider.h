@@ -12,7 +12,7 @@ public:
     GameImageProvider();
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
 
-
+    void resetData();
 public slots:
     void insertPixmap(QString,QPixmap*);
 

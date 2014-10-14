@@ -70,7 +70,6 @@ void LocalisationView::addItemToScene()
                 }
                 else
                 {
-                    qDebug()<< "insert"<< previousRoomName;
                     m_buildData->insert(previousRoomName,tmp);
                     finished=true;
                 }
@@ -80,7 +79,6 @@ void LocalisationView::addItemToScene()
             {
                 if(!previousRoomName.isEmpty())
                 {
-                    qDebug()<< "insert2"<< previousRoomName;
                     m_buildData->insert(previousRoomName,tmp);
                 }
                 finished=true;
@@ -90,8 +88,6 @@ void LocalisationView::addItemToScene()
 
     ///////////////////////////////////////////////
 
-//QMap<QString, QList<Table*>* >* m_buildData
-    qDebug() << "room number:" <<m_buildData->keys().size();
     int i = 0;
         foreach(QString room, m_buildData->keys())
         {

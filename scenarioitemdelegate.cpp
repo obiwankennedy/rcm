@@ -139,8 +139,6 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
                 const int progress = 100*(tmp.getRestingTimeInSecond())/(tmp.getDuration()*60);
 
-                qDebug() << "progress " <<100-progress;
-
                 progressBarStyleOption.minimum = 1;
                 progressBarStyleOption.state = option.state;
                 progressBarStyleOption.maximum = 100;
@@ -157,7 +155,7 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             }
 
         GameMaster* myGameMaster = m_masterlist[tmp.getGameMasterId()];
-        if((!m_private)||(Scenario::RUNNING != m_state))
+        if(!m_private)
         {
             QString gmStr = tr("GM:%1, phone:%2");
             style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()).arg(myGameMaster->getPhoneNumber()));

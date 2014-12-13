@@ -88,7 +88,7 @@ Item {
                 }
                 Image {
                     id: image
-                    source: "image://game/"+PixmapRole
+                    source: PixmapRole ? "image://game/"+PixmapRole : "image://game/default"
                     cache: false
 
                     visible:PixmapRole.length>0

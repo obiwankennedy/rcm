@@ -5,6 +5,7 @@ GameImageProvider::GameImageProvider()
     : QQuickImageProvider(QQmlImageProviderBase::Pixmap)
 {
     m_map = new QMap<QString,QPixmap*>();
+    m_map->insert("default",new QPixmap(":/resources/nologo.png"));
 }
 QPixmap GameImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
@@ -14,7 +15,7 @@ QPixmap GameImageProvider::requestPixmap(const QString &id, QSize *size, const Q
         return *pix;
     }
     else
-    return QPixmap();
+        return QPixmap();
 }
 void GameImageProvider::insertPixmap(QString str,QPixmap* map)
 {

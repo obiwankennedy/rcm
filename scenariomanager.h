@@ -89,6 +89,7 @@ public slots:
     void editScenario();
     void scenarioIsDone();
     void resetData();
+    void showPlayerInfo();
     
     
 private:
@@ -119,6 +120,7 @@ private:
     QAction* m_startScenario;
     QAction* m_editScenario;
     QAction* m_scenarioIsFinished;
+    QAction* m_showPlayersInfo;
     
 };
 

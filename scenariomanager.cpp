@@ -22,7 +22,7 @@
 #include "scenariomanager.h"
 #include "ui_mainwindow.h"
 #include "scenarioeditordialog.h"
-
+#include "playersinformationdialog.h"
 
 #include <QDebug>
 #include <QContextMenuEvent>
@@ -75,6 +75,8 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
 
     m_scenarioIsFinished = new QAction(tr("Finish"),this);
 
+    m_showPlayersInfo = new QAction(tr("Show Players Info"),this);
+
     //connect
     connect(m_increasePlayersCount,SIGNAL(triggered()),this,SLOT(increaseCurrentPlayerCount()));
     connect(m_decreasePlayersCount,SIGNAL(triggered()),this,SLOT(decreaseCurrentPlayerCount()));
@@ -82,7 +84,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMa
     connect(m_editScenario,SIGNAL(triggered()),this,SLOT(editScenario()));
     connect(m_scenarioIsFinished,SIGNAL(triggered()),this,SLOT(scenarioIsDone()));
 
-
+    connect(m_showPlayersInfo,SIGNAL(triggered()),this,SLOT(showPlayerInfo()));
 
     m_avScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::AVAILABLE);
     m_ui->m_scenarioAvailabeView->setItemDelegate(m_avScenarioDelegate);
@@ -197,6 +199,8 @@ void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m
 
     menu.addSeparator();
     menu.addAction(m_editScenario);
+    menu.addSeparator();
+    menu.addAction(m_showPlayersInfo);
 
     if(!index.isValid())
     {
@@ -226,7 +230,6 @@ void ScenarioManager::increaseCurrentPlayerCount()
     {
         QVariant var = index.data(Qt::UserRole);
         Scenario sce = var.value<Scenario>();
-        //
         ScenarioModel* model = getRightModel(sce.getState());
         model->setData(index,1,ScenarioModel::IncreaseRole);
     }
@@ -244,6 +247,21 @@ void ScenarioManager::decreaseCurrentPlayerCount()
         model->setData(index,1,ScenarioModel::DecreaseRole);
     }
 }
+void ScenarioManager::showPlayerInfo()
+{
+    QModelIndex index = getFocusedListView()->currentIndex();
+
+    if(index.isValid())
+    {
+        QVariant var = index.data(Qt::UserRole);
+        Scenario sce = var.value<Scenario>();
+        PlayersInformationDialog dialog(getFocusedListView());
+        dialog.setData(sce.getPlayerInformation());
+
+        dialog.exec();
+    }
+}
+
 void ScenarioManager::startScenario()
 {
     QModelIndex index = getFocusedListView()->currentIndex();

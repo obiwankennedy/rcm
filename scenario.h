@@ -52,7 +52,7 @@ public:
     void setDescription(QString m);
     void setCurrentPlayers(quint32 m);
     void setScenarioId(QString m);
-
+    void setPlayerInformation(QStringList m);
     void setReferenceScenario(const Scenario*);
 
     void setAvailableTime(QDateTime);
@@ -72,6 +72,7 @@ public:
     quint32 getTableNumber() const;
     QDateTime getDateTime() const;
     QString getScenarioId() const;
+    QStringList getPlayerInformation() const;
 
     quint32 getRestingTimeInSecond() const;
     QDateTime getAvailableTime()const;
@@ -104,6 +105,7 @@ private:
     quint32 m_minimumPlayers;
     quint32 m_currentPlayers;
     QString m_title;
+    QStringList m_playerInformation;
     QString m_description;
     STATE m_state;
 

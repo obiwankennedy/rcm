@@ -343,3 +343,11 @@ QDateTime Scenario::getAvailableTime() const
 {
     return m_availableTime;
 }
+void Scenario::setPlayerInformation(QStringList m)
+{
+    m_playerInformation=m;
+}
+QStringList Scenario::getPlayerInformation() const
+{
+    return m_playerInformation;
+}

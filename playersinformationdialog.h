@@ -15,6 +15,7 @@ public:
     explicit PlayersInformationDialog(QWidget *parent = 0);
     ~PlayersInformationDialog();
 
+    void setData(QStringList data);
 private:
     Ui::PlayersInformationDialog *ui;
 };

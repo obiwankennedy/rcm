@@ -23,6 +23,7 @@
 #include "ui_mainwindow.h"
 #include "scenarioeditordialog.h"
 #include "playersinformationdialog.h"
+#include "playerinformationformdialog.h"
 
 #include <QDebug>
 #include <QContextMenuEvent>
@@ -231,7 +232,13 @@ void ScenarioManager::increaseCurrentPlayerCount()
         QVariant var = index.data(Qt::UserRole);
         Scenario sce = var.value<Scenario>();
         ScenarioModel* model = getRightModel(sce.getState());
-        model->setData(index,1,ScenarioModel::IncreaseRole);
+        PlayerInformationFormDialog dialog(getFocusedListView());
+        if(dialog.exec())
+        {
+            qDebug() << dialog.getInfo() << "test increaseCurrentPlayerCount info";
+            model->setData(index,dialog.getInfo(),ScenarioModel::AddPlayerInfo);
+            model->setData(index,1,ScenarioModel::IncreaseRole);
+        }
     }
 }
 void ScenarioManager::decreaseCurrentPlayerCount()
@@ -242,7 +249,7 @@ void ScenarioManager::decreaseCurrentPlayerCount()
     {
         QVariant var = index.data(Qt::UserRole);
         Scenario sce = var.value<Scenario>();
-        //
+
         ScenarioModel* model = getRightModel(sce.getState());
         model->setData(index,1,ScenarioModel::DecreaseRole);
     }
@@ -257,7 +264,7 @@ void ScenarioManager::showPlayerInfo()
         Scenario sce = var.value<Scenario>();
         PlayersInformationDialog dialog(getFocusedListView());
         dialog.setData(sce.getPlayerInformation());
-
+        qDebug() << sce.getPlayerInformation() << "test player info";
         dialog.exec();
     }
 }

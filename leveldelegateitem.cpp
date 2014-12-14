@@ -44,5 +44,5 @@ void LevelDelegateItem::paint(QPainter *painter, const QStyleOptionViewItem &opt
     {
         painter->fillRect(option.rect, option.palette.highlight());
     }
-    painter->drawText(option.rect,m_data.at(index.data().toInt()));
+    painter->drawText(option.rect,Qt::AlignCenter,m_data.at(index.data().toInt()));
 }

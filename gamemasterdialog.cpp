@@ -48,14 +48,16 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaste
     ui->m_scenarioTable->setItemDelegateForColumn(3,new LevelDelegateItem());
 
     ui->m_scenarioTable->hideColumn(8);
+    ui->m_scenarioTable->hideColumn(7);
     ui->m_scenarioTable->hideColumn(9);
     ui->m_scenarioTable->hideColumn(10);
-#if QT_VERSION >= 0x050000
-    ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-#else
-    ui->m_scenarioTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-#endif
-    ui->m_scenarioTable->horizontalHeader()->setStretchLastSection(true);
+//#if QT_VERSION >= 0x050000
+//    ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+//#else
+//    ui->m_scenarioTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+//#endif
+//    ui->m_scenarioTable->horizontalHeader()->setStretchLastSection(true);
+    updateGameListHeader();
 //    ui->m_scenarioTable->horizontalHeader()->setCascadingSectionResizes(true);
 
     ui->m_scenarioTable->verticalHeader()->setVisible(false);
@@ -114,7 +116,19 @@ void GameMasterDialog::setPerformer(QString m_id)
 
 void GameMasterDialog::updateGameListHeader()
 {
-    ui->m_scenarioTable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    //ui->m_scenarioTable->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    ui->m_scenarioTable->horizontalHeader()->resizeSection(0,150);//Game
+    ui->m_scenarioTable->horizontalHeader()->resizeSection(1,150);//title
+    ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
+    ui->m_scenarioTable->horizontalHeader()->resizeSection(2,80);//Duration
+    ui->m_scenarioTable->horizontalHeader()->resizeSection(3,50);//level
+    ui->m_scenarioTable->horizontalHeader()->resizeSection(4,50);//min
+    ui->m_scenarioTable->horizontalHeader()->resizeSection(5,50);//max
+    ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(6,QHeaderView::Stretch);
+    //ui->m_scenarioTable->setColumnWidth(0,300);//Description
+   // ui->m_scenarioTable->setColumnWidth(0,150);//current Player
+
+
 }
 void GameMasterDialog::setName(QString str)
 {

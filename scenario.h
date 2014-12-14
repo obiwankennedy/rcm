@@ -56,6 +56,7 @@ public:
     void setReferenceScenario(const Scenario*);
 
     void setAvailableTime(QDateTime);
+    void addPlayerInfo(QString info);
 
 
 //gets

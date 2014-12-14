@@ -44,6 +44,7 @@ void Scenario::setReferenceScenario(const Scenario* a)
     m_title = a->getTitle();
     m_startTime = a->getDateTime();
     m_currentPlayers = a->getCurrentPlayers();
+    m_playerInformation = a->getPlayerInformation();
 }
 void Scenario::reset()
 {
@@ -156,6 +157,7 @@ void Scenario::readFromData(QDataStream& from)
     from >> m_minimumPlayers;
     from >> m_currentPlayers;
     from >> m_description;
+    from >> m_playerInformation;
 
     from >> i;
     m_state=(Scenario::STATE)i;
@@ -175,7 +177,9 @@ void Scenario::writeToData(QDataStream& to) const
     to << m_minimumPlayers;
     to << m_currentPlayers;
     to << m_description;
+    to << m_playerInformation;
     to << m_state;
+
 }
 QString Scenario::getDescription() const
 {
@@ -287,6 +291,10 @@ QDomElement Scenario::writeDataToXml(QDomDocument& t)
     stateF.appendChild(doc.createTextNode(QString().setNum(m_state)));
 
 
+    QDomElement playerF = doc.createElement("playersInfo");
+    titleF.appendChild(doc.createTextNode(m_playerInformation.join('\n')));
+
+
     parent.appendChild(gameIdF);
     parent.appendChild(gameMasterIdF);
     parent.appendChild(durationF);
@@ -298,7 +306,7 @@ QDomElement Scenario::writeDataToXml(QDomDocument& t)
     parent.appendChild(descriptionF);
     parent.appendChild(currentF);
     parent.appendChild(stateF);
-
+    parent.appendChild(playerF);
     //doc.appendChild(parent);
 
     return parent;
@@ -333,6 +341,8 @@ void Scenario::readDataFromXml(QDomNode& node)
     m_startTime = QDateTime::fromString(tmpElement.text(),"dd.MM.yyyy:hh:mm:ss");
     tmpElement = node.firstChildElement("tableNumber");
     m_tableNumber = tmpElement.text().toInt();
+    tmpElement = node.firstChildElement("playersInfo");
+    m_playerInformation = tmpElement.text().split('\n');
 
 }
 void Scenario::setAvailableTime(QDateTime a)
@@ -350,4 +360,8 @@ void Scenario::setPlayerInformation(QStringList m)
 QStringList Scenario::getPlayerInformation() const
 {
     return m_playerInformation;
+}
+void Scenario::addPlayerInfo(QString info)
+{
+    m_playerInformation.append(info);
 }

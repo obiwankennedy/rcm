@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     localisation/tableitem.cpp \
     localisation/roomitem.cpp \
     leveldelegateitem.cpp \
-    playersinformationdialog.cpp
+    playersinformationdialog.cpp \
+    playerinformationformdialog.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -59,7 +60,8 @@ HEADERS  += mainwindow.h \
     localisation/tableitem.h \
     localisation/roomitem.h \
     leveldelegateitem.h \
-    playersinformationdialog.h
+    playersinformationdialog.h \
+    playerinformationformdialog.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \
@@ -67,7 +69,8 @@ FORMS    += mainwindow.ui \
     customerview.ui \
     scenarioeditordialog.ui \
     localisation/tableswizard.ui \
-    playersinformationdialog.ui
+    playersinformationdialog.ui \
+    playerinformationformdialog.ui
 
 OTHER_FILES += \
     listView.qml

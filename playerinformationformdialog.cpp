@@ -12,3 +12,9 @@ PlayerInformationFormDialog::~PlayerInformationFormDialog()
 {
     delete ui;
 }
+QString PlayerInformationFormDialog::getInfo()
+{
+    QString result;
+    result=tr("%1;%2;%3").arg(ui->m_firstNameEdit->text()).arg(ui->m_nameEdit->text()).arg(ui->m_phoneEdit->text());
+    return result;
+}

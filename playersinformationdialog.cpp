@@ -21,10 +21,11 @@ void PlayersInformationDialog::setData(QStringList data)
         QStringList fields = user.split(';');
         if(fields.size() == 3)
         {
-            result = tr("<tr><td>%1</td><td>%2</td><td>%3</td></tr>").arg(fields[0]).arg(fields[1]).arg(fields[2]);
+            result += tr("<tr><td>%1</td><td>%2</td><td>%3</td></tr>").arg(fields[0]).arg(fields[1]).arg(fields[2]);
         }
     }
-    result = tr("</table>");
+    result += tr("</table>");
+
 
     ui->m_textBrowser->setHtml(result);
 }

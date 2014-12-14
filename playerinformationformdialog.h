@@ -15,6 +15,8 @@ public:
     explicit PlayerInformationFormDialog(QWidget *parent = 0);
     ~PlayerInformationFormDialog();
 
+    QString getInfo();
+
 private:
     Ui::PlayerInformationFormDialog *ui;
 };

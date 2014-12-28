@@ -62,9 +62,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
 #ifdef __QT_QUICK_2_
-    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
+    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
 #else
-    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
+    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
 #endif
 
     initActions();
@@ -170,8 +170,13 @@ void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
 {
     QMenu menu;
 
-    menu.addAction(m_makeGMGoneAct);
-
+    QModelIndex index = ui->m_masterView->indexAt(event->pos());
+    menu.addAction(m_addGMAct);
+    if(index.isValid())
+    {
+        menu.addAction(m_removeGMAct);
+        menu.addAction(m_makeGMGoneAct);
+    }
 
     menu.exec(event->globalPos());
 }
@@ -361,7 +366,7 @@ void MainWindow::addRecentFile()
 }
 void MainWindow::addGameMasterDialog()
 {
-    GameMasterDialog dialog(m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
+    GameMasterDialog dialog(m_gameModel->getGameMap(),m_gameModel->getGameList(),m_gameMasterModel->getMasterMap());
     connect(&dialog,SIGNAL(addGame()),this,SLOT(addGameDialog()));
     dialog.setWindowFlags(Qt::Window );
 
@@ -443,7 +448,7 @@ void MainWindow::editGameMaster(const QModelIndex& index)
     if(index.isValid())
     {
         GameMaster* tmp = m_gameMasterModel->getMasterList().at(index.row());
-        GameMasterDialog dialog(m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
+        GameMasterDialog dialog(m_gameModel->getGameMap(),m_gameModel->getGameList(),m_gameMasterModel->getMasterMap());
         connect(&dialog,SIGNAL(addGame()),this,SLOT(addGameDialog()));
 
         dialog.setName(tmp->getName());

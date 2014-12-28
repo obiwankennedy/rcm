@@ -25,7 +25,7 @@
 
 #include "leveldelegateitem.h"
 
-GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lst,QWidget *parent) :
+GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedList,QMap<QString,GameMaster*>& lst,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::GameMasterDialog)
 {
@@ -42,7 +42,7 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaste
     ui->m_addGame->setDefaultAction(m_addGameAct);
 
 
-    m_gameDelegate = new GameEditorDelegate(l);
+    m_gameDelegate = new GameEditorDelegate(sortedList);
 
     ui->m_scenarioTable->setItemDelegateForColumn(0,m_gameDelegate);
     ui->m_scenarioTable->setItemDelegateForColumn(3,new LevelDelegateItem());

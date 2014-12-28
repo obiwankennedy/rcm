@@ -37,7 +37,7 @@ class GameMasterDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit GameMasterDialog(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lst,QWidget *parent = 0);
+    explicit GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedList,QMap<QString,GameMaster*>& lst,QWidget *parent = 0);
     ~GameMasterDialog();
 
     QString getName();

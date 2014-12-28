@@ -48,9 +48,9 @@ class ScenarioManager : public QObject, public Serialisable
     Q_OBJECT
 public:
     #ifdef __QT_QUICK_2_
-    explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,GameImageProvider* gameImgProvider,QObject *parent = 0);
+    explicit ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,GameImageProvider* gameImgProvider,QObject *parent = 0);
 #else
-    explicit ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent = 0);
+    explicit ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent = 0);
 #endif
     
     
@@ -107,7 +107,7 @@ private:
     //QList<Scenario*>* m_doneScenarioList;
     
     Ui::MainWindow* m_ui;
-    
+    QList<Game*>& m_sortedList;
     QMap<QString,Game*>& m_list;
     QMap<QString,GameMaster*>& m_masterList;
     #ifdef __QT_QUICK_2_

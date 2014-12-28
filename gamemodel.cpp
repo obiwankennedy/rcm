@@ -53,12 +53,34 @@ QVariant GameModel::data ( const QModelIndex & index, int role ) const
 
 void GameModel::append(Game* tmp)
 {
-    beginInsertRows(QModelIndex(),m_gameList.size(),m_gameList.size());
+    int position = -1;
+  //  bool unfound = true;
+    int start = 0;
+    int end = m_gameList.size();
+    int tmpPosition = 0;
+    while (start!=end)
+    {
+        tmpPosition = (start + end )/2;
+        if(m_gameList[tmpPosition]->getTitle().compare(tmp->getTitle(),Qt::CaseInsensitive)>0)
+        {
+            end = tmpPosition;
+        }
+        else
+        {
+            if(start==tmpPosition)
+            {
+                ++tmpPosition;
+            }
+            start = tmpPosition;
+        }
+    }
+    position = start;
+    beginInsertRows(QModelIndex(),position,position);
     #ifdef __QT_QUICK_2_
     QObject::connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
 #endif
 
-    m_gameList.append(tmp);
+    m_gameList.insert(position,tmp);
     m_gameMap.insert(tmp->getUuid(),tmp);
 
     #ifdef __QT_QUICK_2_

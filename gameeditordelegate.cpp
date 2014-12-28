@@ -26,7 +26,7 @@
 #include <QApplication>
 #include <QDebug>
 
-GameEditorDelegate::GameEditorDelegate(QMap<QString,Game*>& l)
+GameEditorDelegate::GameEditorDelegate(QList<Game*>& l)
     : m_list(l)
 {
 }
@@ -36,9 +36,10 @@ QWidget* GameEditorDelegate::createEditor(QWidget *parent, const QStyleOptionVie
     Q_UNUSED(option)
     Q_UNUSED(index)
     QComboBox *cb = new QComboBox(parent);
+    cb->setInsertPolicy(QComboBox::InsertAlphabetically);
 
 
-     foreach(Game* tmp,m_list.values())
+     foreach(Game* tmp,m_list)
      {
         cb->addItem(tmp->getTitle(),tmp->getUuid());
      }
@@ -76,7 +77,17 @@ void GameEditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model
            QStyledItemDelegate::setModelData(editor, model, index);
     }
 }
-
+Game*  GameEditorDelegate::getGameFromUuid(QString uuid) const
+{
+    foreach(Game* gm, m_list)
+    {
+        if(gm->getUuid()==uuid)
+        {
+            return gm;
+        }
+    }
+    return NULL;
+}
 
 void GameEditorDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -90,7 +101,7 @@ void GameEditorDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         {
             QString currentText = index.data(Qt::EditRole).toString();
 
-            Game* tmp = m_list[currentText];
+            Game* tmp = getGameFromUuid(currentText);
             QString value;
             if(NULL!=tmp)
             {
@@ -119,7 +130,7 @@ QSize GameEditorDelegate::sizeHint ( const QStyleOptionViewItem & option, const 
 
     QString currentText = index.data(Qt::EditRole).toString();
 
-    Game* tmp = m_list[currentText];
+    Game* tmp = getGameFromUuid(currentText);
     QString value;
     if(NULL!=tmp)
     {

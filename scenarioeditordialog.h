@@ -17,7 +17,7 @@ class ScenarioEditorDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit ScenarioEditorDialog(QMap<QString,Game*>& l,QWidget *parent = 0);
+    explicit ScenarioEditorDialog(QList<Game*>& l,QWidget *parent = 0);
     ~ScenarioEditorDialog();
 
     void setModel(ScenarioModel* model);

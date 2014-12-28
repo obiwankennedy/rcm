@@ -29,11 +29,11 @@
 #include <QContextMenuEvent>
 
 #ifdef __QT_QUICK_2_
-ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, GameImageProvider* gameImgProvider,QObject *parent ) :
+ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, GameImageProvider* gameImgProvider,QObject *parent ) :
     #else
-ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent ) :
+ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent ) :
 #endif
-    QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap)
+    QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap),m_sortedList(sortedList)
 {
 
     //model
@@ -339,7 +339,7 @@ void ScenarioManager::editScenario()
         //
         ScenarioModel* model = getRightModel(sce.getState());
         Scenario* mySce = model->getScenarioById(sce.getScenarioId());
-        ScenarioEditorDialog dialog(m_list);
+        ScenarioEditorDialog dialog(m_sortedList);
         dialog.setModel(model);
         dialog.exec();
     }

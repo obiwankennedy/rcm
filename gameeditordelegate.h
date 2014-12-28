@@ -26,7 +26,7 @@
 class GameEditorDelegate : public QStyledItemDelegate
 {
 public:
-    GameEditorDelegate(QMap<QString,Game*>& l);
+    GameEditorDelegate(QList<Game*>& l);
 
     virtual QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index	) const;
     void setEditorData(QWidget *editor	, const QModelIndex &index) const;
@@ -35,8 +35,11 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+
 private:
-    QMap<QString,Game*> m_list;
+    Game* getGameFromUuid(QString) const;
+private:
+    QList<Game*> m_list;
 
 };
 

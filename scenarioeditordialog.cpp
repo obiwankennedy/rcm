@@ -2,7 +2,7 @@
 #include "ui_scenarioeditordialog.h"
 
 
-ScenarioEditorDialog::ScenarioEditorDialog(QMap<QString,Game*>& l,QWidget *parent) :
+ScenarioEditorDialog::ScenarioEditorDialog(QList<Game*>& l,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ScenarioEditorDialog)
 {

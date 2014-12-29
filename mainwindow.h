@@ -83,6 +83,7 @@ private slots:
     void resetData();
 
 
+
     //edition
     void editGame(const QModelIndex& index);
     void editGameMaster(const QModelIndex& index);

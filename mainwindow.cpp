@@ -83,18 +83,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_tabWidget->addTab(new LocalisationView(),tr("Tables"));
 
 
+    setAttribute( Qt::WA_DeleteOnClose);
     //clear selection connect
     connect(ui->m_gameView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_masterView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_scenarioAvailabeView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_scenarioDoneView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
-     connect(ui->m_scenarioRunningView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
+    connect(ui->m_scenarioRunningView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
+
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete m_scenarioManager;
 }
 void MainWindow::initActions()
 {
@@ -144,6 +147,7 @@ void MainWindow::initActions()
 
 
     connect(ui->m_customerViewDisplayAct,SIGNAL(triggered(bool)),m_scenarioManager,SLOT(showCustomView(bool)));
+    connect(ui->m_showFullScreenAct,SIGNAL(triggered()),m_scenarioManager,SLOT(toggleFullScreen()));
 
 
     //edit game and game master
@@ -209,6 +213,7 @@ void MainWindow::closeEvent ( QCloseEvent * event )
     {
         writeSettings();
         event->accept();
+       // close();
     }
     else
     {
@@ -607,6 +612,7 @@ void MainWindow::resetData()
     }
 
 }
+
 void MainWindow::clearSelection( QModelIndex index)
 {
     QAbstractItemView* view = qobject_cast<QAbstractItemView*>(sender());

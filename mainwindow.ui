@@ -280,6 +280,7 @@
      <string>Show</string>
     </property>
     <addaction name="m_customerViewDisplayAct"/>
+    <addaction name="m_showFullScreenAct"/>
    </widget>
    <widget class="QMenu" name="menuActuion">
     <property name="title">
@@ -367,6 +368,11 @@
   <action name="m_exportXMLAct">
    <property name="text">
     <string>XML</string>
+   </property>
+  </action>
+  <action name="m_showFullScreenAct">
+   <property name="text">
+    <string>Show Full Screen</string>
    </property>
   </action>
  </widget>

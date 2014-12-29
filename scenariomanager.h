@@ -52,7 +52,7 @@ public:
 #else
     explicit ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent = 0);
 #endif
-    
+    virtual ~ScenarioManager();
     
     void addScenarios(QList<Scenario*>* l,Scenario::STATE s = Scenario::AVAILABLE);
     
@@ -82,7 +82,7 @@ protected:
     
 public slots:
     void showCustomView(bool);
-    void setCustomViewFullScreen(bool);
+    void setCustomViewVisible(bool);
     void increaseCurrentPlayerCount();
     void decreaseCurrentPlayerCount();
     void startScenario();
@@ -90,6 +90,7 @@ public slots:
     void scenarioIsDone();
     void resetData();
     void showPlayerInfo();
+    void toggleFullScreen();
     
     
 private:

@@ -85,6 +85,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
     connect(m_editScenario,SIGNAL(triggered()),this,SLOT(editScenario()));
     connect(m_scenarioIsFinished,SIGNAL(triggered()),this,SLOT(scenarioIsDone()));
 
+
     connect(m_showPlayersInfo,SIGNAL(triggered()),this,SLOT(showPlayerInfo()));
 
     m_avScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::AVAILABLE);
@@ -98,7 +99,15 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
     m_doneScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::DONE);
     m_ui->m_scenarioDoneView->setItemDelegate(m_doneScenarioDelegate);
 }
+ScenarioManager::~ScenarioManager()
+{
+    #ifdef __QT_QUICK_2_
+    m_customerView->close();
+    if(NULL!=m_customerView)
+        delete m_customerView;
+    #endif
 
+}
 
 void ScenarioManager::addScenarios(QList<Scenario*>* l,Scenario::STATE m )
 {
@@ -134,7 +143,7 @@ void ScenarioManager::showCustomView(bool b)
     m_customerView->setVisible(b);
 #endif
 }
-void ScenarioManager::setCustomViewFullScreen(bool b)
+void ScenarioManager::setCustomViewVisible(bool b)
 {
 #ifdef __QT_QUICK_2_
     m_customerView->setVisible(b);
@@ -458,6 +467,20 @@ GameMaster* ScenarioManager::getGameMasterFromId(QString id)
 {
     return m_masterList[id];
 }
+void ScenarioManager::toggleFullScreen()
+{
+    #ifdef __QT_QUICK_2_
+    if(!(m_customerView->windowState() & Qt::WindowFullScreen))
+    {
+        m_customerView->showFullScreen();
+    }
+    else
+    {
+        m_customerView->showNormal();
+    }
+    #endif
+}
+
 void ScenarioManager::resetData()
 {
     m_availableScenarioModel->resetData();

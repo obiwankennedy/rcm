@@ -37,6 +37,7 @@ public:
 
 public slots:
     void setSelectionIndex(const QModelIndex& index);
+
     
 private:
     ScenarioItemDelegate* m_scenarioDelegate;

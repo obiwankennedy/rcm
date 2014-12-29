@@ -142,19 +142,13 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
         int max = m_scenarioList->at(index.row())->getMaximumPlayers();
 
         qreal a = (qreal)current/(qreal)max;
-        QColor endColor(0,255,0);
-        //QColor startColor(237,127,16);
-        QColor startColor(255,0,0);
+        int endHue= 120;
+        int startHue = 0;
+        int hueResult = startHue + (a * (endHue - startHue));
+
         QColor result;
-        qreal bleu = startColor.blue() + (a*(endColor.blue()-startColor.blue()));
-        qreal red = startColor.red() + (a*(endColor.red()-startColor.red()));
-        qreal green = startColor.green() + (a*(endColor.green()-startColor.green()));
 
-        result.setBlue(bleu);
-        result.setGreen(green);
-        result.setRed(red);
-        result.setAlpha(128);
-
+        result.setHsv(hueResult,255,255,200);
         return result;
     }
     else if(Qt::UserRole == role)

@@ -15,8 +15,8 @@ AppSupportURL=http://www.rolisteam.org/
 AppUpdatesURL=http://www.rolisteam.org/
 DefaultDirName={pf}\rcm
 DefaultGroupName=Rolisteam Convention Manager
-LicenseFile=E:\documents\applications\rolisteam\COPYING.txt
-OutputDir=E:\documents\softwares
+LicenseFile=D:\documents\applications\rolisteam\COPYING.txt
+OutputDir=D:\documents\softwares
 OutputBaseFilename=rcm-setup
 Compression=lzma
 SolidCompression=yes
@@ -30,26 +30,28 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "E:\documents\applications\build-rcm-Desktop-Release\release\rcm.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Enginio.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\icudt52.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\icuin52.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\icuuc52.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Declarative.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5OpenGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Qml.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Quick.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x64\Microsoft.VC120.CRT\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\bin\Qt5XmlPatterns.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\plugins\imageformats"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "E:\Qt\Qt5.3.1\5.3\msvc2013_64_opengl\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\documents\applications\build-rcm-Desktop_Qt_5_4_0_MinGW_32bit-Release\release\rcm.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Enginio.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\icudt53.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\icuin53.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\icuuc53.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Declarative.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5OpenGL.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Qml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Quick.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\Tools\mingw491_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\Tools\mingw491_32\bin\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\Tools\mingw491_32\bin\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\bin\Qt5XmlPatterns.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Qt\5.4\mingw491_32\plugins\imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\Qt\5.4\mingw491_32\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\Qt\5.4\mingw491_32\qml\QtQuick.2\*"; DestDir: "{app}\QtQuick.2"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

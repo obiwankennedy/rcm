@@ -72,6 +72,7 @@ public:
 
 
     GameMaster* getGameMasterFromId(QString id);
+    bool isPlayersAreRegistred() const;
     
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
@@ -91,6 +92,7 @@ public slots:
     void resetData();
     void showPlayerInfo();
     void toggleFullScreen();
+    void setRegistrerPlayer(bool);
     
     
 private:
@@ -122,6 +124,8 @@ private:
     QAction* m_editScenario;
     QAction* m_scenarioIsFinished;
     QAction* m_showPlayersInfo;
+
+    bool m_registrerPlayerInfo;
     
 };
 

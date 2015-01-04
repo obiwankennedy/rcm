@@ -284,10 +284,12 @@
    </widget>
    <widget class="QMenu" name="menuActuion">
     <property name="title">
-     <string>Action</string>
+     <string>Edition</string>
     </property>
     <addaction name="m_newGameAct"/>
     <addaction name="m_newGmAct"/>
+    <addaction name="separator"/>
+    <addaction name="m_registerPlayerAct"/>
    </widget>
    <addaction name="m_fileMenu"/>
    <addaction name="menuActuion"/>
@@ -373,6 +375,17 @@
   <action name="m_showFullScreenAct">
    <property name="text">
     <string>Show Full Screen</string>
+   </property>
+  </action>
+  <action name="m_registerPlayerAct">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Registrer Player</string>
    </property>
   </action>
  </widget>

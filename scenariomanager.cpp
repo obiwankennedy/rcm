@@ -33,7 +33,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
     #else
 ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap,QObject *parent ) :
 #endif
-    QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap),m_sortedList(sortedList)
+    QObject(parent),m_ui(ui),m_list(map),m_masterList(mastermap),m_sortedList(sortedList),m_registrerPlayerInfo(true)
 {
 
     //model
@@ -107,6 +107,14 @@ ScenarioManager::~ScenarioManager()
         delete m_customerView;
     #endif
 
+}
+void ScenarioManager::setRegistrerPlayer(bool b)
+{
+    m_registrerPlayerInfo = b;
+}
+bool ScenarioManager::isPlayersAreRegistred() const
+{
+    return m_registrerPlayerInfo;
 }
 
 void ScenarioManager::addScenarios(QList<Scenario*>* l,Scenario::STATE m )

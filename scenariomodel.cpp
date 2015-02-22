@@ -277,6 +277,11 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
 
         return true;
     }
+    else if(ScenarioModel::SetPlayerInfo == role)
+    {
+        current->setPlayerInformation(value.toStringList());
+        return true;
+    }
     return false;
 
 }

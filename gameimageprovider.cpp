@@ -7,7 +7,7 @@ GameImageProvider::GameImageProvider()
     m_map = new QMap<QString,QPixmap*>();
     m_map->insert("default",new QPixmap(":/resources/nologo.png"));
 }
-QPixmap GameImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+QPixmap GameImageProvider::requestPixmap(const QString &id, QSize */*size*/, const QSize &/*requestedSize*/)
 {
     if(m_map->contains(id))
     {

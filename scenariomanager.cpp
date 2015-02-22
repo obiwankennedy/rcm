@@ -27,6 +27,7 @@
 
 #include <QDebug>
 #include <QContextMenuEvent>
+#include <QInputDialog>
 
 #ifdef __QT_QUICK_2_
 ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMap<QString,Game*>& map,QMap<QString,GameMaster*>& mastermap, GameImageProvider* gameImgProvider,QObject *parent ) :
@@ -187,6 +188,10 @@ bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
     {
         return QObject::eventFilter(obj, event);
     }
+    else
+    {
+        return retValue;
+    }
 }
 //slots to perform action
 void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m)
@@ -250,24 +255,47 @@ void ScenarioManager::increaseCurrentPlayerCount()
         Scenario sce = var.value<Scenario>();
         ScenarioModel* model = getRightModel(sce.getState());
         PlayerInformationFormDialog dialog(getFocusedListView());
+
         if(dialog.exec())
         {
-            qDebug() << dialog.getInfo() << "test increaseCurrentPlayerCount info";
             model->setData(index,dialog.getInfo(),ScenarioModel::AddPlayerInfo);
-            model->setData(index,1,ScenarioModel::IncreaseRole);
+            model->setData(index,dialog.getPlayerCount() ,ScenarioModel::IncreaseRole);
         }
     }
 }
 void ScenarioManager::decreaseCurrentPlayerCount()
 {
     QModelIndex index = getFocusedListView()->currentIndex();
-
     if(index.isValid())
     {
+
+
+
+        QInputDialog dialog;
+
+
         QVariant var = index.data(Qt::UserRole);
         Scenario sce = var.value<Scenario>();
-
+        QStringList list = sce.getPlayerInformation();
+        list.prepend(tr("No body"));
+        dialog.setComboBoxItems(list);
+        //dialog.setInputMode(QInputDialog::TextInput);
         ScenarioModel* model = getRightModel(sce.getState());
+        if(dialog.exec())
+        {
+            list.removeAt(0);
+            QString textVal = dialog.textValue();
+            if(list.contains(textVal))
+            {
+                qDebug() << textVal << list;
+                list.removeOne(textVal);
+                qDebug() << "after remove" << textVal << list;
+
+                QVariant var2 = list;
+                model->setData(index,var2,ScenarioModel::SetPlayerInfo);
+            }
+        }
+
         model->setData(index,1,ScenarioModel::DecreaseRole);
     }
 }
@@ -281,7 +309,6 @@ void ScenarioManager::showPlayerInfo()
         Scenario sce = var.value<Scenario>();
         PlayersInformationDialog dialog(getFocusedListView());
         dialog.setData(sce.getPlayerInformation());
-        qDebug() << sce.getPlayerInformation() << "test player info";
         dialog.exec();
     }
 }
@@ -318,6 +345,14 @@ void ScenarioManager::startScenario()
 
     }
 }
+void ScenarioManager::closeView()
+{
+        #ifdef __QT_QUICK_2_
+    m_customerView->close();
+    #endif
+
+}
+
 void ScenarioManager::scenarioIsDone()
 {
     QModelIndex index = getFocusedListView()->currentIndex();

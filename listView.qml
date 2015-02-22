@@ -15,9 +15,6 @@ Item {
         model: _myModel
         delegate: scenarioDelegate
         currentIndex: -1
-        onCurrentIndexChanged: {
-            console.log("change on currentIndex"+currentIndex);
-        }
         highlight: Rectangle {
             height: 60
             width: parent.width

@@ -86,7 +86,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinBox">
+        <widget class="QSpinBox" name="m_playerCount">
          <property name="minimum">
           <number>1</number>
          </property>

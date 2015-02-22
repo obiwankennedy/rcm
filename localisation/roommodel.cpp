@@ -54,11 +54,11 @@ bool RoomModel::setData(const QModelIndex &index, const QVariant &value, int rol
     return false;
 }
 
-int RoomModel::rowCount(const QModelIndex &parent) const
+int RoomModel::rowCount(const QModelIndex &/*parent*/) const
 {
     return m_roomMap->size();
 }
-int RoomModel::columnCount(const QModelIndex &parent) const
+int RoomModel::columnCount(const QModelIndex &/*parent*/) const
 {
     return 2;
 }

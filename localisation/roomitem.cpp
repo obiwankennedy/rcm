@@ -13,7 +13,7 @@ QRectF RoomItem::boundingRect() const
     return QRectF(0,0,m_w,m_h);
 }
 
-void RoomItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget)
+void RoomItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/,QWidget */*widget*/)
 {
     painter->drawRoundedRect(boundingRect(),RADIUS,RADIUS);
     painter->drawText(RADIUS,RADIUS,m_id);
@@ -22,8 +22,6 @@ void RoomItem::setSize(int w, int h)
 {
     m_w=w;
     m_h=h;
-
-    qDebug() << "RoomItem size:" <<m_h << m_w;
 }
 void RoomItem::setName(QString str)
 {

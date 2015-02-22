@@ -17,6 +17,8 @@ public:
 
     QString getInfo();
 
+    int getPlayerCount();
+
 private:
     Ui::PlayerInformationFormDialog *ui;
 };

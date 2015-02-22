@@ -83,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_tabWidget->addTab(new LocalisationView(),tr("Tables"));
 
 
-    setAttribute( Qt::WA_DeleteOnClose);
+    //setAttribute( Qt::WA_DeleteOnClose);
     //clear selection connect
     connect(ui->m_gameView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_masterView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
@@ -96,6 +96,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    qDebug() << "Destructor MainWindow";
     delete ui;
     delete m_scenarioManager;
 }
@@ -214,6 +215,7 @@ void MainWindow::closeEvent ( QCloseEvent * event )
         writeSettings();
         event->accept();
        // close();
+        m_scenarioManager->closeView();
     }
     else
     {

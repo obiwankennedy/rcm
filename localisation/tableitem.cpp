@@ -12,7 +12,7 @@ QRectF TableItem::boundingRect() const
 {
     return QRectF(0,0,m_w,m_h);
 }
-void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->fillRect(boundingRect(),Qt::red);
     if(NULL!=m_table)

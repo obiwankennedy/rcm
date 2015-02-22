@@ -101,11 +101,11 @@ QList<Table*>* TableModel::getDataList()
     return m_tableList;
 }
 
-int TableModel::rowCount(const QModelIndex &parent) const
+int TableModel::rowCount(const QModelIndex &/*parent*/) const
 {
     return m_tableList->size();
 }
-int TableModel::columnCount(const QModelIndex &parent) const
+int TableModel::columnCount(const QModelIndex &/*parent*/) const
 {
     return m_header.size();
 }

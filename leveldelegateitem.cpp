@@ -7,7 +7,7 @@ LevelDelegateItem::LevelDelegateItem()
     m_data << tr("Beginner")<< tr("Middle")<<tr("Veteran");
 }
 
-QWidget *	LevelDelegateItem::createEditor ( QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QWidget *	LevelDelegateItem::createEditor ( QWidget * parent, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/ ) const
 {
     QComboBox* box = new QComboBox(parent);
     return box;

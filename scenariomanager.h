@@ -93,6 +93,7 @@ public slots:
     void showPlayerInfo();
     void toggleFullScreen();
     void setRegistrerPlayer(bool);
+    void closeView();
     
     
 private:

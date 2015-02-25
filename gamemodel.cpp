@@ -45,9 +45,23 @@ QVariant GameModel::data ( const QModelIndex & index, int role ) const
     if((Qt::DisplayRole == role)||(Qt::EditRole == role))
     {
         return m_gameList[index.row()]->getTitle();
+    }//enum CustomRole {PunchLine = Qt::UserRole+1,Description,IMAGE_URL,TYPE};
+    else if(GameModel::PunchLine == role)
+    {
+        return m_gameList[index.row()]->getPunchLine();
     }
-
-
+    else if(GameModel::Description == role)
+    {
+        return m_gameList[index.row()]->getDescription();
+    }
+    else if(GameModel::IMAGE_URL == role)
+    {
+        return m_gameList[index.row()]->getImageUrl();
+    }
+    else if(GameModel::TYPE == role)
+    {
+        return m_gameList[index.row()]->getType();
+    }
     return QVariant();
 }
 

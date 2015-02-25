@@ -34,6 +34,7 @@ class GameModel : public QAbstractListModel, public Serialisable
 {
     Q_OBJECT
 public:
+    enum CustomRole {PunchLine = Qt::UserRole+1,Description,IMAGE_URL,TYPE};
     #ifdef __QT_QUICK_2_
     explicit GameModel(GameImageProvider* gameImageProvider,QObject *parent = 0);
 #else

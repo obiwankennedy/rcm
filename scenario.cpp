@@ -268,6 +268,7 @@ QDomElement Scenario::writeDataToXml(QDomDocument& t)
 
     QDomElement startTimeF = doc.createElement("startTime");
     startTimeF.appendChild(doc.createTextNode(m_startTime.toString("dd.MM.yyyy:hh:mm:ss")));
+    qDebug() << "start time" << m_startTime << m_startTime.toString("dd.MM.yyyy:hh:mm:ss");
 
     QDomElement levelF = doc.createElement("level");
     levelF.appendChild(doc.createTextNode(QString().setNum(m_level)));
@@ -298,6 +299,7 @@ QDomElement Scenario::writeDataToXml(QDomDocument& t)
     parent.appendChild(gameIdF);
     parent.appendChild(gameMasterIdF);
     parent.appendChild(durationF);
+    parent.appendChild(startTimeF);
     parent.appendChild(tableNumberF);
     parent.appendChild(levelF);
     parent.appendChild(maxF);
@@ -345,6 +347,19 @@ void Scenario::readDataFromXml(QDomNode& node)
     m_playerInformation = tmpElement.text().split('\n');
 
 }
+
+void Scenario::writeDataToCsv(QTextStream& out)
+{
+    out << m_gameMasterId << ";"<<m_gameMasterId << ";"<<m_gameId << ";"<<m_duration << ";"<< m_level << ";"<< m_maximumPlayers << ";"
+        <<m_minimumPlayers  << ";" << m_title  << ";"<< m_description  << ";"<< m_currentPlayers  << ";"<< m_state  << ";"<< m_startTime.toString("dd.MM.yyyy:hh:mm:ss")<< "\n";
+
+}
+
+void Scenario::readDataFromCsv(QTextStream&)
+{
+
+}
+
 void Scenario::setAvailableTime(QDateTime a)
 {
     m_availableTime = a;

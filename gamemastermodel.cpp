@@ -58,7 +58,22 @@ QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
         return m_gameMasterList[index.row()]->isPresent();
 
     }
-
+    else if(GameMasterModel::NameRole == role)
+    {
+        return m_gameMasterList[index.row()]->getName();
+    }
+    else if(GameMasterModel::PhoneRole == role)
+    {
+        return m_gameMasterList[index.row()]->getPhoneNumber();
+    }
+    else if(GameMasterModel::FirstNameRole == role)
+    {
+        return m_gameMasterList[index.row()]->getFirstName();
+    }
+    else if(GameMasterModel::MailRole == role)
+    {
+        m_gameMasterList[index.row()]->getMailAddress();
+    }
 
     return QVariant();
 }

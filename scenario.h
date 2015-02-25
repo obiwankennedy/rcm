@@ -87,6 +87,9 @@ public:
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&) ;
 
+    virtual void writeDataToCsv(QTextStream&);
+    virtual void readDataFromCsv(QTextStream&) ;
+
     friend QDataStream &operator<<(QDataStream &out, const Scenario &myObj);
     friend QDataStream &operator>>(QDataStream &in, Scenario &myObj);
 

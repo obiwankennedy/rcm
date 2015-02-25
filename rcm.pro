@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     localisation/roomitem.cpp \
     leveldelegateitem.cpp \
     playersinformationdialog.cpp \
-    playerinformationformdialog.cpp
+    playerinformationformdialog.cpp \
+    export/abstractexport.cpp \
+    export/exportcsv.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -61,7 +63,9 @@ HEADERS  += mainwindow.h \
     localisation/roomitem.h \
     leveldelegateitem.h \
     playersinformationdialog.h \
-    playerinformationformdialog.h
+    playerinformationformdialog.h \
+    export/abstractexport.h \
+    export/exportcsv.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

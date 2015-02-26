@@ -264,6 +264,7 @@
       <string>Export</string>
      </property>
      <addaction name="m_exportXMLAct"/>
+     <addaction name="m_exportCSVAct"/>
     </widget>
     <addaction name="m_newAct"/>
     <addaction name="m_openAct"/>
@@ -386,6 +387,11 @@
    </property>
    <property name="text">
     <string>Registrer Player</string>
+   </property>
+  </action>
+  <action name="m_exportCSVAct">
+   <property name="text">
+    <string>CSV</string>
    </property>
   </action>
  </widget>

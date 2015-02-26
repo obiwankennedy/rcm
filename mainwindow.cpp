@@ -36,6 +36,7 @@
 #include "gamemasterdialog.h"
 #include "localisation/localisationview.h"
 
+#include "export/exportcsv.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -90,6 +91,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->m_scenarioAvailabeView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_scenarioDoneView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_scenarioRunningView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
+    connect(ui->m_exportCSVAct,SIGNAL(triggered()),this,SLOT(exporCSV()));
 
 
 }
@@ -623,5 +625,18 @@ void MainWindow::clearSelection( QModelIndex index)
     if((NULL!=view)&&(!index.isValid()))
     {
         view->clearSelection();
+    }
+}
+void MainWindow::exporCSV()
+{
+    QString fileExport = QFileDialog::getSaveFileName(this, tr("Export Data as CSV"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Csv Rolisteam Conv Database (*.csv)"));
+    if(!fileExport.isNull())
+    {
+        ExportCSV csvWriter;
+
+        csvWriter.setData(m_gameModel,m_gameMasterModel,m_scenarioManager->getRightModel(Scenario::DONE));
+        csvWriter.setFilename(fileExport);
+
+        csvWriter.write();
     }
 }

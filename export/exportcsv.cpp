@@ -54,16 +54,16 @@ void ExportCSV::write()
     if(NULL!= m_scenarioModel)
     {
         cvs << QObject::tr("List of Scenarios\n");
-      for(int i = 0; i<m_gameMasterModel->rowCount();i++)
+      for(int i = 0; i<m_scenarioModel->rowCount();i++)
       {
-          QModelIndex index = m_gameMasterModel->index(i,0);
-          cvs << QString("%1;%2;%3;%4;%5;%6;%7\n").arg(m_gameMasterModel->data(index,ScenarioModel::TitleRole).toString())
-                                            .arg(m_gameMasterModel->data(index,ScenarioModel::GameTitleRole).toString())
-                                            .arg(m_gameMasterModel->data(index,ScenarioModel::GameMasterNameRole).toString())
-                                            .arg(m_gameMasterModel->data(index,ScenarioModel::LevelRole).toString())
-                                            .arg(m_gameMasterModel->data(index,ScenarioModel::CurrentPlayerRole).toString())
-                                            .arg(m_gameMasterModel->data(index,ScenarioModel::MaximumRole).toString())
-                                            .arg(m_gameMasterModel->data(index,ScenarioModel::DurationRole).toString());
+          QModelIndex index = m_scenarioModel->index(i,0);
+          cvs << QString("%1;%2;%3;%4;%5;%6;%7\n").arg(m_scenarioModel->data(index,ScenarioModel::TitleRole).toString())
+                                            .arg(m_scenarioModel->data(index,ScenarioModel::GameTitleRole).toString())
+                                            .arg(m_scenarioModel->data(index,ScenarioModel::GameMasterNameRole).toString())
+                                            .arg(m_scenarioModel->data(index,ScenarioModel::LevelRole).toString())
+                                            .arg(m_scenarioModel->data(index,ScenarioModel::CurrentPlayerRole).toString())
+                                            .arg(m_scenarioModel->data(index,ScenarioModel::MaximumRole).toString())
+                                            .arg(m_scenarioModel->data(index,ScenarioModel::DurationRole).toString());
       }
 
     }

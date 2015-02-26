@@ -81,6 +81,7 @@ private slots:
     void saveAsData();
     void openData();
     void resetData();
+    void exporCSV();
 
 
 

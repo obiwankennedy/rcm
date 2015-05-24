@@ -5,3 +5,5 @@ rcm
 ===
 
 Rolisteam Convention Manager
+
+It is dedicated to manager Table and Pen Role playing games in special Events. 

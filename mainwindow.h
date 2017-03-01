@@ -66,6 +66,7 @@ public slots:
     void statusGmHasChanged(GameMaster* l,bool);
     void ensureTabVisible(TAB);
     void makeGameMasterUnavailable();
+    void openData();
 
 protected:
     void closeEvent ( QCloseEvent * event );
@@ -79,7 +80,6 @@ private slots:
     void readFile();
     bool maybeSave();
     void saveAsData();
-    void openData();
     void resetData();
     void exporCSV();
 

@@ -246,7 +246,7 @@
      <x>0</x>
      <y>0</y>
      <width>966</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu">
@@ -258,6 +258,7 @@
       <string>Import</string>
      </property>
      <addaction name="m_importXMLAct"/>
+     <addaction name="m_csvAct"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -390,6 +391,11 @@
    </property>
   </action>
   <action name="m_exportCSVAct">
+   <property name="text">
+    <string>CSV</string>
+   </property>
+  </action>
+  <action name="m_csvAct">
    <property name="text">
     <string>CSV</string>
    </property>

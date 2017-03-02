@@ -67,6 +67,7 @@ public slots:
     void ensureTabVisible(TAB);
     void makeGameMasterUnavailable();
 
+    void readCSV();
 protected:
     void closeEvent ( QCloseEvent * event );
     bool eventFilter(QObject *obj, QEvent *event);

@@ -132,7 +132,7 @@ void MainWindow::initActions()
 
 
 
-
+    connect(ui->m_csvAct,SIGNAL(triggered(bool)),this,SLOT(readCSV()));
 
     // init menu
     connect(ui->m_newAct,SIGNAL(triggered()),this,SLOT(resetData()));
@@ -638,5 +638,179 @@ void MainWindow::exporCSV()
         csvWriter.setFilename(fileExport);
 
         csvWriter.write();
+    }
+}
+void MainWindow::readCSV()
+{
+    QString fileImport = QFileDialog::getOpenFileName(this, tr("Open CSV Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Csv Conv DataBase (*.csv)"));
+    if(!fileImport.isNull())
+    {
+
+        QFile file(fileImport);
+        if (file.open(QIODevice::ReadOnly))
+        {
+            QTextStream text(&file);
+            QString line;
+            text.readLineInto(&line);//remove first line
+          while (text.readLineInto(&line))
+          {//	Nom du jdr	Nombre de joueurs (mini-max)	Durée de la partie prévu
+              //Description du jdr et/ou du scénario	Lien vers une image représentant le jeu (exemple la couverture du jeu)	Notes
+              //Autre jeux ?	Nom du jdr	Nombre de joueurs (mini-max)	Durée de la partie prévu	Description du jdr et/ou du scénario
+              //Lien vers une image représentant le jeu (exemple la couverture du jeu)	Notes	Autre jeux ?
+              //Nom du jdr	Nombre de joueurs (mini-max)	Durée de la partie prévu	Description du jdr et/ou du scénario
+              //Lien vers une image représentant le jeu (exemple la couverture du jeu)	Notes	Alors, heureux ?
+//32
+              QStringList array = line.split(";");
+
+              while(array.size()!=35)
+              {
+                  array.append(QString());
+              }
+              QString hour = array.at(0);
+              QString mail = array.at(1);
+              QString name = array.at(2);
+              QString pseudo = array.at(3);
+              QString assos= array.at(4);
+              QString dispo = array.at(5);
+              QString info = array.at(6);
+              QString rpg1 = array.at(7);
+              QString rpg1PlayerCount = array.at(8);
+              QString rpg1Time = array.at(9);
+              QString rpg1Description = array.at(10);
+              QString rpg1ImgLink = array.at(11);
+              QString rpg1note = array.at(12);
+              QString rpgOther = array.at(13);
+              QString rpg2 = array.at(14);
+              QString rpg2PlayerCount = array.at(15);
+              QString rpg2Time = array.at(16);
+              QString rpg2Description = array.at(17);
+              QString rpg2ImgLink = array.at(18);
+              QString rpg2note = array.at(19);
+              QString rpgOther2 = array.at(20);
+              QString rpg3 = array.at(21);
+              QString rpg3PlayerCount = array.at(22);
+              QString rpg3Time = array.at(23);
+              QString rpg3Description = array.at(24);
+              QString rpg3ImgLink = array.at(25);
+              QString rpg3note = array.at(26);
+              QString rpgOther3 = array.at(27);
+
+              QString rpg4 = array.at(28);
+              QString rpg4PlayerCount = array.at(29);
+              QString rpg4Time = array.at(30);
+              QString rpg4Description = array.at(31);
+              QString rpg4ImgLink = array.at(32);
+              QString rpg4note = array.at(33);
+              QString rpgOther4 = array.at(34);
+
+
+              qDebug() << "note:"<<rpg4note << rpg1 << rpg2 << array.size();
+
+              GameMaster* gm = new GameMaster();
+              gm->setName(name);
+              gm->setNickName(pseudo);
+              gm->setMailAddress(mail);
+
+              QList<Scenario*>* listOfGame = new QList<Scenario*>();
+
+
+              if(!rpg1.isEmpty())
+              {
+                Game* game1 = new Game();
+                game1->setTitle(rpg1);
+                game1->setImageUrl(rpg1ImgLink);
+
+                m_gameModel->append(game1);
+
+
+                QStringList minmax = rpg1PlayerCount.split('-');
+
+                Scenario* scen1 = new Scenario();
+                scen1->setDescription(rpg1Description);
+                scen1->setDuration(rpg1Time.toInt());
+                scen1->setMaximumPlayer(minmax[1].toInt());
+                scen1->setMinimumPlayer(minmax[0].toInt());
+                scen1->setGameId(game1->getUuid());
+                scen1->setGameMasterId(gm->getId());
+
+                listOfGame->append(scen1);
+
+              }
+              if(!rpg2.isEmpty())
+              {
+                Game* game2 = new Game();
+                game2->setTitle(rpg2);
+                game2->setImageUrl(rpg2ImgLink);
+
+                m_gameModel->append(game2);
+
+
+                QStringList minmax = rpg2PlayerCount.split('-');
+
+                Scenario* scen2 = new Scenario();
+                scen2->setDescription(rpg2Description);
+                scen2->setDuration(rpg2Time.toInt());
+                scen2->setMaximumPlayer(minmax[1].toInt());
+                scen2->setMinimumPlayer(minmax[0].toInt());
+                scen2->setGameId(game2->getUuid());
+                scen2->setGameMasterId(gm->getId());
+
+                listOfGame->append(scen2);
+
+              }
+              if(!rpg3.isEmpty())
+              {
+                Game* game3 = new Game();
+                game3->setTitle(rpg1);
+                game3->setImageUrl(rpg1ImgLink);
+
+                m_gameModel->append(game3);
+
+
+                QStringList minmax = rpg3PlayerCount.split('-');
+
+                Scenario* scen3 = new Scenario();
+                scen3->setDescription(rpg3Description);
+                scen3->setDuration(rpg3Time.toInt());
+                scen3->setMaximumPlayer(minmax[1].toInt());
+                scen3->setMinimumPlayer(minmax[0].toInt());
+                scen3->setGameId(game3->getUuid());
+                scen3->setGameMasterId(gm->getId());
+
+                listOfGame->append(scen3);
+
+              }
+
+              if(!rpg4.isEmpty())
+              {
+                Game* game4 = new Game();
+                game4->setTitle(rpg4);
+                game4->setImageUrl(rpg4ImgLink);
+
+                m_gameModel->append(game4);
+
+
+                QStringList minmax = rpg4PlayerCount.split('-');
+
+                Scenario* scen4 = new Scenario();
+                scen4->setDescription(rpg4Description);
+                scen4->setDuration(rpg4Time.toInt());
+                scen4->setMaximumPlayer(minmax[1].toInt());
+                scen4->setMinimumPlayer(minmax[0].toInt());
+                scen4->setGameId(game4->getUuid());
+                scen4->setGameMasterId(gm->getId());
+
+                listOfGame->append(scen4);
+
+              }
+
+              gm->setGMScenario(listOfGame);
+
+              m_gameMasterModel->append(gm);
+
+          }
+
+        }
+
     }
 }

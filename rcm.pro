@@ -74,7 +74,8 @@ FORMS    += mainwindow.ui \
     scenarioeditordialog.ui \
     localisation/tableswizard.ui \
     playersinformationdialog.ui \
-    playerinformationformdialog.ui
+    playerinformationformdialog.ui \
+    localisation/eventproperties.ui
 
 OTHER_FILES += \
     listView.qml

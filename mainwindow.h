@@ -33,9 +33,9 @@
 
 #include "preferences/preferencesmanager.h"
 #include "serializable.h"
-#ifdef __QT_QUICK_2_
+
 #include "gameimageprovider.h"
-#endif
+
 
 namespace Ui {
 class MainWindow;
@@ -126,9 +126,7 @@ private:
     ScenarioManager* m_scenarioManager;
 
     QString m_title;
-#ifdef __QT_QUICK_2_
     GameImageProvider* m_gameImgProvider;
-#endif
 };
 
 #endif // MAINWINDOW_H

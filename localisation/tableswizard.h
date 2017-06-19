@@ -1,17 +1,37 @@
 #ifndef TABLESWIZARD_H
 #define TABLESWIZARD_H
 
-#include <QWizard>
+#include <QDialog>
 
 
 #include "roommodel.h"
 #include "tablemodel.h"
 
 namespace Ui {
-class TablesWizard;
+    class EventProperties;
 }
+class EventDay
+{
 
-class TablesWizard : public QWizard
+public:
+    EventDay();
+    int getStartTime() const;
+    void setStartTime(int startTime);
+
+    int getEndTime() const;
+    void setEndTime(int endTime);
+
+    int getDuration();//in minutes
+    int getId() const;
+    void setId(int id);
+
+private:
+    int m_startTime;
+    int m_endTime;
+    int m_id;
+};
+
+class TablesWizard : public QDialog
 {
     Q_OBJECT
 
@@ -19,22 +39,14 @@ public:
     explicit TablesWizard(QWidget *parent = 0);
     ~TablesWizard();
 
+    QList<EventDay*>* getSchedule();
+    int getTableCount() const;
 public slots:
-    void currentPageChanged(int i);
-    void manageRoomPage();
-    void manageTableInRooms();
-   // void managePersonPerTable();
-
-    void currentRoomCount(int);
-    QList<Table*>* getData();
-    int getRoomCount()const;
+    void numberOfDayChanged();
 
 private:
-    Ui::TablesWizard *ui;
-
+    Ui::EventProperties *ui;
     int m_roomCount;
-    RoomModel* m_modelRoom;
-    TableModel* m_modelTable;
 };
 
 #endif // TABLESWIZARD_H

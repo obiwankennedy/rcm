@@ -1,70 +1,84 @@
 #include "tableswizard.h"
-#include "ui_tableswizard.h"
+#include "ui_eventproperties.h"
 
 #include <QDebug>
 TablesWizard::TablesWizard(QWidget *parent) :
-    QWizard(parent),
-    ui(new Ui::TablesWizard)
+    QDialog(parent),
+    ui(new Ui::EventProperties)
 {
     ui->setupUi(this);
-
-
-    connect(ui->m_roomCountSpin,SIGNAL(valueChanged(int)),this,SLOT(currentRoomCount(int)));
-
-    ui->m_roomCountSpin->setKeyboardTracking(true);
-
-
-    connect(this,SIGNAL(currentIdChanged(int)),this,SLOT(currentPageChanged(int)));
+    connect(ui->m_dayCount,SIGNAL(valueChanged(int)),this, SLOT(numberOfDayChanged()));
 }
 
 TablesWizard::~TablesWizard()
 {
     delete ui;
 }
-
-
-void TablesWizard::currentPageChanged(int i)
+QList<EventDay *> *TablesWizard::getSchedule()
 {
-    switch(i)
-    {
-    case 0:
 
-        break;
-    case 1:
-        manageRoomPage();
-        break;
-    case 2:
-        manageTableInRooms();
-        break;
+}
+
+int TablesWizard::getTableCount() const
+{
+    return ui->m_tableCount->value();
+}
+#include <QTimeEdit>
+#include <QHeaderView>
+void TablesWizard::numberOfDayChanged()
+{
+    int day = ui->m_dayCount->value();
+    ui->tableWidget->clear();
+    ui->tableWidget->insertColumn(0);
+    ui->tableWidget->insertColumn(1);
+    QStringList header;
+    header << tr("Start Time") << tr("End Time");
+    ui->tableWidget->setHorizontalHeaderLabels(header);
+    ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
+    for(int i = 0; i < day; i++)
+    {
+        ui->tableWidget->insertRow(i);
+        QTableWidgetItem* start = new QTableWidgetItem();
+        QTableWidgetItem* end = new QTableWidgetItem();
+
+        ui->tableWidget->setItem(i,0,start);
+        ui->tableWidget->setItem(i,1,end);
+
+        ui->tableWidget->setCellWidget(i,0,new QTimeEdit());
+        ui->tableWidget->setCellWidget(i,1,new QTimeEdit());
+
+        start->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
+        end->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
     }
 }
 
-
-void TablesWizard::manageRoomPage()
+int EventDay::getStartTime() const
 {
-     ui->m_roomCountSpin->clearFocus();
-     m_roomCount = ui->m_roomCountSpin->value();
-     m_modelRoom = new RoomModel(m_roomCount);
-     ui->m_roomTableView->setModel(m_modelRoom);
-}
-void TablesWizard::manageTableInRooms()
-{
-    QMap<QString,int>* data = m_modelRoom->getDataMap();
-
-    m_modelTable = new TableModel(data);
-
-    ui->m_tablePersonView->setModel(m_modelTable);
+    return m_startTime;
 }
 
-void TablesWizard::currentRoomCount(int a)
+void EventDay::setStartTime(int startTime)
 {
-    m_roomCount = a;
+    m_startTime = startTime;
 }
-QList<Table*>* TablesWizard::getData()
+
+int EventDay::getEndTime() const
 {
-    return m_modelTable->getDataList();
+    return m_endTime;
 }
-int TablesWizard::getRoomCount() const
+
+void EventDay::setEndTime(int endTime)
 {
-    return m_roomCount;
+    m_endTime = endTime;
 }
+
+int EventDay::getId() const
+{
+    return m_id;
+}
+
+void EventDay::setId(int id)
+{
+    m_id = id;
+}
+

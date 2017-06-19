@@ -1,123 +1,54 @@
 #include <QVBoxLayout>
 #include <QDebug>
+#include <QEvent>
+
 
 #include "localisationview.h"
 #include "tableitem.h"
 #include "roomitem.h"
+#include "tableswizard.h"
 
-LocalisationView::LocalisationView(QWidget *parent) :
-    QWidget(parent),m_wizzard(NULL)
+LocalisationView::LocalisationView(QGraphicsView* view,QWidget *parent) :
+    QObject(parent),m_wizzard(nullptr),m_view(view)
 {
-    QVBoxLayout* myBoxLayout = new QVBoxLayout();
-
-    m_startWizzard = new QPushButton(tr("Wizzard"));
-    m_view = new QGraphicsView();
-    /// @todo get screen size
-    m_scene = new QGraphicsScene(0,0,800,600);
+    m_scene = new QGraphicsScene(0,0,1500,900);
     m_view->setScene(m_scene);
-    myBoxLayout->addWidget(m_view);
-    myBoxLayout->addWidget(m_startWizzard);
-
-    connect(m_startWizzard,SIGNAL(pressed()),this,SLOT(startWizzard()));
+    m_view->ensureVisible(m_scene->sceneRect(),0,0);
 
 
-    setLayout(myBoxLayout);
+
+    m_view->installEventFilter(this);
 }
 
 
-void LocalisationView::startWizzard()
+bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
 {
-    if(NULL!=m_wizzard)
+    if(obj == m_view)
     {
-        delete m_wizzard;
-        m_wizzard = NULL;
+        if(event->type() == QEvent::Resize)
+        {
+            m_view->fitInView(
+                m_scene->itemsBoundingRect(),
+                Qt::KeepAspectRatio);
+        }
     }
-    m_wizzard = new TablesWizard();
-    m_wizzard->setModal(true);
-    if(m_wizzard->exec())
-    {
-
-        m_data = m_wizzard->getData();
-        m_roomCount = m_wizzard->getRoomCount();
-
-        addItemToScene();
-    }
+    return QObject::eventFilter(obj,event);
 }
-void LocalisationView::addItemToScene()
+void LocalisationView::setProperties()
 {
-//    QList<Table*>* m_data;
-//    int m_roomCount;
-
-    QMap<QString, QList<Table*>* >* m_buildData = new QMap<QString, QList<Table*>* >();
-
-    for(int i = 0; i<m_roomCount;++i)
+    TablesWizard wizzard;
+    if(QDialog::Accepted == wizzard.exec())
     {
-        QList<Table*>* tmp = new QList<Table*>();
-
-        bool finished=false;
-        QString previousRoomName;
-
-        do
+        int tableCount = wizzard.getTableCount();
+        int y = m_scene->height()/tableCount;
+        for(int i = 0; i< tableCount; ++i)
         {
-            if(!m_data->isEmpty())
-            {
-                Table* tmpTable= m_data->at(0);
-                if((previousRoomName.isNull())||(previousRoomName==tmpTable->getRoomName()))
-                {
-                    m_data->removeAt(0);
-                    tmp->append(tmpTable);
-
-                }
-                else
-                {
-                    m_buildData->insert(previousRoomName,tmp);
-                    finished=true;
-                }
-                previousRoomName=tmpTable->getRoomName();
-            }
-            else
-            {
-                if(!previousRoomName.isEmpty())
-                {
-                    m_buildData->insert(previousRoomName,tmp);
-                }
-                finished=true;
-            }
-        }while(!finished);
-    }
-
-    ///////////////////////////////////////////////
-
-    int i = 0;
-        foreach(QString room, m_buildData->keys())
-        {
-            QList<Table*>* tmp = m_buildData->value(room);
-            qDebug() << "table count" << tmp->size();
-            RoomItem* roomItem = new RoomItem();
-            roomItem->setName(room);
-            int w = m_scene->width()/m_roomCount;
-            roomItem->setPos(w*i,0);
-            //qDebug() << "roomItem pos:" <<w*i << "scene"<< m_scene->sceneRect();
-            roomItem->setSize(w,m_scene->height());
-            m_scene->addItem(roomItem);
-            int j=0;
-            int tableCount = tmp->size();
-            int sizeTable=m_scene->height()/tableCount;
-            foreach(Table* table, *tmp)
-            {
-              TableItem* tableitem = new TableItem();
-              tableitem->setTable(table);
-              tableitem->setSize(w*0.8,sizeTable/2);
-              tableitem->setPos(w*0.1,j*sizeTable+sizeTable*0.2);
-              //qDebug() << "tableItem pose:" <<w/2 << j*sizeTable;
-              tableitem->setParentItem(roomItem);
-              ++j;
-            }
-            ++i;
+            TableItem* item = new TableItem();
+            item->setIdTable(i);
+            item->setTableCount(tableCount);
+            m_scene->addItem(item);
+            item->setPos(0,y*i);
         }
 
-
-
-
-
+    }
 }

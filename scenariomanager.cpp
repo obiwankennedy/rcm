@@ -57,6 +57,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
 
     //view
     m_ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
+    m_ui->m_availableScenario->setModel(m_availableScenarioModel);
 
     m_ui->m_scenarioAvailabeView->installEventFilter(this);
 
@@ -91,6 +92,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
 
     m_avScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::AVAILABLE);
     m_ui->m_scenarioAvailabeView->setItemDelegate(m_avScenarioDelegate);
+    m_ui->m_availableScenario->setItemDelegate(m_avScenarioDelegate);
 
 
     m_runningScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::RUNNING);

@@ -1,32 +1,108 @@
 #include "tableitem.h"
 #include <QPainter>
 #include <QDebug>
+#include <QGraphicsScene>
+#include <QPen>
 
-TableItem::TableItem() :
-    QGraphicsItem(),m_table(NULL)
+TableItem::TableItem()
+ :  QGraphicsObject(),m_day(nullptr)
 {
-    m_w=16;
-    m_h=16;
+    m_idTable =1;
 }
 QRectF TableItem::boundingRect() const
 {
-    return QRectF(0,0,m_w,m_h);
+    qreal width = scene()->width();
+    qreal height = scene()->height()/m_tableCount;
+
+    return QRectF(0,0,width,height);
 }
+
 void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
-    painter->fillRect(boundingRect(),Qt::red);
-    if(NULL!=m_table)
+    qDebug() << "draw TableItem" << boundingRect();
+    qreal width = scene()->width();
+    qreal height = scene()->height()/m_tableCount;
+    int duration = 8*60;//m_day->getDuration();
+    int startHour = 8;
+
+    QPen pen = painter->pen();
+    if(duration!=0)
     {
-        painter->drawText(boundingRect(),Qt::AlignCenter,QString("%1").arg(m_table->getId()));
+        qreal fiveMinutes = 5*width/duration;
+        qreal marginY = 0.2*(height);
+        qreal marginY2 = 0.8*(height);
+
+
+        painter->drawText(0,marginY,tr("Table #%1").arg(m_idTable+1));
+        painter->drawLine(0,marginY,width,marginY);
+        painter->drawLine(0,marginY2,width,marginY2);
+
+        int j = 0;
+        int h = 0;
+        for(int i = 0; i < width; i += fiveMinutes)
+        {
+            pen.setWidth(1);
+            pen.setColor(Qt::black);
+            painter->setPen(pen);
+            painter->drawLine(i,marginY,i,marginY2);
+
+            if(j%3 == 0)
+            {
+                pen.setWidth(2);
+                pen.setColor(Qt::green);
+                painter->setPen(pen);
+                painter->drawLine(i,marginY,i,marginY2);
+            }
+            if(j%6 == 0)
+            {
+                pen.setWidth(3);
+                pen.setColor(Qt::blue);
+                painter->setPen(pen);
+                painter->drawLine(i,marginY,i,marginY2);
+            }
+            if(j%12 == 0)
+            {
+                pen.setWidth(4);
+                pen.setColor(Qt::red);
+                painter->setPen(pen);
+                painter->drawLine(i,marginY,i,marginY2);
+                pen.setWidth(1);
+                painter->drawText(i,height,tr("%1h").arg(startHour+h));
+                h++;
+            }
+            j++;
+        }
+
     }
 }
-void TableItem::setSize(int w,int h)
+
+EventDay *TableItem::day() const
 {
-    m_w=w;
-    m_h=h;
-   // qDebug() << "TableItem size:" <<m_h << m_w;
+    return m_day;
 }
-void TableItem::setTable(Table* table)
+
+void TableItem::setDay(EventDay *day)
 {
-    m_table= table;
+    m_day = day;
 }
+
+int TableItem::idTable() const
+{
+    return m_idTable;
+}
+
+void TableItem::setIdTable(int idTable)
+{
+    m_idTable = idTable;
+}
+
+int TableItem::tableCount() const
+{
+    return m_tableCount;
+}
+
+void TableItem::setTableCount(int tableCount)
+{
+    m_tableCount = tableCount;
+}
+

@@ -1,27 +1,35 @@
 #ifndef TABLEITEM_H
 #define TABLEITEM_H
 
-#include <QGraphicsItem>
+#include <QGraphicsObject>
 #include "table.h"
+#include "scenario.h"
+#include "tableswizard.h"
 
-class TableItem : public QGraphicsItem
+class TableItem : public QGraphicsObject
 {
-
+    Q_OBJECT
 public:
     explicit TableItem();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void setSize(int,int);
 
-    void setTable(Table*);
 
-signals:
 
-public slots:
+    EventDay* day() const;
+    void setDay(EventDay* day);
+
+    int idTable() const;
+    void setIdTable(int idTable);
+
+    int tableCount() const;
+    void setTableCount(int tableCount);
+
 private:
-    int m_w;
-    int m_h;
-    Table* m_table;
+    QList<Scenario*> m_scenarioList;
+    EventDay* m_day;
+    int m_idTable;
+    int m_tableCount;
 };
 
 #endif // TABLEITEM_H

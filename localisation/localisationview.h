@@ -7,17 +7,19 @@
 
 #include "tableswizard.h"
 
-class LocalisationView : public QWidget
+class LocalisationView : public QObject
 {
     Q_OBJECT
 public:
-    explicit LocalisationView(QWidget *parent = 0);
-
-signals:
+    explicit LocalisationView(QGraphicsView* view, QWidget *parent = 0);
 
 public slots:
-    void startWizzard();
-    void addItemToScene();
+    void setProperties();
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+signals:
+
 
 private:
     QPushButton* m_startWizzard;

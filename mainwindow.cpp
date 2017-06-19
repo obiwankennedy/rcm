@@ -43,18 +43,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-#ifdef __QT_QUICK_2_
+
     m_gameImgProvider = new GameImageProvider();
-#endif
+
     m_title=tr("%1[*] - Rolisteam Convention Manager");
     m_recentFileActions = new QList<QAction*>();
 
     setWindowTitle(m_title.arg("Unkown"));
-#ifdef __QT_QUICK_2_
+
     m_gameModel = new GameModel(m_gameImgProvider);
-#else
-    m_gameModel = new GameModel();
-#endif
+
     m_gameMasterModel = new GameMasterModel();
     //m_gameMasterPresenceModel = new GameMasterModel();
 
@@ -62,11 +60,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
-#ifdef __QT_QUICK_2_
+
     m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
-#else
-    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
-#endif
+
 
     initActions();
 
@@ -80,8 +76,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_fileMenu->insertSeparator(ui->m_quitAct);
 
     ui->m_masterView->installEventFilter(this);
+    LocalisationView* locview = new LocalisationView(ui->m_timeLine);
 
-    ui->m_tabWidget->addTab(new LocalisationView(),tr("Tables"));
+
+    connect(ui->m_properties,SIGNAL(clicked(bool)),locview,SLOT(setProperties()));
+   // ui->m_tabWidget->addTab(,tr("Tables"));
 
 
     //setAttribute( Qt::WA_DeleteOnClose);
@@ -195,9 +194,7 @@ void  MainWindow::addGameDialog()
     if(dialog.exec())
     {
         Game* tmp = new Game();
-#ifdef __QT_QUICK_2_
         connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
-#endif
         tmp->setTitle(dialog.getTitle());
         tmp->setPunchLine(dialog.getPunchLine());
         tmp->setDescription(dialog.getDescription());

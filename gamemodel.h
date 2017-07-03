@@ -60,6 +60,8 @@ public:
     void resetData();
 
 
+    void writeSettings(QSettings& settings);
+    void readSettings(QSettings& settings);
 
 private:
     QList<Game*> m_gameList;

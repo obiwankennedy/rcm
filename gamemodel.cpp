@@ -177,3 +177,51 @@ void GameModel::resetData()
     #endif
     endResetModel();
 }
+void GameModel::writeSettings(QSettings& settings)
+{
+    settings.beginGroup("games");
+    settings.beginWriteArray("games");
+
+    for (int i = 0; i < m_gameList.size(); ++i)
+    {
+        Game* game = m_gameList.at(i);
+        settings.setArrayIndex(i);
+        settings.setValue("title", game->getTitle());
+        settings.setValue("punchline", game->getPunchLine());
+        settings.setValue("description", game->getDescription());
+        settings.setValue("uuid", game->getUuid());
+        settings.setValue("type", game->getType());
+        settings.setValue("imageUrl", game->getImageUrl());
+        QPixmap* map = game->getPixmap();
+        QVariant var = *map;
+        settings.setValue("image",var);
+    }
+    settings.endArray();
+    settings.endGroup();
+}
+
+void GameModel::readSettings(QSettings& settings)
+{
+    settings.beginGroup("games");
+    int size = settings.beginReadArray("games");
+
+   for (int i = 0; i < size; ++i)
+   {
+        settings.setArrayIndex(i);
+        Game* game = new Game();
+        game->setTitle(settings.value("title").toString());
+        game->setPunchLine(settings.value("punchline").toString());
+        game->setDescription(settings.value("description").toString());
+        game->setUuid(settings.value("uuid").toString());
+        game->setType(settings.value("type").toString());
+        game->setImageUrl(settings.value("imageUrl").toString());
+        QPixmap* pix = new QPixmap();
+        *pix = settings.value("image").value<QPixmap>();
+        game->setPixmap(pix);
+
+        m_gameList.append(game);
+        m_gameMap.insert(game->getUuid(),game);
+   }
+   settings.endArray();
+   settings.endGroup();
+}

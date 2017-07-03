@@ -27,6 +27,9 @@
 #include <QUuid>
 #include "serializable.h"
 
+/**
+ * @brief The Scenario class
+ */
 class Scenario : public Serialisable
 {
 public:

@@ -172,7 +172,11 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignTop ,option.palette,true,tr("Players: %1/%2").arg(tmp.getCurrentPlayers()).arg(tmp.getMaximumPlayers()));
 
 
-        style->drawItemText(painter,itemRect,Qt::AlignCenter,option.palette,true,m_list[tmp.getGameId()]->getTitle());
+        Game* game = m_list[tmp.getGameId()];
+        if(nullptr != game)
+        {
+           style->drawItemText(painter,itemRect,Qt::AlignCenter,option.palette,true,game->getTitle());
+        }
 
 
     }

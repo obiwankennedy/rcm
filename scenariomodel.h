@@ -25,7 +25,7 @@
 #include <QAbstractListModel>
 #include <QStringList>
 #include <QTimer>
-
+#include <QString>
 
 #include "scenario.h"
 #include "game.h"
@@ -35,6 +35,7 @@
 class ScenarioModel : public QAbstractListModel, public Serialisable
 {
     Q_OBJECT
+    //Q_PROPERTY(type Title READ getTitle WRITE setTitle NOTIFY titleChanged)
 public:
     enum CustomRole {IncreaseRole = Qt::UserRole+1,DecreaseRole,GameIdRole,GameMasterIdRole,DurationRole,MinimumRole,
                      MaximumRole,DescriptionRole,CurrentPlayerRole,TitleRole,GameTitleRole,GameMasterNameRole,ColorRole,PixmapRole,LevelRole,AddPlayerInfo,RemovePlayerInfo,ClearPlayerInfo,SetPlayerInfo};
@@ -72,9 +73,15 @@ public:
 
      void resetData();
 
+
+
+     QString getTitle();//Q_INVOKABLE
+     void setTitle(QString);
 signals:
     void updateHeader();
     void addedData();
+    void titleChanged();
+
 public slots:
     void mayStartTimer();
     void timeOut();

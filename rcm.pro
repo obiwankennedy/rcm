@@ -86,7 +86,7 @@ RESOURCES += \
 ## Translation
 TRANSLATIONS =  rcm_fr.ts
 
-
+CONFIG += c++11
 
 CODECFORTR = UTF-8
 

@@ -318,6 +318,7 @@ void MainWindow::readSettings()
 
 
     m_preferences->readSettings(settings);
+    m_gameModel->readSettings(settings);
 }
 
 void MainWindow::writeSettings()
@@ -343,7 +344,7 @@ void MainWindow::writeSettings()
 
 
     m_preferences->writeSettings(settings);
-
+    m_gameModel->writeSettings(settings);
 }
 void MainWindow::openRecentFile()
 {

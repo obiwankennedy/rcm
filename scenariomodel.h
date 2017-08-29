@@ -38,7 +38,8 @@ class ScenarioModel : public QAbstractListModel, public Serialisable
     //Q_PROPERTY(type Title READ getTitle WRITE setTitle NOTIFY titleChanged)
 public:
     enum CustomRole {IncreaseRole = Qt::UserRole+1,DecreaseRole,GameIdRole,GameMasterIdRole,DurationRole,MinimumRole,
-                     MaximumRole,DescriptionRole,CurrentPlayerRole,TitleRole,GameTitleRole,GameMasterNameRole,ColorRole,PixmapRole,LevelRole,AddPlayerInfo,RemovePlayerInfo,ClearPlayerInfo,SetPlayerInfo};
+                     MaximumRole,DescriptionRole,CurrentPlayerRole,TitleRole,GameTitleRole,GameMasterNameRole,ColorRole,
+                     PixmapRole,LevelRole,AddPlayerInfo,RemovePlayerInfo,ClearPlayerInfo,SetPlayerInfo};
 
     explicit ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent = 0);
     int rowCount ( const QModelIndex & parent = QModelIndex() ) const;

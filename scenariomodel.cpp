@@ -102,6 +102,15 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     {
         return m_scenarioList->at(index.row())->getDuration();
     }
+    else if(ScenarioModel::DescriptionRole == role)
+    {
+        QString id = m_scenarioList->at(index.row())->getGameId();
+        Game* tmp  = m_list[id];
+        if(tmp!=NULL)
+            return tmp->getDescription();
+        else
+            return QVariant();
+    }
     else if(ScenarioModel::CurrentPlayerRole == role)
     {
         return m_scenarioList->at(index.row())->getCurrentPlayers();

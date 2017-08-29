@@ -9,6 +9,7 @@ GameImageProvider::GameImageProvider()
 }
 QPixmap GameImageProvider::requestPixmap(const QString &id, QSize */*size*/, const QSize &/*requestedSize*/)
 {
+    //qDebug() << "id image:" << id << m_map;
     if(m_map->contains(id))
     {
         const QPixmap* pix = m_map->value(id);

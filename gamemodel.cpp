@@ -221,6 +221,9 @@ void GameModel::readSettings(QSettings& settings)
 
         m_gameList.append(game);
         m_gameMap.insert(game->getUuid(),game);
+
+        m_gameImgProvider->insertPixmap(game->getIdImage(),game->getPixmap());
+
    }
    settings.endArray();
    settings.endGroup();

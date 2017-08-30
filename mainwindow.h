@@ -59,6 +59,7 @@ public:
     void refreshOpenedFile();
     
 
+    void refreshView();
 public slots:
     void addGameDialog();
     void addGameMasterDialog();
@@ -118,7 +119,7 @@ private:
     QList<QAction*>* m_recentFileActions;
 
 
-
+    QQuickWindow* m_window;
 
 
     QString m_currentDataPath;

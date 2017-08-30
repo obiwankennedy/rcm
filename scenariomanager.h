@@ -24,8 +24,9 @@
 
 #include <QObject>
 #include <QList>
+#include <QLabel>
 #include <QListView>
-
+#include <QScrollArea>
 
 #include "scenario.h"
 #include "scenariomodel.h"
@@ -74,6 +75,8 @@ public:
     GameMaster* getGameMasterFromId(QString id);
     bool isPlayersAreRegistred() const;
     
+    bool isCustomViewDisplayed();
+    void setLabel(Ui::MainWindow* wid);
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
     void showContextMenu(QContextMenuEvent* event,Scenario::STATE m);

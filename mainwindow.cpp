@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_masterView->setModel(m_gameMasterModel);
 
     m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
-
+    m_scenarioManager->setLabel(ui);
 
     initActions();
 
@@ -109,6 +109,8 @@ void MainWindow::initActions()
     m_addGMAct= new QAction(tr("Add"),this);
     m_makeGMGoneAct = new QAction(tr("GM is leaving"),this);
     connect(m_makeGMGoneAct,SIGNAL(triggered()),this,SLOT(makeGameMasterUnavailable()));
+
+    addAction(ui->m_customerViewDisplayAct);
 
     ui->m_addGameButton->setDefaultAction(m_addGameAct);
     ui->m_addGMButton->setDefaultAction(m_addGMAct);
@@ -279,7 +281,7 @@ void MainWindow::saveAsData()
 }
 void MainWindow::openData()
 {
-     m_currentDataPath = "/home/renaud/documents/rcm/data_test_several_game.rcdb";
+     m_currentDataPath = "/home/renaud/applications/mine/rcm/data_test_several_game.rcdb";
     //m_currentDataPath = QFileDialog::getOpenFileName(this, tr("Open Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Rolisteam Conv Database (*.rcdb)"));
     if(!m_currentDataPath.isNull())
     {
@@ -292,6 +294,32 @@ void MainWindow::openData()
         addRecentFile();
     }
 }
+/*void MainWindow::refreshView()
+{
+    if(m_scenarioManager->isCustomViewDisplayed())
+    {
+        QImage img = m_window->grabWindow();
+
+        if(img.isNull())
+            return;
+
+        static int count = 0;
+
+        //img.save(tr("/home/renaud/application/mine/pasSageEnSeine/screen/%1_screen.png").arg(++count,3,10,QChar('0')),"png");
+        qDebug() << "id page shot save" << i;
+
+        m_ratioImage = (double)img.size().width()/img.size().height();
+        m_ratioImageBis = (double)img.size().height()/img.size().width();
+
+        m_label->setPixmap(QPixmap::fromImage(img));
+
+        if((i+1>=0)&&(i+1<m_commentData.size()))
+        {
+            ui->textEdit->setHtml(m_commentData.at(i));
+        }
+        resizeLabel();
+    }
+}*/
 void MainWindow::readSettings()
 {
     QSettings settings("rolisteam","rcm/preferences");

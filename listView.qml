@@ -1,11 +1,31 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.0
+import QtQuick.Window 2.1
 
-Item {
+ApplicationWindow {
     id: root
-    anchors.fill: parent
+    //visibility: Window.FullScreen;
     property real factor: 0.04
     property alias msg: popupTop.msg
+    property bool autoAnimation: false
+    property int itemAngle: 60
+    property int itemSize: root.width * 0.8
+
+
+
+    onAutoAnimationChanged: {
+
+        if(autoAnimation)
+        {
+            anima.start()
+        }
+        else
+        {
+            anima.stop()
+        }
+
+        console.log("auto animation changed")
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -20,10 +40,8 @@ Item {
             property double rotationValue2: PathView.itemRotation
             scale: PathView.iconScale
             z: PathView.isCurrentItem ? 5 : 0
-            onRotationValue2Changed: {
 
-            }
-            transform: Rotation { origin.x: width/2; origin.y: height/2; axis { x: 0; y: 1; z: 0 } angle:  rotationValue2}
+            transform: Rotation {origin.x: width /2; origin.y: height/2;  axis { x: 0; y: 1; z: 0 } angle:rotationValue2;}//
             Rectangle {
                 id:rect
                 state: CurrentPlayer == 0 ? "" : CurrentPlayer == MaximumPlayer ? "ready" : "wip"
@@ -75,7 +93,7 @@ Item {
                         id:gmId
                         anchors.top: titleLabel.bottom
                         anchors.left: parent.left
-                        text: qsTr("Votre meneur:") + GMName
+                        text: qsTr("Votre meneur: ") + GMName
                         font.pixelSize: parent.height * root.factor
                         textFormat: Text.RichText
                         height: contentHeight
@@ -151,10 +169,20 @@ Item {
             }
         }
     }
+    Timer {
+        id: anima
+        interval: 10000
+        repeat: true
+        onTriggered: {
+            view.incrementCurrentIndex()
+        }
+
+    }
 
     PathView {
-        id: view
+         id: view
          anchors.fill: parent
+
          //model: 32
          model: _myModel
          delegate: scenarioDelegate
@@ -176,9 +204,112 @@ Item {
              PathAttribute { name: "itemRotation"; value: 54 }
              PathLine { x: view.width*0.5; y: view.height*0.5; }
          }
+
+        /* path: Path {
+            startX: 0
+            startY: height / 2
+
+
+            PathPercent { value: 0.0 }
+            PathAttribute { name: "iconScale"; value: 1.0 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+            PathAttribute { name: "iconScale"; value: 0.2 }
+            PathAttribute { name: "itemRotation"; value: 54.0 }
+            PathAttribute { name: "itemOrigin"; value: 0 }
+
+
+            PathLine { x:view.width*0.25; y: view.height/2 }
+            PathAttribute { name: "itemOrigin"; value: 0 }
+
+            PathAttribute { name: "iconScale"; value: 0.3 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+            PathAttribute { name: "itemRotation"; value: 25.0 }
+
+            PathPercent { value: 0.49 }
+            PathAttribute { name: "z"; value: 10 }
+            PathLine { relativeX: 0; relativeY: 0 }
+            PathAttribute { name: "itemOpacity"; value: 1.0 }
+            PathAttribute { name: "itemRotation"; value: 0.0 }
+            PathAttribute { name: "iconScale"; value: 1.0 }
+            PathLine { x:view.width*0.75; y: view.height/2 }
+            PathAttribute { name: "itemRotation"; value: 0.0 }
+            PathAttribute { name: "iconScale"; value: 1.0 }
+            PathAttribute { name: "itemOpacity"; value: 1.0 }
+            PathPercent { value: 0.51 }
+            PathLine { relativeX: 0; relativeY: 0 }
+
+            PathAttribute { name: "z"; value: 10 }
+            PathAttribute { name: "itemRotation"; value: -25.0 }
+            PathAttribute { name: "itemOrigin"; value: view.width*0.5 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+
+            PathLine { x: width; y: view.height/2; }
+            PathPercent { value: 1 }
+            PathAttribute { name: "z"; value: 0 }
+            PathAttribute { name: "iconScale"; value: 0.3 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+            PathAttribute { name: "itemRotation"; value: -54 }
+            PathAttribute { name: "itemOrigin"; value: view.width*0.5 }
+
+         }*/
+
+         //pathItemCount: 6
+         /*path: Path {
+             startX: 0
+             startY: height / 2
+
+
+             PathPercent { value: 0.0 }
+             PathAttribute { name: "z"; value: 0 }
+             PathAttribute { name: "angle"; value: itemAngle }
+             PathAttribute { name: "origin"; value: 0 }
+             PathLine {
+                 x: (view.width - itemSize) / 2
+                 y: view.height / 2
+             }
+             PathAttribute { name: "angle"; value: itemAngle }
+             PathAttribute { name: "origin"; value: 0 }
+             PathPercent { value: 0.49 }
+             PathAttribute { name: "z"; value: 10 }
+
+
+             PathLine { relativeX: 0; relativeY: 0 }
+
+             PathAttribute { name: "angle"; value: 0 }
+             PathLine {
+                 x: (view.width - itemSize) / 2 + itemSize
+                 y: view.height / 2
+             }
+             PathAttribute { name: "angle"; value: 0 }
+             PathPercent { value: 0.51 }
+
+             PathLine { relativeX: 0; relativeY: 0 }
+
+             PathAttribute { name: "z"; value: 10 }
+             PathAttribute { name: "angle"; value: -itemAngle }
+             PathAttribute { name: "origin"; value: itemSize }
+             PathLine {
+                 x: view.width
+                 y: view.height / 2
+             }
+             PathPercent { value: 1 }
+             PathAttribute { name: "z"; value: 0 }
+             PathAttribute { name: "angle"; value: -itemAngle }
+             PathAttribute { name: "origin"; value: itemSize }
+         }*/
          focus: true
        Keys.onLeftPressed: decrementCurrentIndex()
        Keys.onRightPressed: incrementCurrentIndex()
+       Keys.onEscapePressed: {
+           if(root.visibility == Window.FullScreen )
+           {
+               root.visibility = Window.Windowed
+           }
+           else
+           {
+               root.visibility = Window.FullScreen
+           }
+       }
 
     }
 
@@ -191,12 +322,16 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        visible: (msg.length > 0)
         height: parent.height * 0.07
         radius: 20
         property alias msg: popupMenu.text
         Text {
             id: popupMenu
             anchors.fill: parent
+            verticalAlignment:Text.AlignVCenter
+            horizontalAlignment:Text.AlignHCenter
+            font.pixelSize: parent.height
         }
     }
 

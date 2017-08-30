@@ -33,7 +33,7 @@
     <item>
      <widget class="QTabWidget" name="m_tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -238,7 +238,7 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>Page</string>
+        <string>Planning</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
@@ -317,6 +317,99 @@
              <widget class="QListView" name="m_availableScenario"/>
             </item>
            </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="m_visual">
+       <attribute name="title">
+        <string>Visuel</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QPushButton" name="m_startAnimation">
+            <property name="text">
+             <string>Carousel Animation</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Texte:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="m_msgEdit"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="m_showMsg">
+              <property name="text">
+               <string>Show Message</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="m_bigPopup">
+            <property name="text">
+             <string>Show Big Popup</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QScrollArea" name="m_scrollAreaVisual">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>942</width>
+             <height>586</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_9"/>
           </widget>
          </widget>
         </item>

@@ -105,9 +105,9 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
 ScenarioManager::~ScenarioManager()
 {
     #ifdef __QT_QUICK_2_
-    m_customerView->close();
+    /*m_customerView->close();
     if(NULL!=m_customerView)
-        delete m_customerView;
+        delete m_customerView;*/
     #endif
 
 }
@@ -160,6 +160,22 @@ void ScenarioManager::setCustomViewVisible(bool b)
     m_customerView->setVisible(b);
 #endif
 }
+
+bool ScenarioManager::isCustomViewDisplayed()
+{
+#ifdef __QT_QUICK_2_
+    return m_customerView->isVisible();
+#endif
+    return false;
+}
+
+void ScenarioManager::setLabel(Ui::MainWindow* wid)
+{
+#ifdef __QT_QUICK_2_
+        m_customerView->setLabel(wid);
+#endif
+}
+
 void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 {
     foreach(Scenario* tmp,*l)
@@ -349,8 +365,8 @@ void ScenarioManager::startScenario()
 }
 void ScenarioManager::closeView()
 {
-        #ifdef __QT_QUICK_2_
-    m_customerView->close();
+     #ifdef __QT_QUICK_2_
+    m_customerView->setVisible(false);
     #endif
 
 }
@@ -534,6 +550,4 @@ void ScenarioManager::resetData()
 
     m_list.clear();
     m_masterList.clear();
-
-
 }

@@ -279,7 +279,7 @@ void MainWindow::saveAsData()
 }
 void MainWindow::openData()
 {
-    m_currentDataPath = "/home/renaud/applications/mine/rcm/data.rcdb";
+     m_currentDataPath = "/home/renaud/documents/rcm/data_test_several_game.rcdb";
     //m_currentDataPath = QFileDialog::getOpenFileName(this, tr("Open Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Rolisteam Conv Database (*.rcdb)"));
     if(!m_currentDataPath.isNull())
     {

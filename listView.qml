@@ -1,10 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 2.2
 
 Item {
     id: root
     anchors.fill: parent
-    property real factor: 0.05
+    property real factor: 0.04
+    property alias msg: popupTop.msg
 
     Rectangle {
         anchors.fill: parent
@@ -30,15 +31,17 @@ Item {
                 anchors.fill: parent
                 height: parent.height
                 color: "white"//ColorRol
-                radius: 5
+                radius: 20
                 border.width: 1
                 Text {
                     id:gametitleLabel
                     text:GameTitle
-                    font.pixelSize: parent.height * root.factor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: parent.height * root.factor * 1.5
                     textFormat: Text.RichText
                     horizontalAlignment: Text.AlignHCenter
                     width: parent.width * 0.5
+
                 }
                 Image {
                     id: image
@@ -47,62 +50,83 @@ Item {
                     visible:PixmapRole.length>0
                     fillMode: Image.PreserveAspectFit
                     x: 5
-                    y: parent.height * 0.1
-                    width: parent.width * 0.5
+                    y: gametitleLabel.contentHeight
+                    width: parent.width * 0.5 - 10
                     height: parent.height* 0.8
                 }
-                Column  {
+                Item  {
+                    id: rootItem
                     anchors.left: image.right
-                    anchors.top: rect.top
+                    anchors.leftMargin: -(image.width - image.paintedWidth)/2
+                    anchors.top: gametitleLabel.bottom
                     anchors.right: rect.right
-                    anchors.bottom: image.bottom
+                    anchors.bottom: rect.bottom
+                    //spacing: parent.height * root.factor
                     Text {
                         id:titleLabel
-                        text:Title
+                        text:Title + "title"
                         font.pixelSize: parent.height * root.factor
                         textFormat: Text.RichText
-                        width: parent.width * 0.5
-                        height: parent.height * 0.1
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        height: contentHeight
                     }
-                    Row {
-                        height: parent.height * 0.1
-                        width: parent.width
-                        Rectangle {
-                            color: ColorRole
-                            width: 100
-                            height: parent.height
-                            Text {
-                                id:playerCountTxt
-                                anchors.fill: parent
-                                text: CurrentPlayer +'/'+ MaximumPlayer
-                                font.pixelSize: parent.height * 0.8
-                                textFormat: Text.RichText
-                            }
-                        }
+                   Text {
+                        id:gmId
+                        anchors.top: titleLabel.bottom
+                        anchors.left: parent.left
+                        text: qsTr("Votre meneur:") + GMName
+                        font.pixelSize: parent.height * root.factor
+                        textFormat: Text.RichText
+                        height: contentHeight
+                        width: contentWidth
+                    }
+                    Rectangle {
+                        id: playerCount
+                        color: ColorRole
+                        anchors.top: titleLabel.bottom
+                        anchors.right: parent.right
+                        width: playerCountTxt.contentWidth
+                        height: playerCountTxt.height
                         Text {
-                            id:durationId
-                            text: Duration+ qsTr("min")
-                            font.pixelSize: parent.height
+                            id:playerCountTxt
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            text: CurrentPlayer +'/'+ MaximumPlayer
+                            font.pixelSize: rootItem.height * root.factor
                             textFormat: Text.RichText
-                        }
-                        Text {
-                            id:gmId
-                            text: qsTr("GM:") + GMName
-                            font.pixelSize: parent.height
-                            textFormat: Text.RichText
+                            height: contentHeight
+                            verticalAlignment: Text.AlignTop
+
                         }
                     }
+
+
+
                     TextArea {
                         id:desc
                         text: Description
+                        anchors.top: gmId.bottom
+                        anchors.left: parent.left
                         font.pixelSize: parent.height * root.factor
                         wrapMode: Text.WordWrap
-                        //elide:  Text.ElideRight
                         width: parent.width
-                        height: parent.height * 0.6
+                        height: parent.height * 0.8
                         textFormat: Text.RichText
+                        leftPadding: 0
                     }
 
+
+
+                }
+                Text {
+                    id:durationId
+                    text: Duration+ qsTr("min")
+                    font.pixelSize: parent.height*0.05
+                    textFormat: Text.RichText
+                    anchors.bottom: rect.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
 
                 }
                 MouseArea {
@@ -144,11 +168,11 @@ Item {
              PathLine { x:view.width; y: 3*view.height/8 }
              //PathQuad { x: view.width/2; y: view.height/8; controlX: 3*view.width/2; controlY: 3*view.height/8 }
              PathAttribute { name: "iconScale"; value: 0.3 }
-             PathAttribute { name: "itemOpacity"; value: 0.5 }
+             PathAttribute { name: "itemOpacity"; value: 0.01 }
              PathAttribute { name: "itemRotation"; value: -54 }
              PathLine { x: 0; y: 3*view.height/8; }
              PathAttribute { name: "iconScale"; value: 0.3 }
-             PathAttribute { name: "itemOpacity"; value: 0.5 }
+             PathAttribute { name: "itemOpacity"; value: 0.01 }
              PathAttribute { name: "itemRotation"; value: 54 }
              PathLine { x: view.width*0.5; y: view.height*0.5; }
          }
@@ -156,6 +180,24 @@ Item {
        Keys.onLeftPressed: decrementCurrentIndex()
        Keys.onRightPressed: incrementCurrentIndex()
 
+    }
+
+
+    Rectangle {
+        id: popupTop
+        color: "white"
+        border.width: 2
+        border.color: "black"
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: parent.height * 0.07
+        radius: 20
+        property alias msg: popupMenu.text
+        Text {
+            id: popupMenu
+            anchors.fill: parent
+        }
     }
 
 }

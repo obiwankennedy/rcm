@@ -57,6 +57,8 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
 
     //view
     m_ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
+
+    m_ui->m_availableScenario->setList(&m_list);
     m_ui->m_availableScenario->setModel(m_availableScenarioModel);
 
     m_ui->m_scenarioAvailabeView->installEventFilter(this);
@@ -111,6 +113,35 @@ ScenarioManager::~ScenarioManager()
     #endif
 
 }
+bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
+{
+    bool retValue=false;
+    if (obj == m_ui->m_scenarioAvailabeView)
+    {
+        retValue = eventFilterForAvailable(event);
+    }
+    else if(obj == m_ui->m_scenarioRunningView)
+    {
+        retValue =  eventFilterForRunning(event);
+    }
+    else if(obj == m_ui->m_scenarioDoneView)
+    {
+        retValue =  eventFilterForDone(event);
+    }
+    else if(obj == m_ui->m_availableScenario)
+    {
+        retValue =  eventFilterForListPlaning(event);
+    }
+
+    if(!retValue)
+    {
+        return QObject::eventFilter(obj, event);
+    }
+    else
+    {
+        return retValue;
+    }
+}
 void ScenarioManager::setRegistrerPlayer(bool b)
 {
     m_registrerPlayerInfo = b;
@@ -128,7 +159,39 @@ void ScenarioManager::addScenarios(QList<Scenario*>* l,Scenario::STATE m )
     }
 
 }
+#include "localisation/rcmmimedata.h"
+#include <QDrag>
+bool ScenarioManager::mouseMoveOnScenarioListOnPlanning ( QMouseEvent * event)
+{
+    QModelIndex tmp = m_ui->m_availableScenario->indexAt(event->pos());
 
+    qDebug() << "mouseMoveOnScenarioListOnPlanning" << tmp;
+    if ((event->buttons() == Qt::LeftButton) && (tmp.isValid()))
+    {
+        QVariant var = tmp.data(Qt::UserRole);
+        Scenario sce = var.value<Scenario>();
+
+        Scenario* trueScenario = new Scenario();
+        trueScenario->setReferenceScenario(&sce);
+
+
+
+        QDrag *drag = new QDrag(this);
+        RcmMimeData* mimeData = new RcmMimeData();
+
+        mimeData->setScenario(trueScenario);
+        drag->setMimeData(mimeData);
+        auto game = m_list.value(trueScenario->getGameId());
+        if(nullptr != game)
+        {
+            drag->setPixmap(*game->getPixmap());
+        }
+
+        Qt::DropAction dropAction = drag->exec();
+
+    }
+    return true;
+}
 void ScenarioManager::addScenario(Scenario* l,Scenario::STATE s)
 {
     l->setState(s);
@@ -186,31 +249,7 @@ void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 }
 
 
-bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
-{
-    bool retValue=false;
-    if (obj == m_ui->m_scenarioAvailabeView)
-    {
-        retValue = eventFilterForAvailable(event);
-    }
-    else if(obj == m_ui->m_scenarioRunningView)
-    {
-        retValue =  eventFilterForRunning(event);
-    }
-    else if(obj == m_ui->m_scenarioDoneView)
-    {
-        retValue =  eventFilterForDone(event);
-    }
 
-    if(!retValue)
-    {
-        return QObject::eventFilter(obj, event);
-    }
-    else
-    {
-        return retValue;
-    }
-}
 //slots to perform action
 void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m)
 {
@@ -454,6 +493,16 @@ bool ScenarioManager::eventFilterForAvailable( QEvent *event)
 }
 bool ScenarioManager::eventFilterForDone(QEvent * /*ent*/)
 {
+    return false;
+}
+bool ScenarioManager::eventFilterForListPlaning(QEvent * ent)
+{
+    if(ent->type() == QEvent::MouseMove)
+    {
+        QMouseEvent* mouse = dynamic_cast<QMouseEvent*>(ent);
+        return mouseMoveOnScenarioListOnPlanning(mouse);
+    }
+
     return false;
 }
 bool ScenarioManager::eventFilterForRunning(QEvent * event)

@@ -54,6 +54,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_gameModel = new GameModel(m_gameImgProvider);
 
     m_gameMasterModel = new GameMasterModel();
+
+    ui->m_availableScenario->setDragEnabled(true);
+
     //m_gameMasterPresenceModel = new GameMasterModel();
 
     m_preferences = PreferencesManager::getInstance();
@@ -92,12 +95,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->m_scenarioRunningView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_exportCSVAct,SIGNAL(triggered()),this,SLOT(exporCSV()));
 
+    connect(ui->m_nextDay,SIGNAL(clicked(bool)),locview,SLOT(displayNextDay()));
+    connect(ui->m_previousDay,SIGNAL(clicked(bool)),locview,SLOT(displayPreviousDay()));
+
 
 }
 
 MainWindow::~MainWindow()
 {
-    qDebug() << "Destructor MainWindow";
     delete ui;
     delete m_scenarioManager;
 }

@@ -2,7 +2,8 @@
 #define TABLESWIZARD_H
 
 #include <QDialog>
-
+#include <QTimeEdit>
+#include <QTableWidgetItem>
 
 #include "roommodel.h"
 #include "tablemodel.h"
@@ -47,6 +48,7 @@ public slots:
 private:
     Ui::EventProperties *ui;
     int m_roomCount;
+    QHash<QTimeEdit*, QTableWidgetItem*> m_editors;
 };
 
 #endif // TABLESWIZARD_H

@@ -15,7 +15,8 @@ public:
 
 public slots:
     void setProperties();
-
+    void displayNextDay();
+    void displayPreviousDay();
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 signals:
@@ -24,7 +25,7 @@ signals:
 private:
     QPushButton* m_startWizzard;
     QGraphicsView* m_view;
-    QGraphicsScene* m_scene;
+    QList<QGraphicsScene*> m_scenes;
 
 
     TablesWizard* m_wizzard;

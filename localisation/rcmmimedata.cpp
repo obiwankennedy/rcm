@@ -1,32 +1,32 @@
-#include "rolisteammimedata.h"
+#include "rcmmimedata.h"
 
 
-RolisteamMimeData::RolisteamMimeData()
+RcmMimeData::RcmMimeData()
     : m_data(NULL)
 {
-    m_format = "rolisteam/userlist-item";
+    m_format = "rcm/userlist-item";
 }
-bool RolisteamMimeData::hasFormat ( const QString & mimeType ) const
+bool RcmMimeData::hasFormat ( const QString & mimeType ) const
 {
     if(mimeType==m_format)
     {
-        return hasPerson();
+        return hasScenario();
     }
     return QMimeData::hasFormat(mimeType);
 }
 
-void RolisteamMimeData::setPerson(Person* data)
+void RcmMimeData::setScenario(Scenario* data)
 {
     m_data=data;
 }
-bool RolisteamMimeData::hasPerson() const
+bool RcmMimeData::hasScenario() const
 {
     if(m_data!=NULL)
         return true;
     else
         return false;
 }
-Person* RolisteamMimeData::getData() const
+Scenario* RcmMimeData::getData() const
 {
     return m_data;
 }

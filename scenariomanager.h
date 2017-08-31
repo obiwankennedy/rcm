@@ -83,7 +83,8 @@ protected:
     bool eventFilterForAvailable(QEvent* );
     bool eventFilterForRunning(QEvent* );
     bool eventFilterForDone(QEvent* );
-    
+    bool eventFilterForListPlaning(QEvent *ent);
+    bool mouseMoveOnScenarioListOnPlanning(QMouseEvent *event);
 public slots:
     void showCustomView(bool);
     void setCustomViewVisible(bool);

@@ -19,11 +19,10 @@ QRectF TableItem::boundingRect() const
 
 void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
-    qDebug() << "draw TableItem" << boundingRect();
     qreal width = scene()->width();
     qreal height = scene()->height()/m_tableCount;
-    int duration = 8*60;//m_day->getDuration();
-    int startHour = 8;
+    int duration = m_day->getDuration();
+    int startHour = m_day->getStartTime()/60;
 
     QPen pen = painter->pen();
     if(duration!=0)
@@ -33,7 +32,7 @@ void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
         qreal marginY2 = 0.8*(height);
 
 
-        painter->drawText(0,marginY,tr("Table #%1").arg(m_idTable+1));
+        painter->drawText(0,marginY,tr("J%2:Table #%1").arg(m_idTable+1).arg(m_day->getId()+1));
         painter->drawLine(0,marginY,width,marginY);
         painter->drawLine(0,marginY2,width,marginY2);
 

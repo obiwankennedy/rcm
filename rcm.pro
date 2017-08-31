@@ -37,7 +37,9 @@ SOURCES += main.cpp\
     playersinformationdialog.cpp \
     playerinformationformdialog.cpp \
     export/abstractexport.cpp \
-    export/exportcsv.cpp
+    export/exportcsv.cpp \
+    localisation/rcmmimedata.cpp \
+    localisation/scenariolistview.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -65,7 +67,9 @@ HEADERS  += mainwindow.h \
     playersinformationdialog.h \
     playerinformationformdialog.h \
     export/abstractexport.h \
-    export/exportcsv.h
+    export/exportcsv.h \
+    localisation/rcmmimedata.h \
+    localisation/scenariolistview.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

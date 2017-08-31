@@ -11,9 +11,9 @@
 LocalisationView::LocalisationView(QGraphicsView* view,QWidget *parent) :
     QObject(parent),m_wizzard(nullptr),m_view(view)
 {
-    m_scene = new QGraphicsScene(0,0,1500,900);
-    m_view->setScene(m_scene);
-    m_view->ensureVisible(m_scene->sceneRect(),0,0);
+
+    //m_view->setScene(m_scene);
+    //m_view->ensureVisible(m_scene->sceneRect(),0,0);
 
 
 
@@ -27,9 +27,11 @@ bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::Resize)
         {
-            m_view->fitInView(
-                m_scene->itemsBoundingRect(),
-                Qt::KeepAspectRatio);
+            auto scene = m_view->scene();
+            if(nullptr != scene)
+            {
+                m_view->fitInView(scene->itemsBoundingRect(),Qt::KeepAspectRatio);
+            }
         }
     }
     return QObject::eventFilter(obj,event);
@@ -39,16 +41,61 @@ void LocalisationView::setProperties()
     TablesWizard wizzard;
     if(QDialog::Accepted == wizzard.exec())
     {
+        auto schedules = wizzard.getSchedule();
         int tableCount = wizzard.getTableCount();
-        int y = m_scene->height()/tableCount;
-        for(int i = 0; i< tableCount; ++i)
-        {
-            TableItem* item = new TableItem();
-            item->setIdTable(i);
-            item->setTableCount(tableCount);
-            m_scene->addItem(item);
-            item->setPos(0,y*i);
-        }
 
+        for(auto day : *schedules)
+        {
+            QGraphicsScene* scene = new QGraphicsScene(0,0,1500,900);
+
+            int y = scene->height()/tableCount;
+            for(int i = 0; i< tableCount; ++i)
+            {
+                TableItem* item = new TableItem();
+                item->setDay(day);
+                item->setIdTable(i);
+                item->setTableCount(tableCount);
+                scene->addItem(item);
+                item->setPos(0,y*i);
+            }
+            m_scenes.append(scene);
+        }
     }
+
+    if(!m_scenes.isEmpty())
+    {
+        m_view->setScene(m_scenes.at(0));
+        m_view->ensureVisible(m_scenes.at(0)->sceneRect(),0,0);
+    }
+}
+void LocalisationView::displayNextDay()
+{
+    auto scene = m_view->scene();
+    int i = m_scenes.indexOf(scene);
+    ++i;
+    if(i<0)
+    {
+        i =0;
+    }
+    else if(i>=m_scenes.size())
+    {
+        i = m_scenes.size()-1;
+    }
+    m_view->setScene(m_scenes.at(i));
+}
+
+void LocalisationView::displayPreviousDay()
+{
+    auto scene = m_view->scene();
+    int i = m_scenes.indexOf(scene);
+    --i;
+    if(i<0)
+    {
+        i =0;
+    }
+    else if(i>=m_scenes.size())
+    {
+        i = m_scenes.size()-1;
+    }
+    m_view->setScene(m_scenes.at(i));
 }

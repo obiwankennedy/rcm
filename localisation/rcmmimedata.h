@@ -1,21 +1,21 @@
-#ifndef ROLISTEAMMIMEDATA_H
-#define ROLISTEAMMIMEDATA_H
+#ifndef RCMMIMEDATA_H
+#define RCMMIMEDATA_H
 
 #include <QMimeData>
 
 
-#include "data/person.h"
+#include "scenario.h"
 /**
  * @brief allows drag and drop inside the application scope.
  */
-class RolisteamMimeData : public QMimeData
+class RcmMimeData : public QMimeData
 {
     Q_OBJECT
 public:
     /**
       *  @brief default constructor
       */
-    RolisteamMimeData();
+    RcmMimeData();
     /**
       *  @brief return true when given parameter describe a format is stored into the class
       */
@@ -25,19 +25,18 @@ public:
     /**
       *  @brief to define the draged and droped person.
       */
-    void setPerson(Person*);
+    void setScenario(Scenario*);
     /**
       *  @brief same utility of hasformat except is dedicated to person instance.
       */
-    bool hasPerson() const;
+    bool hasScenario() const;
     /**
       *  @brief return the person instance.
       */
-    Person* getData() const;
-    /*protected:
-    QVariant retrieveData ( const QString & mimeType, QVariant::Type type ) const;*/
+    Scenario* getData() const;
+
 private:
     QString m_format; /// const string representing the minetype of person
-    Person* m_data; /// pointer to stored data
+    Scenario* m_data; /// pointer to stored data
 };
-#endif // ROLISTEAMMIMEDATA_H
+#endif // RCMMIMEDATA_H

@@ -58,11 +58,34 @@ QPointF Schedules::computeClosePoint(QPointF pos)
 void Schedules::addScenario(Scenario* item, QPointF pos)
 {
     ScenarioItem* sceneItem = new ScenarioItem();
+    sceneItem->setMinutesInPixel(&m_minuteWidth);
+    sceneItem->setTableInPixel(&m_tableHeight);
     sceneItem->setData(item);
     addItem(sceneItem);
 
     sceneItem->setPos(pos);
 
+}
+
+qreal Schedules::minuteWidth() const
+{
+    return m_minuteWidth;
+}
+
+void Schedules::setMinuteWidth(qreal minuteWidth)
+{
+    qDebug() << "Schedules minute in pixel"<< minuteWidth;
+    m_minuteWidth = minuteWidth;
+}
+
+qreal Schedules::getTableHeight() const
+{
+    return m_tableHeight;
+}
+
+void Schedules::setTableHeight(qreal height)
+{
+    m_tableHeight = height;
 }
 
 
@@ -101,6 +124,7 @@ bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
     }
     return QObject::eventFilter(obj,event);
 }
+
 void LocalisationView::setProperties()
 {
     TablesWizard wizzard;
@@ -113,10 +137,13 @@ void LocalisationView::setProperties()
         {
             Schedules* scene = new Schedules(0,0,1500,900);
 
+
             int y = scene->height()/tableCount;
             for(int i = 0; i< tableCount; ++i)
             {
                 TableItem* item = new TableItem();
+                connect(item,SIGNAL(minuteWidthChanged(qreal)),scene,SLOT(setMinuteWidth(qreal)));
+                connect(item,SIGNAL(heightChanged(qreal)),scene,SLOT(setTableHeight(qreal)));
                 item->setDay(day);
                 item->setIdTable(i);
                 item->setTableCount(tableCount);

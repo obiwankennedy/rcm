@@ -13,16 +13,19 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    int* minutesInPixel() const;
-    void setMinutesInPixel(int* minutesInPixel);
+    qreal* minutesInPixel() const;
+    void setMinutesInPixel(qreal* minutesInPixel);
 
     Scenario* data() const;
     void setData(Scenario* data);
 
+    qreal *tableInPixel() const;
+    void setTableInPixel(qreal *tableInPixel);
+
 private:
     Scenario* m_data;
-    int* m_minutesInPixel;
-    int* m_tableInPixel;
+    qreal* m_minutesInPixel;
+    qreal* m_tableInPixel;
 };
 
 #endif // SCENARIOITEM_H

@@ -31,13 +31,14 @@ void ScenarioItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 }
 
-int *ScenarioItem::minutesInPixel() const
+qreal *ScenarioItem::minutesInPixel() const
 {
     return m_minutesInPixel;
 }
-
-void ScenarioItem::setMinutesInPixel(int *minutesInPixel)
+#include <QDebug>
+void ScenarioItem::setMinutesInPixel(qreal* minutesInPixel)
 {
+    qDebug() << "ScenarioItem minute in pixel"<< minutesInPixel;
     m_minutesInPixel = minutesInPixel;
 }
 
@@ -49,4 +50,14 @@ Scenario *ScenarioItem::data() const
 void ScenarioItem::setData(Scenario *data)
 {
     m_data = data;
+}
+
+qreal *ScenarioItem::tableInPixel() const
+{
+    return m_tableInPixel;
+}
+
+void ScenarioItem::setTableInPixel(qreal *tableInPixel)
+{
+    m_tableInPixel = tableInPixel;
 }

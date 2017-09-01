@@ -9,8 +9,18 @@
 class Scenario;
 class Schedules : public QGraphicsScene
 {
+    Q_OBJECT
 public:
     Schedules(int, int,int,int);
+
+
+    qreal getTableHeight() const;
+
+    qreal minuteWidth() const;
+
+public slots:
+    void setTableHeight(qreal height);
+    void setMinuteWidth(qreal minuteWidth);
 
 
 protected:
@@ -32,6 +42,8 @@ private:
 
 private:
     Scenario* m_droppingItem;
+    qreal m_tableHeight;
+    qreal m_minuteWidth;
 
 };
 
@@ -45,6 +57,7 @@ public slots:
     void setProperties();
     void displayNextDay();
     void displayPreviousDay();
+
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
 signals:
@@ -59,7 +72,6 @@ private:
     TablesWizard* m_wizzard;
     QList<Table*>* m_data;
     int m_roomCount;
-
 };
 
 #endif // LOCALISATIONVIEW_H

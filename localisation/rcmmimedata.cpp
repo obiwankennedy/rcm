@@ -4,7 +4,7 @@
 RcmMimeData::RcmMimeData()
     : m_data(NULL)
 {
-    m_format = "rcm/userlist-item";
+    m_format = "rcm/scenario-item";
 }
 bool RcmMimeData::hasFormat ( const QString & mimeType ) const
 {

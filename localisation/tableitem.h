@@ -25,6 +25,10 @@ public:
     int tableCount() const;
     void setTableCount(int tableCount);
 
+signals:
+    void heightChanged(qreal );
+    void minuteWidthChanged(qreal );
+
 private:
     QList<Scenario*> m_scenarioList;
     EventDay* m_day;

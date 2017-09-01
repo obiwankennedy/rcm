@@ -31,6 +31,8 @@ void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
         qreal marginY = 0.2*(height);
         qreal marginY2 = 0.8*(height);
 
+        emit heightChanged(marginY2-marginY);
+        emit minuteWidthChanged(width/duration);
 
         painter->drawText(0,marginY,tr("J%2:Table #%1").arg(m_idTable+1).arg(m_day->getId()+1));
         painter->drawLine(0,marginY,width,marginY);

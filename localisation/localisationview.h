@@ -6,6 +6,34 @@
 #include <QGraphicsView>
 
 #include "tableswizard.h"
+class Scenario;
+class Schedules : public QGraphicsScene
+{
+public:
+    Schedules(int, int,int,int);
+
+
+protected:
+    void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
+    /**
+     * @brief dropEvent
+     * @param event
+     */
+    void dropEvent ( QGraphicsSceneDragDropEvent * event );
+    /**
+     * @brief dragMoveEvent
+     * @param event
+     */
+    void dragMoveEvent( QGraphicsSceneDragDropEvent * event );
+
+private:
+    QPointF computeClosePoint(QPointF pos);
+    void addScenario(Scenario* item, QPointF pos);
+
+private:
+    Scenario* m_droppingItem;
+
+};
 
 class LocalisationView : public QObject
 {

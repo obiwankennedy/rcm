@@ -1,12 +1,77 @@
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QEvent>
+#include <QGraphicsSceneDragDropEvent>
 
-
+#include "scenarioitem.h"
 #include "localisationview.h"
 #include "tableitem.h"
 #include "roomitem.h"
 #include "tableswizard.h"
+#include "rcmmimedata.h"
+
+
+Schedules::Schedules(int x, int y, int w, int h)
+    : QGraphicsScene(x,y,w,h)
+{
+
+}
+void Schedules::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
+    event->acceptProposedAction();
+}
+void Schedules::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
+{
+    const RcmMimeData* data= qobject_cast<const RcmMimeData*>(event->mimeData());
+    if(nullptr != data)
+    {
+        if (data->hasFormat("rcm/scenario-item"))
+        {
+            event->acceptProposedAction();
+        }
+    }
+}
+
+void Schedules::dropEvent ( QGraphicsSceneDragDropEvent * event )
+{
+    const RcmMimeData* data = qobject_cast<const RcmMimeData*>(event->mimeData());
+    if(nullptr != data)
+    {
+        if (data->hasFormat("rcm/scenario-item"))
+        {
+            Scenario* item = data->getData();
+            if(item)
+            {
+                addScenario(item,computeClosePoint(event->scenePos()));
+                m_droppingItem = item;
+            }
+        }
+    }
+
+}
+
+QPointF Schedules::computeClosePoint(QPointF pos)
+{
+    return pos;
+}
+
+void Schedules::addScenario(Scenario* item, QPointF pos)
+{
+    ScenarioItem* sceneItem = new ScenarioItem();
+    sceneItem->setData(item);
+    addItem(sceneItem);
+
+    sceneItem->setPos(pos);
+
+}
+
+
+
+
+
+//////////////////////////
+
+
 
 LocalisationView::LocalisationView(QGraphicsView* view,QWidget *parent) :
     QObject(parent),m_wizzard(nullptr),m_view(view)
@@ -46,7 +111,7 @@ void LocalisationView::setProperties()
 
         for(auto day : *schedules)
         {
-            QGraphicsScene* scene = new QGraphicsScene(0,0,1500,900);
+            Schedules* scene = new Schedules(0,0,1500,900);
 
             int y = scene->height()/tableCount;
             for(int i = 0; i< tableCount; ++i)

@@ -34,7 +34,14 @@ void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
         emit heightChanged(marginY2-marginY);
         emit minuteWidthChanged(width/duration);
 
-        painter->drawText(0,marginY,tr("J%2:Table #%1").arg(m_idTable+1).arg(m_day->getId()+1));
+        if(m_name.isEmpty())
+        {
+            painter->drawText(0,marginY,tr("J%2:Table #%1").arg(m_idTable+1).arg(m_day->getId()+1));
+        }
+        else
+        {
+            painter->drawText(0,marginY,tr("J%2:Table %1").arg(m_name).arg(m_day->getId()+1));
+        }
         painter->drawLine(0,marginY,width,marginY);
         painter->drawLine(0,marginY2,width,marginY2);
 
@@ -105,5 +112,45 @@ int TableItem::tableCount() const
 void TableItem::setTableCount(int tableCount)
 {
     m_tableCount = tableCount;
+}
+
+QString TableItem::name() const
+{
+    return m_name;
+}
+
+void TableItem::setName(const QString &name)
+{
+    m_name = name;
+}
+
+void TableItem::readFromData(QDataStream &)
+{
+
+}
+
+void TableItem::writeToData(QDataStream &) const
+{
+
+}
+
+QDomElement TableItem::writeDataToXml(QDomDocument &)
+{
+
+}
+
+void TableItem::readDataFromXml(QDomNode &)
+{
+
+}
+
+void TableItem::readDataToJson(QJsonObject &)
+{
+
+}
+
+void TableItem::writeDataToJson(QJsonObject &)
+{
+
 }
 

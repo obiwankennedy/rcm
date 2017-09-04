@@ -5,8 +5,9 @@
 #include "table.h"
 #include "scenario.h"
 #include "tableswizard.h"
+#include "serializable.h"
 
-class TableItem : public QGraphicsObject
+class TableItem : public QGraphicsObject, public Serialisable
 {
     Q_OBJECT
 public:
@@ -25,6 +26,18 @@ public:
     int tableCount() const;
     void setTableCount(int tableCount);
 
+    QString name() const;
+    void setName(const QString &name);
+
+    virtual void readFromData(QDataStream&);
+    virtual void writeToData(QDataStream&) const;
+
+    virtual QDomElement writeDataToXml(QDomDocument&);
+    virtual void readDataFromXml(QDomNode&);
+
+    virtual void readDataToJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
+
 signals:
     void heightChanged(qreal );
     void minuteWidthChanged(qreal );
@@ -34,6 +47,7 @@ private:
     EventDay* m_day;
     int m_idTable;
     int m_tableCount;
+    QString m_name;
 };
 
 #endif // TABLEITEM_H

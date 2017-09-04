@@ -48,6 +48,9 @@ public:
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
+    virtual void readDataToJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
+
 
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);

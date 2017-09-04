@@ -127,6 +127,16 @@ void GameModel::writeToData(QDataStream& to) const
         tmp->writeToData(to);
     }
 }
+
+void GameModel::readDataToJson(QJsonObject &)
+{
+
+}
+
+void GameModel::writeDataToJson(QJsonObject &)
+{
+
+}
 QMap<QString,Game*>& GameModel::getGameMap()
 {
     return m_gameMap;

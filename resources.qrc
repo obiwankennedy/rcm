@@ -5,5 +5,7 @@
         <file>resources/nologo.png</file>
         <file>resources/go-left.png</file>
         <file>resources/go-right.png</file>
+        <file>resources/cadenas_closed.png</file>
+        <file>resources/cadenas_open.png</file>
     </qresource>
 </RCC>

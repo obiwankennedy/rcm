@@ -34,9 +34,10 @@
 #include "gamemaster.h"
 
 #include "gamemasterdialog.h"
-#include "localisation/localisationview.h"
 
 #include "export/exportcsv.h"
+
+#include "idtranslator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -64,6 +65,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
 
+
+    IdTranslator* translator = IdTranslator::getInstance(m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
+    Q_UNUSED(translator);
     m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
     m_scenarioManager->setLabel(ui);
 
@@ -79,10 +83,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_fileMenu->insertSeparator(ui->m_quitAct);
 
     ui->m_masterView->installEventFilter(this);
-    LocalisationView* locview = new LocalisationView(ui->m_timeLine);
+    m_locview = new LocalisationView(ui->m_timeLine);
 
 
-    connect(ui->m_properties,SIGNAL(clicked(bool)),locview,SLOT(setProperties()));
+    connect(ui->m_properties,SIGNAL(clicked(bool)),m_locview,SLOT(setProperties()));
    // ui->m_tabWidget->addTab(,tr("Tables"));
 
 
@@ -95,8 +99,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->m_scenarioRunningView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_exportCSVAct,SIGNAL(triggered()),this,SLOT(exporCSV()));
 
-    connect(ui->m_nextDay,SIGNAL(clicked(bool)),locview,SLOT(displayNextDay()));
-    connect(ui->m_previousDay,SIGNAL(clicked(bool)),locview,SLOT(displayPreviousDay()));
+    connect(ui->m_nextDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayNextDay()));
+    connect(ui->m_previousDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayPreviousDay()));
 
 
 }
@@ -273,6 +277,7 @@ void MainWindow::saveData()
         m_gameModel->writeToData(in);
         m_gameMasterModel->writeToData(in);
         m_scenarioManager->writeToData(in);
+        m_locview->writeToData(in);
         file.close();
     }
 }
@@ -286,7 +291,7 @@ void MainWindow::saveAsData()
 }
 void MainWindow::openData()
 {
-     m_currentDataPath = "/home/renaud/applications/mine/rcm/data_test_several_game.rcdb";
+     m_currentDataPath = "/home/renaud/documents/rcm/data_test_several_game.rcdb";
     //m_currentDataPath = QFileDialog::getOpenFileName(this, tr("Open Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Rolisteam Conv Database (*.rcdb)"));
     if(!m_currentDataPath.isNull())
     {

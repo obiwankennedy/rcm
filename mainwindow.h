@@ -33,6 +33,7 @@
 
 #include "preferences/preferencesmanager.h"
 #include "serializable.h"
+#include "localisation/localisationview.h"
 
 #include "gameimageprovider.h"
 
@@ -117,6 +118,7 @@ private:
     QAction* m_makeGMGoneAct;
     QMenu* m_recentFile;
     QList<QAction*>* m_recentFileActions;
+    LocalisationView* m_locview;
 
 
     QQuickWindow* m_window;

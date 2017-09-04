@@ -562,6 +562,16 @@ void ScenarioManager::writeToData(QDataStream& to) const
     m_doneScenarioModel->writeToData(to);
 }
 
+void ScenarioManager::readDataToJson(QJsonObject &)
+{
+
+}
+
+void ScenarioManager::writeDataToJson(QJsonObject &)
+{
+
+}
+
 QDomElement ScenarioManager::writeDataToXml(QDomDocument& t)
 {
     QDomElement scenarioList =  t.createElement("scenarioManager");

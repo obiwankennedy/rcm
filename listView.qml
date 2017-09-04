@@ -6,7 +6,7 @@ ApplicationWindow {
     id: root
     //visibility: Window.FullScreen;
     property real factor: 0.04
-    property alias msg: popupTop.msg
+    property string msg: ""
     property bool autoAnimation: false
     property int itemAngle: 60
     property int itemSize: root.width * 0.8
@@ -317,6 +317,7 @@ ApplicationWindow {
     Rectangle {
         id: popupTop
         color: "white"
+       // property alias msg: popupMenu.text
         border.width: 2
         border.color: "black"
         anchors.top: parent.top
@@ -325,13 +326,13 @@ ApplicationWindow {
         visible: (msg.length > 0)
         height: parent.height * 0.07
         radius: 20
-        property alias msg: popupMenu.text
         Text {
             id: popupMenu
             anchors.fill: parent
             verticalAlignment:Text.AlignVCenter
             horizontalAlignment:Text.AlignHCenter
             font.pixelSize: parent.height
+            text: root.msg
         }
     }
 

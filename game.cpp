@@ -111,6 +111,16 @@ void Game::readDataFromXml(QDomNode& node)
 
 }
 
+void Game::readDataToJson(QJsonObject &)
+{
+
+}
+
+void Game::writeDataToJson(QJsonObject &)
+{
+
+}
+
 void Game::setTitle(QString title)
 {
     m_title = title;

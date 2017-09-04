@@ -58,6 +58,10 @@ public:
      */
     virtual void readDataFromXml(QDomNode&) ;
 
+    virtual void readDataToJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
+
+
     /**
      * @brief setTitle
      * @param title

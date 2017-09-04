@@ -90,6 +90,9 @@ public:
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&) ;
 
+    virtual void readDataToJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
+
     virtual void writeDataToCsv(QTextStream&);
     virtual void readDataFromCsv(QTextStream&) ;
 

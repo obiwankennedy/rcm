@@ -348,6 +348,16 @@ void Scenario::readDataFromXml(QDomNode& node)
 
 }
 
+void Scenario::readDataToJson(QJsonObject &)
+{
+
+}
+
+void Scenario::writeDataToJson(QJsonObject &)
+{
+
+}
+
 void Scenario::writeDataToCsv(QTextStream& out)
 {
     out << m_gameMasterId << ";"<<m_gameMasterId << ";"<<m_gameId << ";"<<m_duration << ";"<< m_level << ";"<< m_maximumPlayers << ";"

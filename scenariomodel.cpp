@@ -432,6 +432,16 @@ void  ScenarioModel::writeToData(QDataStream& to) const
     }
 
 }
+
+void ScenarioModel::readDataToJson(QJsonObject &)
+{
+
+}
+
+void ScenarioModel::writeDataToJson(QJsonObject &)
+{
+
+}
 QDomElement ScenarioModel::writeDataToXml(QDomDocument& to)
 {
     //to << m_scenarioList->count();

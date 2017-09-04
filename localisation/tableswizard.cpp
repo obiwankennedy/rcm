@@ -10,6 +10,10 @@ TablesWizard::TablesWizard(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->m_dayCount,SIGNAL(valueChanged(int)),this, SLOT(numberOfDayChanged()));
+    connect(ui->m_tableCount,SIGNAL(valueChanged(int)),this,SLOT(tableCountChanged()));
+
+    ui->m_tableName->setEditTriggers(QAbstractItemView::DoubleClicked);
+    ui->m_tableName->setAlternatingRowColors(true);
 }
 
 TablesWizard::~TablesWizard()
@@ -57,6 +61,18 @@ int TablesWizard::getTableCount() const
     return ui->m_tableCount->value();
 }
 
+QStringList TablesWizard::getNameTable()
+{
+    QStringList data;
+
+    for(int i = 0; i < ui->m_tableName->count();++i)
+    {
+        auto item = ui->m_tableName->item(i);
+        data << item->data(Qt::DisplayRole).toString();
+    }
+    return data;
+}
+
 #include <QHeaderView>
 void TablesWizard::numberOfDayChanged()
 {
@@ -94,6 +110,29 @@ void TablesWizard::numberOfDayChanged()
         start->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
         end->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
     }
+}
+
+void TablesWizard::tableCountChanged()
+{
+    int tableCount = ui->m_tableCount->value();
+    ui->m_tableName->clear();
+    QStringList names;
+
+
+    for(int i = 0 ; i < tableCount ; i++)
+    {
+        names << QString("");
+    }
+
+    ui->m_tableName->addItems(names);
+
+    for(int i = 0; i < ui->m_tableName->count();++i)
+    {
+        auto item = ui->m_tableName->item(i);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+    }
+
+
 }
 //////////////////////////////////////////
 /// \brief EventDay::getStartTime

@@ -42,8 +42,10 @@ public:
 
     QList<EventDay*>* getSchedule();
     int getTableCount() const;
+    QStringList getNameTable();
 public slots:
     void numberOfDayChanged();
+    void tableCountChanged();
 
 private:
     Ui::EventProperties *ui;

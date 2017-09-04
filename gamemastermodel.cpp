@@ -140,6 +140,16 @@ void GameMasterModel::writeToData(QDataStream& to) const
         tmp->writeToData(to);
     }
 }
+
+void GameMasterModel::readDataToJson(QJsonObject &)
+{
+
+}
+
+void GameMasterModel::writeDataToJson(QJsonObject &)
+{
+
+}
 Qt::ItemFlags GameMasterModel::flags ( const QModelIndex & index ) const
 {
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;

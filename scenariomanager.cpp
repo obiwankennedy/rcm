@@ -562,14 +562,14 @@ void ScenarioManager::writeToData(QDataStream& to) const
     m_doneScenarioModel->writeToData(to);
 }
 
-void ScenarioManager::readDataToJson(QJsonObject &)
+void ScenarioManager::readDataToJson(QJsonObject & obj)
 {
-
+    m_doneScenarioModel->readDataToJson(obj);
 }
 
-void ScenarioManager::writeDataToJson(QJsonObject &)
+void ScenarioManager::writeDataToJson(QJsonObject & obj)
 {
-
+    m_doneScenarioModel->writeDataToJson(obj);
 }
 
 QDomElement ScenarioManager::writeDataToXml(QDomDocument& t)

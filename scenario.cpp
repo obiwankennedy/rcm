@@ -347,14 +347,42 @@ void Scenario::readDataFromXml(QDomNode& node)
     m_playerInformation = tmpElement.text().split('\n');
 
 }
+#include <QJsonObject>
 
-void Scenario::readDataToJson(QJsonObject &)
+void Scenario::readDataToJson(QJsonObject & obj)
 {
+    m_gameMasterId=obj["gameMasterId"].toString();
+    m_gameId=obj["gameId"].toString();
+    m_duration=obj["duration"].toInt();
+    m_level= (LEVEL)obj["level"].toInt();
+    m_maximumPlayers=obj["maximumPlayers"].toInt();
+    m_minimumPlayers=obj["minimumPlayers"].toInt();
+    m_title=obj["title"].toString();
+    m_description=obj["description"].toString();
+    m_currentPlayers=obj["currentPlayers"].toInt();
+    m_state= (STATE)obj["state"].toInt();
+    m_startTime=QDateTime::fromString(obj["startTime"].toString(),"dd.MM.yyyy:hh:mm:ss");
+    m_tableNumber=obj["tableNumber"].toInt();
+    m_playerInformation=obj["playersInfo"].toString().split('\n');
 
 }
 
-void Scenario::writeDataToJson(QJsonObject &)
+void Scenario::writeDataToJson(QJsonObject & obj)
 {
+    obj["gameMasterId"]=m_gameMasterId;
+    obj["gameId"]=m_gameId;
+    obj["duration"]=(int)m_duration;
+    obj["level"]=m_level;
+    obj["maximumPlayers"]=(int)m_maximumPlayers;
+    obj["minimumPlayers"]=(int)m_minimumPlayers;
+    obj["title"]=m_title;
+    obj["description"]=m_description;
+    obj["currentPlayers"]=(int)m_currentPlayers;
+    obj["state"]=m_state;
+    obj["startTime"]=m_startTime.toString("dd.MM.yyyy:hh:mm:ss");
+    obj["tableNumber"]=(int)m_tableNumber;
+    obj["playersInfo"]=m_playerInformation.join('\n');
+
 
 }
 

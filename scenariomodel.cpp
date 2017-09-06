@@ -22,6 +22,9 @@
 #include "scenariomodel.h"
 #include <QDebug>
 #include <QColor>
+#include <QJsonArray>
+#include <QJsonObject>
+
 
 ScenarioModel::ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent) :
     QAbstractListModel(parent),m_state(m),m_list(l),m_gameMasterMap(lstGm),m_edition(true)
@@ -433,14 +436,21 @@ void  ScenarioModel::writeToData(QDataStream& to) const
 
 }
 
-void ScenarioModel::readDataToJson(QJsonObject &)
+void ScenarioModel::readDataToJson(QJsonObject & obj)
 {
 
 }
 
-void ScenarioModel::writeDataToJson(QJsonObject &)
+void ScenarioModel::writeDataToJson(QJsonObject & obj)
 {
-
+    QJsonArray fieldArray;
+    for(auto tmp : *m_scenarioList)
+    {
+        QJsonObject scenario;
+        tmp->writeDataToJson(scenario);
+        fieldArray.append(scenario);
+    }
+    obj["items"]=fieldArray;
 }
 QDomElement ScenarioModel::writeDataToXml(QDomDocument& to)
 {

@@ -1,0 +1,374 @@
+{
+    "games": {
+        "items": [
+            {
+                "description": "￼\nPremier jeu de rôle japonais à être traduit en français, Ryuutama vous propose de jouer dans un univers fantastique nourri d’histoires de dragons, de saisons et de quêtes inoubliables. Au milieu d’une nature suscitant un émerveillement permanent, les joueurs y incarnent des voyageurs qui arpentent le monde, principalement mus par leur enthousiasme et la beauté de ce qui les entoure.",
+                "gameId": "{114a19c2-36a2-49bd-a17a-68a83b9cd6e4}",
+                "imageUrl": "http://lapinmarteau.com/wp-content/uploads/2013/09/cover.png",
+                "punchline": "Les œufs de dragons",
+                "title": "Ryuutama",
+                "type": "Kawai"
+            },
+            {
+                "description": "COPS se propose de vous entraîner dans un proche futur, celui de la Californie des années 2030. Jeune recrue fraîchement émoulue de l'Académie de Police, fils à papa pistonné, ex-fédéral ou vétéran issu de la police ou de l'armée, c'est à vous désormais de combattre le crime sous toutes ses formes au coeur de la Cité des Anges, en intégrant les rangs de l'unité COPS - Central Organisation for Public Security, élite et vitrine d'un LAPD à bout de souffle.",
+                "gameId": "{2d56634c-6af5-4b9c-b825-200910a90e6b}",
+                "imageUrl": "http://www.jdroll.org/files/b375290e450e3a893fe1efd90854697032736c2e.gif",
+                "punchline": "Flics, Los Angeles, 2030",
+                "title": "COPS",
+                "type": "Cyberpunk / Anticipation"
+            },
+            {
+                "description": "Ce jeu emprunte à l’univers de H. P. Lovecraft son ambiance mystérieuse et oppressante, ainsi que sa cosmogonie hétéroclite et originale — le Mythe de Cthulhu — qui décrit un ensemble de puissances maléfiques, incarnations de forces cosmiques et primitives : les Grands Anciens. Les joueurs sont confrontés à des situations où ils doivent déjouer les complots de ces créatures et de leurs adorateurs.",
+                "gameId": "{40ec64e8-ab67-4a39-970e-13546fca537d}",
+                "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/51HmnBa4mGL._SX339_BO1,204,203,200_.jpg",
+                "punchline": "Enquêtes et mystères",
+                "title": "L'Appel de Cthulhu",
+                "type": "Historique fantastique"
+            },
+            {
+                "description": "Le jeu de rôle Le Livre des cinq anneaux (L5A) (titre original: \"Legend of the Five Rings\" ou \"L5R\") est un jeu de rôle américain tiré du jeu de cartes Legend of the Five Rings et dont la première édition est parue en 1996. Le jeu se déroule dans l'univers de Rokugan, un univers de fantasy librement inspiré du Japon médiéval auquel il ajoute l'existence de la magie et de nombreux peuples et créatures surnaturels. Les joueurs évoluent dans un vaste empire dont les principales factions sont des clans de samouraïs. Ils peuvent notamment incarner des samouraïs guerriers, des magiciens appelés shugenjas, mais aussi des prêtres ou des courtisans. Le système de jeu d'origine est conçu pour des aventures héroïques. Le jeu a connu un bon accueil de la part des critiques et des joueurs et a connu plusieurs rééditions ainsi que de nombreux suppléments.",
+                "gameId": "{4d28d907-5e4d-441e-be46-0ef23a179a01}",
+                "imageUrl": "https://www.philibertnet.com/216012/l5a-le-livre-des-5-anneaux-4eme-ed.jpg",
+                "punchline": "Des samouraïs dans un monde fantastique",
+                "title": "Livre des 5 anneaux",
+                "type": "Med-fan asiatique"
+            },
+            {
+                "description": "\"Il y a bien longtemps, dans une galaxie lointaine, très lointaine...\"",
+                "gameId": "{79bdd676-47d4-48c8-8b5a-4182721561ca}",
+                "imageUrl": "http://www.jdrp.fr/img/articles/32912_ext.jpg",
+                "punchline": "Que la force soit avec vous!",
+                "title": "Star Wars",
+                "type": "Space Opera"
+            },
+            {
+                "description": "Knight est un jeu de rôle futuriste se déroulant en 2037 : les ténèbres ont détruit la Terre telle que nous la connaissions. Ces ténèbres, appelés ténèbres de l'Anathème, sont remplis de créatures maléfiques et démoniaques n'hésitant pas à se nourrir de la vie ou de l'espoir de l'humanité. Grâce aux Immortels,qui sont aux nombres de 24, une partie de l'humanité à réussi à survivre dans des arches, des sortes d'immenses dômes. En 2036, un homme équipé d'une méta-armure, décide de combattre les ténèbres de l'Anathème. Il se fait appeller Arthur et crée l'organisation Knight. Les personnages seront des Chevaliers (knights), membres de cette organisation, porteurs d'armures, créées par l'organisation Knight sous la supervision de Merlin, qui décuplent leurs capacités et peuvent être améliorées par l'ajout de nouveaux modules.",
+                "gameId": "{91a88d14-d762-4ce4-8d6a-7eaf2c706a7a}",
+                "imageUrl": "http://img.over-blog-kiwi.com/1/71/54/18/20160106/ob_234a9a_arton754.png",
+                "punchline": "Chevalier de la table ronde en armure d’Ironman",
+                "title": "Knight",
+                "type": " Post Apocalyptique Fantastique, Science Fiction divers"
+            },
+            {
+                "description": "Sombre : la peur comme au cinéma est un jeu d’horreur contemporain. Il met en scène des antihéros qui essaient de survivre dans un monde particulièrement violent et hostile. L’univers de jeu proposé est celui des films d’horreur, soit un monde contemporain particulièrement dur où fous dangereux et maniaques du découpage de viande humaine sont légion.",
+                "gameId": "{d76b4aa6-1c52-4af8-8462-ed4c5794e826}",
+                "imageUrl": "https://i1.wp.com/saint-epondyle.net/blog/wp-content/uploads/2016/09/Sombre-JdR-horreur-Greg-Guilhaumond-et-Johan-Scipion-1.jpg?resize=220%2C312",
+                "punchline": "La peur comme au cinéma",
+                "title": "Sombre",
+                "type": "Contemporain, Contemporain Fantastique"
+            },
+            {
+                "description": "Les personnages incarnent des prédateurs déshumanisés cherchant à garder le contrôle de leurs tendances bestiales. Le souvenir de leur nature humaine contrebalance de façon précaire leur soif de sang, et la bête affleure toujours sous le vernis de sociabilité. L'origine de leur malédiction est inconnue mais chaque clan a ses propres légendes, à commencer par le fait que les vampire seraient en fait cinq espèces de monstres différents qui se sont mêlées au cours des âges.",
+                "gameId": "{ee8e2358-c620-4f58-9e9a-977d7c6209cd}",
+                "imageUrl": "http://www.legrog.org/visuels/couvertures/7807.jpg",
+                "punchline": "Ce n’est pas Twilight",
+                "title": "Vampire : Le Requiem",
+                "type": "Contemporain Fantastique"
+            },
+            {
+                "description": "Loup-Garou : les Déchus est un jeu de rôle contemporain-fantastique dans lequel les personnages sont des lycanthropes chargés de préserver l’équilibre entre notre monde et le monde des esprits. Ils doivent aussi créer et protéger le domaine de leur meute, car les loups sont des créatures très territoriales. Ils sont ceux que la Lune a maudit, ceux qui sont condamnés à changer de forme et à préserver l’équilibre entre les mondes. Ce sont les loups-garous, en proie à leur fureur et à leur condition ambiguë, à mi-chemin entre l'homme et la bête. Comme symbole de la lune, ils sont aussi très vulnérables aux armes en argent.",
+                "gameId": "{fb032065-4349-473c-b20b-53a8c8771361}",
+                "imageUrl": "http://www.legrog.org/visuels/couvertures/8497.jpg",
+                "punchline": "Fureur Sauvage",
+                "title": "Loup Garou les déchus",
+                "type": "Contemporain Fantastique"
+            }
+        ]
+    },
+    "masters": {
+        "items": [
+            {
+                "first": "obi",
+                "id": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                "mail": "obi",
+                "name": "obi",
+                "nick": "obi",
+                "phone": "obi",
+                "present": true,
+                "scenarios": [
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 60,
+                        "gameId": "{2d56634c-6af5-4b9c-b825-200910a90e6b}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    },
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 60,
+                        "gameId": "{91a88d14-d762-4ce4-8d6a-7eaf2c706a7a}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    },
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 60,
+                        "gameId": "{40ec64e8-ab67-4a39-970e-13546fca537d}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    },
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 120,
+                        "gameId": "{4d28d907-5e4d-441e-be46-0ef23a179a01}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    },
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 60,
+                        "gameId": "{fb032065-4349-473c-b20b-53a8c8771361}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    },
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 60,
+                        "gameId": "{114a19c2-36a2-49bd-a17a-68a83b9cd6e4}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    },
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 60,
+                        "gameId": "{79bdd676-47d4-48c8-8b5a-4182721561ca}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    },
+                    {
+                        "currentPlayers": 0,
+                        "description": "",
+                        "duration": 60,
+                        "gameId": "{ee8e2358-c620-4f58-9e9a-977d7c6209cd}",
+                        "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                        "level": 0,
+                        "maximumPlayers": 6,
+                        "minimumPlayers": 2,
+                        "playersInfo": "",
+                        "startTime": "",
+                        "state": 0,
+                        "tableNumber": 0,
+                        "title": ""
+                    }
+                ]
+            }
+        ]
+    },
+    "scenarios": {
+        "items": [
+        ]
+    },
+    "schedules": {
+        "scenes": [
+            {
+                "day": 0,
+                "minuteWidth": 2.0833333333333335,
+                "scenarioList": [
+                    {
+                        "color": "#000000",
+                        "scenario": {
+                            "currentPlayers": 0,
+                            "description": "",
+                            "duration": 60,
+                            "gameId": "{91a88d14-d762-4ce4-8d6a-7eaf2c706a7a}",
+                            "gameMasterId": "{b3ea9cd1-829a-4016-90ad-d92d65673337}",
+                            "level": 0,
+                            "maximumPlayers": 6,
+                            "minimumPlayers": 2,
+                            "playersInfo": "",
+                            "startTime": "",
+                            "state": 0,
+                            "tableNumber": 0,
+                            "title": ""
+                        },
+                        "state": 0,
+                        "x": 800.015350877193,
+                        "y": 45
+                    }
+                ],
+                "startOnDay": 480,
+                "tableHeight": 135,
+                "tablelist": [
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 0,
+                            "startTime": 480
+                        },
+                        "idTable": 0,
+                        "name": "Horreur",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 0,
+                            "startTime": 480
+                        },
+                        "idTable": 1,
+                        "name": "SF",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 225
+                    },
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 0,
+                            "startTime": 480
+                        },
+                        "idTable": 2,
+                        "name": "",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 450
+                    },
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 0,
+                            "startTime": 480
+                        },
+                        "idTable": 3,
+                        "name": "",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 675
+                    }
+                ]
+            },
+            {
+                "day": 1,
+                "minuteWidth": 0,
+                "scenarioList": [
+                ],
+                "startOnDay": 480,
+                "tableHeight": 0,
+                "tablelist": [
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 1,
+                            "startTime": 480
+                        },
+                        "idTable": 0,
+                        "name": "Horreur",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 1,
+                            "startTime": 480
+                        },
+                        "idTable": 1,
+                        "name": "SF",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 225
+                    },
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 1,
+                            "startTime": 480
+                        },
+                        "idTable": 2,
+                        "name": "",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 450
+                    },
+                    {
+                        "day": {
+                            "endTime": 1200,
+                            "id": 1,
+                            "startTime": 480
+                        },
+                        "idTable": 3,
+                        "name": "",
+                        "scenarios": [
+                        ],
+                        "tableCount": 4,
+                        "x": 0,
+                        "y": 675
+                    }
+                ]
+            }
+        ]
+    }
+}

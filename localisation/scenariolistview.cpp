@@ -10,13 +10,12 @@ ScenarioListView::ScenarioListView(QWidget* parent)
 
 void ScenarioListView::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug() << "mouse move";
 
     QModelIndex tmp = indexAt(event->pos());
 
     QListView::mouseMoveEvent(event);
 
-    qDebug() << "mouseMoveOnScenarioListOnPlanning" << tmp;
+
     if ((event->buttons() == Qt::LeftButton) && (tmp.isValid()))
     {
         QVariant var = tmp.data(Qt::UserRole);

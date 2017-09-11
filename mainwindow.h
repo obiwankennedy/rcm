@@ -33,9 +33,10 @@
 
 #include "preferences/preferencesmanager.h"
 #include "serializable.h"
-#ifdef __QT_QUICK_2_
+#include "localisation/localisationview.h"
+
 #include "gameimageprovider.h"
-#endif
+
 
 namespace Ui {
 class MainWindow;
@@ -59,6 +60,7 @@ public:
     void refreshOpenedFile();
     
 
+    void refreshView();
 public slots:
     void addGameDialog();
     void addGameMasterDialog();
@@ -66,6 +68,7 @@ public slots:
     void statusGmHasChanged(GameMaster* l,bool);
     void ensureTabVisible(TAB);
     void makeGameMasterUnavailable();
+    void openData();
 
     void readCSV();
 protected:
@@ -73,16 +76,20 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event);
 
 
+    void readJSonFile();
 private slots:
+    void saveAs();
     void saveData();
     void saveDataToXml();
     void importDataFromXml();
     void readFile();
     bool maybeSave();
     void saveAsData();
-    void openData();
     void resetData();
     void exporCSV();
+
+    void saveDataToJson();
+    void openJsonData();
 
 
 
@@ -117,9 +124,10 @@ private:
     QAction* m_makeGMGoneAct;
     QMenu* m_recentFile;
     QList<QAction*>* m_recentFileActions;
+    LocalisationView* m_locview;
 
 
-
+    QQuickWindow* m_window;
 
 
     QString m_currentDataPath;
@@ -127,9 +135,7 @@ private:
     ScenarioManager* m_scenarioManager;
 
     QString m_title;
-#ifdef __QT_QUICK_2_
     GameImageProvider* m_gameImgProvider;
-#endif
 };
 
 #endif // MAINWINDOW_H

@@ -60,6 +60,8 @@ public:
     void setGMScenario(QList<Scenario*>* l);
 
 
+
+
     int getScenarioCount() const;
 
 
@@ -71,11 +73,18 @@ public:
     virtual void writeToData(QDataStream&) const;
     virtual QDomElement writeDataToXml(QDomDocument&)  ;
     virtual void readDataFromXml(QDomNode&) ;
+    virtual void readDataFromJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
+
+
+    QColor getColor() const;
+    void setColor(const QColor &color);
 
 private:
     QString m_id;
     QString m_name;
     QString m_phoneNumber;
+    QColor m_color;
     QString m_firstName;
     QString m_nickname;
     QString m_mailAddress;

@@ -20,9 +20,12 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include "gamemodel.h"
-
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QDataStream>
+#include <QJsonArray>
 #include <QDebug>
+
 #ifdef __QT_QUICK_2_
 GameModel::GameModel(GameImageProvider* gameImageProvider, QObject *parent) :
     QAbstractListModel(parent),m_gameImgProvider(gameImageProvider)
@@ -127,6 +130,34 @@ void GameModel::writeToData(QDataStream& to) const
         tmp->writeToData(to);
     }
 }
+
+
+void GameModel::readDataFromJson(QJsonObject & json)
+{
+    QJsonArray fieldArray = json["items"].toArray();
+    QJsonArray::Iterator it;
+    for(it = fieldArray.begin(); it != fieldArray.end(); ++it)
+    {
+        QJsonObject obj = (*it).toObject();
+        Game* game = new Game();
+        game->readDataFromJson(obj);
+        append(game);
+    }
+}
+
+void GameModel::writeDataToJson(QJsonObject & obj)
+{
+      QJsonArray fieldArray;
+      for(auto key : m_gameMap.keys())
+      {
+          auto game = m_gameMap.value(key);
+          QJsonObject gameObj;
+          game->writeDataToJson(gameObj);
+          fieldArray.append(gameObj);
+      }
+      obj["items"]=fieldArray;
+
+}
 QMap<QString,Game*>& GameModel::getGameMap()
 {
     return m_gameMap;
@@ -176,4 +207,55 @@ void GameModel::resetData()
     m_gameImgProvider->resetData();
     #endif
     endResetModel();
+}
+void GameModel::writeSettings(QSettings& settings)
+{
+    settings.beginGroup("games");
+    settings.beginWriteArray("games");
+
+    for (int i = 0; i < m_gameList.size(); ++i)
+    {
+        Game* game = m_gameList.at(i);
+        settings.setArrayIndex(i);
+        settings.setValue("title", game->getTitle());
+        settings.setValue("punchline", game->getPunchLine());
+        settings.setValue("description", game->getDescription());
+        settings.setValue("uuid", game->getUuid());
+        settings.setValue("type", game->getType());
+        settings.setValue("imageUrl", game->getImageUrl());
+        QPixmap* map = game->getPixmap();
+        QVariant var = *map;
+        settings.setValue("image",var);
+    }
+    settings.endArray();
+    settings.endGroup();
+}
+
+void GameModel::readSettings(QSettings& settings)
+{
+    settings.beginGroup("games");
+    int size = settings.beginReadArray("games");
+
+   for (int i = 0; i < size; ++i)
+   {
+        settings.setArrayIndex(i);
+        Game* game = new Game();
+        game->setTitle(settings.value("title").toString());
+        game->setPunchLine(settings.value("punchline").toString());
+        game->setDescription(settings.value("description").toString());
+        game->setUuid(settings.value("uuid").toString());
+        game->setType(settings.value("type").toString());
+        game->setImageUrl(settings.value("imageUrl").toString());
+        QPixmap* pix = new QPixmap();
+        *pix = settings.value("image").value<QPixmap>();
+        game->setPixmap(pix);
+
+        m_gameList.append(game);
+        m_gameMap.insert(game->getUuid(),game);
+
+        m_gameImgProvider->insertPixmap(game->getIdImage(),game->getPixmap());
+
+   }
+   settings.endArray();
+   settings.endGroup();
 }

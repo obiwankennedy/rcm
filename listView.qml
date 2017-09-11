@@ -1,113 +1,156 @@
-import QtQuick 2.0
+import QtQuick 2.7
+import QtQuick.Controls 2.0
+import QtQuick.Window 2.1
 
-Item {
+ApplicationWindow {
     id: root
-    width: 400
-    height: 400
+    //visibility: Window.FullScreen;
+    property real factor: 0.04
+    property string msg: ""
+    property bool autoAnimation: false
+    property int itemAngle: 60
+    property int itemSize: root.width * 0.8
 
 
 
-    ListView {
+    onAutoAnimationChanged: {
+
+        if(autoAnimation)
+        {
+            anima.start()
+        }
+        else
+        {
+            anima.stop()
+        }
+
+        console.log("auto animation changed")
+    }
+
+    Rectangle {
         anchors.fill: parent
-        id:listView
-        objectName:"listView"
-        highlightFollowsCurrentItem :  true
-        model: _myModel
-        delegate: scenarioDelegate
-        currentIndex: -1
-        highlight: Rectangle {
-            height: 60
-            width: parent.width
-            color: "lightsteelblue";
-            radius: 5 }
-        focus: true
-
-
+        color: "black"
     }
     Component {
         id: scenarioDelegate
         Item {
-            height: listView.currentIndex == index ? 120 : 60
-            width: parent.width
+            height: parent.height*0.8//listView.currentIndex == index ? 120 : 60
+            width: parent.width*0.8
+            opacity: PathView.itemOpacity
+            property double rotationValue2: PathView.itemRotation
+            scale: PathView.iconScale
+            z: PathView.isCurrentItem ? 5 : 0
+
+            transform: Rotation {origin.x: width /2; origin.y: height/2;  axis { x: 0; y: 1; z: 0 } angle:rotationValue2;}//
             Rectangle {
                 id:rect
                 state: CurrentPlayer == 0 ? "" : CurrentPlayer == MaximumPlayer ? "ready" : "wip"
-                property int rotationValue: 0
                 property int playerCount: CurrentPlayer
-//
-
-
                 anchors.fill: parent
                 height: parent.height
-                color: ColorRole
-                radius: 5
+                color: "white"//ColorRol
+                radius: 20
                 border.width: 1
-                transform: Rotation { origin.x: rect.width/2; origin.y: rect.height/2; axis { x: 1; y: 0; z: 0 } angle: rect.rotationValue}
-
-
-                Text {
-                    id:titleLabel
-                    text:Title
-                    anchors.top: parent.top
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
                 Text {
                     id:gametitleLabel
                     text:GameTitle
-                    anchors.top: titleLabel.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                }
-                Text {
-                    id:levelid
-                    text: "("+Level+")"
-                    anchors.top: gametitleLabel.top
-                    anchors.left: gametitleLabel.right
-                    width: 100
-                    height:20
-                }
-                Text {
-                    id:playerCountTxt
-                    text: CurrentPlayer +'/'+ MaximumPlayer
-                    anchors.top: parent.top
-                    anchors.right: parent.right
-                }
-                Text {
-                    id:durationId
-                    text: qsTr("Duration: ") + Duration
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                }
-                Text {
-                    id:gmId
-                    text: qsTr("GM:") + GMName
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
+                    font.pixelSize: parent.height * root.factor * 1.5
+                    textFormat: Text.RichText
+                    horizontalAlignment: Text.AlignHCenter
+                    width: parent.width * 0.5
+
                 }
                 Image {
                     id: image
                     source: PixmapRole ? "image://game/"+PixmapRole : "image://game/default"
                     cache: false
-
                     visible:PixmapRole.length>0
-
                     fillMode: Image.PreserveAspectFit
-                    anchors.top: parent.top
-                    anchors.left: gmId.right
-                    anchors.leftMargin: 5
-                    anchors.bottom: parent.bottom
+                    x: 5
+                    y: gametitleLabel.contentHeight
+                    width: parent.width * 0.5 - 10
+                    height: parent.height* 0.8
                 }
-
-                Behavior on playerCount  {
-                    SequentialAnimation {
-                      PropertyAnimation { target: rect; property: "rotationValue"; to: 800 }//Easing.OutQuart
-                      PropertyAnimation { target: rect; property: "rotationValue"; to: 0 }
+                Item  {
+                    id: rootItem
+                    anchors.left: image.right
+                    anchors.leftMargin: -(image.width - image.paintedWidth)/2
+                    anchors.top: gametitleLabel.bottom
+                    anchors.right: rect.right
+                    anchors.bottom: rect.bottom
+                    //spacing: parent.height * root.factor
+                    Text {
+                        id:titleLabel
+                        text:Title + "title"
+                        font.pixelSize: parent.height * root.factor
+                        textFormat: Text.RichText
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        height: contentHeight
                     }
-                }
+                   Text {
+                        id:gmId
+                        anchors.top: titleLabel.bottom
+                        anchors.left: parent.left
+                        text: qsTr("Votre meneur: ") + GMName
+                        font.pixelSize: parent.height * root.factor
+                        textFormat: Text.RichText
+                        height: contentHeight
+                        width: contentWidth
+                    }
+                    Rectangle {
+                        id: playerCount
+                        color: ColorRole
+                        anchors.top: titleLabel.bottom
+                        anchors.right: parent.right
+                        width: playerCountTxt.contentWidth
+                        height: playerCountTxt.height
+                        Text {
+                            id:playerCountTxt
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            text: CurrentPlayer +'/'+ MaximumPlayer
+                            font.pixelSize: rootItem.height * root.factor
+                            textFormat: Text.RichText
+                            height: contentHeight
+                            verticalAlignment: Text.AlignTop
 
+                        }
+                    }
+
+
+
+                    TextArea {
+                        id:desc
+                        text: Description
+                        anchors.top: gmId.bottom
+                        anchors.left: parent.left
+                        font.pixelSize: parent.height * root.factor
+                        wrapMode: Text.WordWrap
+                        width: parent.width
+                        height: parent.height * 0.8
+                        textFormat: Text.RichText
+                        leftPadding: 0
+                    }
+
+
+
+                }
+                Text {
+                    id:durationId
+                    text: Duration+ qsTr("min")
+                    font.pixelSize: parent.height*0.05
+                    textFormat: Text.RichText
+                    anchors.bottom: rect.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                }
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        listView.currentIndex = index;
+                        view.currentIndex = index;
                     }
                 }
                 states: [
@@ -126,4 +169,171 @@ Item {
             }
         }
     }
+    Timer {
+        id: anima
+        interval: 10000
+        repeat: true
+        onTriggered: {
+            view.incrementCurrentIndex()
+        }
+
+    }
+
+    PathView {
+         id: view
+         anchors.fill: parent
+
+         //model: 32
+         model: _myModel
+         delegate: scenarioDelegate
+         path: Path {
+             startX: view.width/2
+             startY: view.height/2
+             PathAttribute { name: "iconScale"; value: 1.0 }
+             PathAttribute { name: "itemOpacity"; value: 1 }
+             PathAttribute { name: "itemRotation"; value: 0.0 }
+            // PathAttribute { name: "itemZValue"; value: 5.0 }
+             PathLine { x:view.width; y: 3*view.height/8 }
+             //PathQuad { x: view.width/2; y: view.height/8; controlX: 3*view.width/2; controlY: 3*view.height/8 }
+             PathAttribute { name: "iconScale"; value: 0.3 }
+             PathAttribute { name: "itemOpacity"; value: 0.01 }
+             PathAttribute { name: "itemRotation"; value: -54 }
+             PathLine { x: 0; y: 3*view.height/8; }
+             PathAttribute { name: "iconScale"; value: 0.3 }
+             PathAttribute { name: "itemOpacity"; value: 0.01 }
+             PathAttribute { name: "itemRotation"; value: 54 }
+             PathLine { x: view.width*0.5; y: view.height*0.5; }
+         }
+
+        /* path: Path {
+            startX: 0
+            startY: height / 2
+
+
+            PathPercent { value: 0.0 }
+            PathAttribute { name: "iconScale"; value: 1.0 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+            PathAttribute { name: "iconScale"; value: 0.2 }
+            PathAttribute { name: "itemRotation"; value: 54.0 }
+            PathAttribute { name: "itemOrigin"; value: 0 }
+
+
+            PathLine { x:view.width*0.25; y: view.height/2 }
+            PathAttribute { name: "itemOrigin"; value: 0 }
+
+            PathAttribute { name: "iconScale"; value: 0.3 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+            PathAttribute { name: "itemRotation"; value: 25.0 }
+
+            PathPercent { value: 0.49 }
+            PathAttribute { name: "z"; value: 10 }
+            PathLine { relativeX: 0; relativeY: 0 }
+            PathAttribute { name: "itemOpacity"; value: 1.0 }
+            PathAttribute { name: "itemRotation"; value: 0.0 }
+            PathAttribute { name: "iconScale"; value: 1.0 }
+            PathLine { x:view.width*0.75; y: view.height/2 }
+            PathAttribute { name: "itemRotation"; value: 0.0 }
+            PathAttribute { name: "iconScale"; value: 1.0 }
+            PathAttribute { name: "itemOpacity"; value: 1.0 }
+            PathPercent { value: 0.51 }
+            PathLine { relativeX: 0; relativeY: 0 }
+
+            PathAttribute { name: "z"; value: 10 }
+            PathAttribute { name: "itemRotation"; value: -25.0 }
+            PathAttribute { name: "itemOrigin"; value: view.width*0.5 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+
+            PathLine { x: width; y: view.height/2; }
+            PathPercent { value: 1 }
+            PathAttribute { name: "z"; value: 0 }
+            PathAttribute { name: "iconScale"; value: 0.3 }
+            PathAttribute { name: "itemOpacity"; value: 0.01 }
+            PathAttribute { name: "itemRotation"; value: -54 }
+            PathAttribute { name: "itemOrigin"; value: view.width*0.5 }
+
+         }*/
+
+         //pathItemCount: 6
+         /*path: Path {
+             startX: 0
+             startY: height / 2
+
+
+             PathPercent { value: 0.0 }
+             PathAttribute { name: "z"; value: 0 }
+             PathAttribute { name: "angle"; value: itemAngle }
+             PathAttribute { name: "origin"; value: 0 }
+             PathLine {
+                 x: (view.width - itemSize) / 2
+                 y: view.height / 2
+             }
+             PathAttribute { name: "angle"; value: itemAngle }
+             PathAttribute { name: "origin"; value: 0 }
+             PathPercent { value: 0.49 }
+             PathAttribute { name: "z"; value: 10 }
+
+
+             PathLine { relativeX: 0; relativeY: 0 }
+
+             PathAttribute { name: "angle"; value: 0 }
+             PathLine {
+                 x: (view.width - itemSize) / 2 + itemSize
+                 y: view.height / 2
+             }
+             PathAttribute { name: "angle"; value: 0 }
+             PathPercent { value: 0.51 }
+
+             PathLine { relativeX: 0; relativeY: 0 }
+
+             PathAttribute { name: "z"; value: 10 }
+             PathAttribute { name: "angle"; value: -itemAngle }
+             PathAttribute { name: "origin"; value: itemSize }
+             PathLine {
+                 x: view.width
+                 y: view.height / 2
+             }
+             PathPercent { value: 1 }
+             PathAttribute { name: "z"; value: 0 }
+             PathAttribute { name: "angle"; value: -itemAngle }
+             PathAttribute { name: "origin"; value: itemSize }
+         }*/
+         focus: true
+       Keys.onLeftPressed: decrementCurrentIndex()
+       Keys.onRightPressed: incrementCurrentIndex()
+       Keys.onEscapePressed: {
+           if(root.visibility == Window.FullScreen )
+           {
+               root.visibility = Window.Windowed
+           }
+           else
+           {
+               root.visibility = Window.FullScreen
+           }
+       }
+
+    }
+
+
+    Rectangle {
+        id: popupTop
+        color: "white"
+       // property alias msg: popupMenu.text
+        border.width: 2
+        border.color: "black"
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        visible: (msg.length > 0)
+        height: parent.height * 0.07
+        radius: 20
+        Text {
+            id: popupMenu
+            anchors.fill: parent
+            verticalAlignment:Text.AlignVCenter
+            horizontalAlignment:Text.AlignHCenter
+            font.pixelSize: parent.height
+            text: root.msg
+        }
+    }
+
 }

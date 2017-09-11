@@ -24,23 +24,31 @@
 #include <QDebug>
 #include <QQuickItem>
 #include <QQuickView>
+#include <QTimer>
 
 CustomerView::CustomerView(GameImageProvider* gameImgProvider,ScenarioModel* model,QWindow* parent) :
-    QQuickView(parent),
+    QObject(parent),
     m_model(model)
 {
-    //ui->setupUi(this);
-    //m_scenarioDelegate = new ScenarioItemDelegate(map,mastermap,Scenario::AVAILABLE,true);
-    //ui->listView->setItemDelegate(m_scenarioDelegate);
-    //ui->listView->setModel(m_model);
-    rootContext()->setContextProperty("_myModel",m_model);
-    QQmlEngine* myEngine =engine();
-    myEngine->addImageProvider(QString("game"), gameImgProvider);
-    setSource(QUrl("qrc:/listView.qml"));
+    m_engine = new QQmlApplicationEngine();
 
-    setResizeMode(QQuickView::SizeRootObjectToView);
+    m_timer =  new QTimer();
+    m_timer->setInterval(200);
 
+    connect(m_timer,SIGNAL(timeout()),this,SLOT(refreshView()));
 
+    m_engine->rootContext()->setContextProperty("_myModel",m_model);
+    m_engine->addImageProvider(QString("game"), gameImgProvider);
+
+    m_engine->load(QUrl("qrc:/listView.qml"));
+
+    //setResizeMode(QQuickView::SizeRootObjectToView);
+    QObject* root = m_engine->rootObjects().first();
+    if(nullptr != root)
+    {
+        m_window = qobject_cast<QQuickWindow*>(root);
+        m_window->setVisible(false);
+    }
 }
 
 CustomerView::~CustomerView()
@@ -48,15 +56,101 @@ CustomerView::~CustomerView()
 
 }
 
+void CustomerView::setLabel(Ui::MainWindow* parent)
+{
+#ifdef __QT_QUICK_2_
 
+    m_ui = parent;
+    m_label = new QLabel();
+    m_label->setLineWidth(0);
+    m_label->setFrameStyle(QFrame::NoFrame);
+    m_ui->m_scrollAreaVisual->setWidget(m_label);
+    m_ui->m_scrollAreaVisual->setAlignment(Qt::AlignCenter);
+    m_ui->m_scrollAreaVisual->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_ui->m_scrollAreaVisual->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    m_label->setScaledContents(true);
+    m_label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+
+    connect(m_ui->m_startAnimation,&QPushButton::toggled,[=](bool b){
+            m_window->setProperty("autoAnimation",b);
+    });
+
+    connect(m_ui->m_showMsg,&QPushButton::clicked,[=](bool b){
+            m_window->setProperty("msg",m_ui->m_msgEdit->text());
+    });
+
+    m_widget = m_ui->m_scrollAreaVisual;
+#endif
+}
 void CustomerView::setSelectionIndex(const QModelIndex& index)
 {
-
-    QQuickItem* object = rootObject();
-    QObject* listview = object->findChild<QObject*>("listView");
+    QObject* root = m_engine->rootObjects().first();
+    QObject* listview = root->findChild<QObject*>("listView");
     if(NULL!=listview)
     {
         listview->setProperty("currentIndex",index.row());
     }
+}
 
+bool CustomerView::isVisible() const
+{
+    return m_window->isVisible();
+}
+
+void CustomerView::setVisible(bool visible)
+{
+    m_window->setVisible(visible);
+    if(visible)
+    {
+        m_timer->start();
+    }
+    else
+    {
+        m_timer->stop();
+    }
+
+}
+void CustomerView::showFullScreen()
+{
+    if(nullptr != m_window)
+    {
+        m_window->showFullScreen();
+    }
+}
+void CustomerView::showNormal()
+{
+    if(nullptr != m_window)
+    {
+        m_window->showNormal();
+    }
+}
+Qt::WindowState CustomerView::windowState()
+{
+    return m_window->windowState();
+}
+void CustomerView::refreshView()
+{
+    if(nullptr!=m_window)
+    {
+        QImage img = m_window->grabWindow();
+        m_ratioImage = (double)img.size().width()/img.size().height();
+        m_ratioImageBis = (double)img.size().height()/img.size().width();
+        m_label->setPixmap(QPixmap::fromImage(img));
+        resizeLabel();
+    }
+}
+void CustomerView::resizeLabel()
+{
+    int w = m_widget->viewport()->rect().width();
+    int h = m_widget->viewport()->rect().height();
+    if(w>h*m_ratioImage)
+    {
+        m_label->resize(h*m_ratioImage,h);
+    }
+    else
+    {
+        m_label->resize(w,w*m_ratioImageBis);
+    }
 }

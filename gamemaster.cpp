@@ -22,12 +22,25 @@
 #include "gamemaster.h"
 #include <QUuid>
 #include <QDataStream>
+#include <random>
+#include <chrono>
 
 GameMaster::GameMaster()
     : m_id(QUuid::createUuid().toString())
 {
     m_isPresent = false;
     m_scenarioList = new QList<Scenario*>();
+
+    auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    std::mt19937 rng = std::mt19937(quintptr(this)+seed);
+
+
+    std::uniform_int_distribution<qint64> dist(128,255);
+    qint64 r = dist(rng);
+    qint64 g = dist(rng);
+    qint64 b = dist(rng);
+
+    m_color.setRgb(r,g,b);
 }
 
 void GameMaster::insertScenario(Scenario* game)
@@ -196,6 +209,60 @@ void GameMaster::readDataFromXml(QDomNode& node)
     }
 
 
+}
+#include <QJsonObject>
+#include <QJsonArray>
+void GameMaster::readDataFromJson(QJsonObject & obj)
+{
+    m_name = obj["name"].toString();
+    m_phoneNumber=obj["phone"].toString();
+    m_firstName=obj["first"].toString();
+    m_nickname=obj["nick"].toString();
+    m_mailAddress=obj["mail"].toString();
+    m_isPresent = obj["present"].toBool();
+    m_id=obj["id"].toString();
+
+    m_isPresent = false;
+
+    QJsonArray scenarios = obj["scenarios"].toArray();
+    QJsonArray::iterator it;
+    for(it = scenarios.begin(); it != scenarios.end(); ++it)
+    {
+        QJsonObject sce = (*it).toObject();
+        Scenario* tmp = new Scenario();
+        tmp->readDataFromJson(sce);
+        insertScenario(tmp);
+    }
+}
+
+void GameMaster::writeDataToJson(QJsonObject & obj)
+{
+    obj["name"]=m_name;
+    obj["phone"]=m_phoneNumber;
+    obj["first"]=m_firstName;
+    obj["nick"]=m_nickname;
+    obj["mail"]=m_mailAddress;
+    obj["present"]=m_isPresent;
+    obj["id"]=m_id;
+
+    QJsonArray array;
+    for(Scenario* tmp : *m_scenarioList)
+    {
+        QJsonObject sceObj;
+        tmp->writeDataToJson(sceObj);
+        array.append(sceObj);
+    }
+    obj["scenarios"]=array;
+}
+
+QColor GameMaster::getColor() const
+{
+    return m_color;
+}
+
+void GameMaster::setColor(const QColor &color)
+{
+    m_color = color;
 }
 int GameMaster::getScenarioCount() const
 {

@@ -58,6 +58,9 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
     //view
     m_ui->m_scenarioAvailabeView->setModel(m_availableScenarioModel);
 
+    m_ui->m_availableScenario->setList(&m_list);
+    m_ui->m_availableScenario->setModel(m_availableScenarioModel);
+
     m_ui->m_scenarioAvailabeView->installEventFilter(this);
 
     m_ui->m_scenarioRunningView->setModel(m_runningScenarioModel);
@@ -91,6 +94,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
 
     m_avScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::AVAILABLE);
     m_ui->m_scenarioAvailabeView->setItemDelegate(m_avScenarioDelegate);
+    m_ui->m_availableScenario->setItemDelegate(m_avScenarioDelegate);
 
 
     m_runningScenarioDelegate = new ScenarioItemDelegate(m_list,m_masterList,Scenario::RUNNING);
@@ -103,11 +107,40 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui,QList<Game*>& sortedList,QMa
 ScenarioManager::~ScenarioManager()
 {
     #ifdef __QT_QUICK_2_
-    m_customerView->close();
+    /*m_customerView->close();
     if(NULL!=m_customerView)
-        delete m_customerView;
+        delete m_customerView;*/
     #endif
 
+}
+bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
+{
+    bool retValue=false;
+    if (obj == m_ui->m_scenarioAvailabeView)
+    {
+        retValue = eventFilterForAvailable(event);
+    }
+    else if(obj == m_ui->m_scenarioRunningView)
+    {
+        retValue =  eventFilterForRunning(event);
+    }
+    else if(obj == m_ui->m_scenarioDoneView)
+    {
+        retValue =  eventFilterForDone(event);
+    }
+    else if(obj == m_ui->m_availableScenario)
+    {
+        retValue =  eventFilterForListPlaning(event);
+    }
+
+    if(!retValue)
+    {
+        return QObject::eventFilter(obj, event);
+    }
+    else
+    {
+        return retValue;
+    }
 }
 void ScenarioManager::setRegistrerPlayer(bool b)
 {
@@ -126,7 +159,39 @@ void ScenarioManager::addScenarios(QList<Scenario*>* l,Scenario::STATE m )
     }
 
 }
+#include "localisation/rcmmimedata.h"
+#include <QDrag>
+bool ScenarioManager::mouseMoveOnScenarioListOnPlanning ( QMouseEvent * event)
+{
+    QModelIndex tmp = m_ui->m_availableScenario->indexAt(event->pos());
 
+    qDebug() << "mouseMoveOnScenarioListOnPlanning" << tmp;
+    if ((event->buttons() == Qt::LeftButton) && (tmp.isValid()))
+    {
+        QVariant var = tmp.data(Qt::UserRole);
+        Scenario sce = var.value<Scenario>();
+
+        Scenario* trueScenario = new Scenario();
+        trueScenario->setReferenceScenario(&sce);
+
+
+
+        QDrag *drag = new QDrag(this);
+        RcmMimeData* mimeData = new RcmMimeData();
+
+        mimeData->setScenario(trueScenario);
+        drag->setMimeData(mimeData);
+        auto game = m_list.value(trueScenario->getGameId());
+        if(nullptr != game)
+        {
+            drag->setPixmap(*game->getPixmap());
+        }
+
+        Qt::DropAction dropAction = drag->exec();
+
+    }
+    return true;
+}
 void ScenarioManager::addScenario(Scenario* l,Scenario::STATE s)
 {
     l->setState(s);
@@ -158,6 +223,22 @@ void ScenarioManager::setCustomViewVisible(bool b)
     m_customerView->setVisible(b);
 #endif
 }
+
+bool ScenarioManager::isCustomViewDisplayed()
+{
+#ifdef __QT_QUICK_2_
+    return m_customerView->isVisible();
+#endif
+    return false;
+}
+
+void ScenarioManager::setLabel(Ui::MainWindow* wid)
+{
+#ifdef __QT_QUICK_2_
+        m_customerView->setLabel(wid);
+#endif
+}
+
 void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 {
     foreach(Scenario* tmp,*l)
@@ -168,31 +249,7 @@ void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
 }
 
 
-bool ScenarioManager::eventFilter(QObject *obj, QEvent *event)
-{
-    bool retValue=false;
-    if (obj == m_ui->m_scenarioAvailabeView)
-    {
-        retValue = eventFilterForAvailable(event);
-    }
-    else if(obj == m_ui->m_scenarioRunningView)
-    {
-        retValue =  eventFilterForRunning(event);
-    }
-    else if(obj == m_ui->m_scenarioDoneView)
-    {
-        retValue =  eventFilterForDone(event);
-    }
 
-    if(!retValue)
-    {
-        return QObject::eventFilter(obj, event);
-    }
-    else
-    {
-        return retValue;
-    }
-}
 //slots to perform action
 void ScenarioManager::showContextMenu(QContextMenuEvent* event,Scenario::STATE m)
 {
@@ -347,8 +404,8 @@ void ScenarioManager::startScenario()
 }
 void ScenarioManager::closeView()
 {
-        #ifdef __QT_QUICK_2_
-    m_customerView->close();
+     #ifdef __QT_QUICK_2_
+    m_customerView->setVisible(false);
     #endif
 
 }
@@ -438,6 +495,16 @@ bool ScenarioManager::eventFilterForDone(QEvent * /*ent*/)
 {
     return false;
 }
+bool ScenarioManager::eventFilterForListPlaning(QEvent * ent)
+{
+    if(ent->type() == QEvent::MouseMove)
+    {
+        QMouseEvent* mouse = dynamic_cast<QMouseEvent*>(ent);
+        return mouseMoveOnScenarioListOnPlanning(mouse);
+    }
+
+    return false;
+}
 bool ScenarioManager::eventFilterForRunning(QEvent * event)
 {
     if (event->type() == QEvent::KeyPress)
@@ -495,6 +562,16 @@ void ScenarioManager::writeToData(QDataStream& to) const
     m_doneScenarioModel->writeToData(to);
 }
 
+void ScenarioManager::readDataFromJson(QJsonObject & obj)
+{
+    m_doneScenarioModel->readDataFromJson(obj);
+}
+
+void ScenarioManager::writeDataToJson(QJsonObject & obj)
+{
+    m_doneScenarioModel->writeDataToJson(obj);
+}
+
 QDomElement ScenarioManager::writeDataToXml(QDomDocument& t)
 {
     QDomElement scenarioList =  t.createElement("scenarioManager");
@@ -532,6 +609,4 @@ void ScenarioManager::resetData()
 
     m_list.clear();
     m_masterList.clear();
-
-
 }

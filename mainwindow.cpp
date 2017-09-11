@@ -26,6 +26,8 @@
 #include <QCloseEvent>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -34,39 +36,42 @@
 #include "gamemaster.h"
 
 #include "gamemasterdialog.h"
-#include "localisation/localisationview.h"
 
 #include "export/exportcsv.h"
+
+#include "idtranslator.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-#ifdef __QT_QUICK_2_
+
     m_gameImgProvider = new GameImageProvider();
-#endif
+
     m_title=tr("%1[*] - Rolisteam Convention Manager");
     m_recentFileActions = new QList<QAction*>();
 
     setWindowTitle(m_title.arg("Unkown"));
-#ifdef __QT_QUICK_2_
+
     m_gameModel = new GameModel(m_gameImgProvider);
-#else
-    m_gameModel = new GameModel();
-#endif
+
     m_gameMasterModel = new GameMasterModel();
+
+    ui->m_availableScenario->setDragEnabled(true);
+
     //m_gameMasterPresenceModel = new GameMasterModel();
 
     m_preferences = PreferencesManager::getInstance();
 
     ui->m_gameView->setModel(m_gameModel);
     ui->m_masterView->setModel(m_gameMasterModel);
-#ifdef __QT_QUICK_2_
+
+
+    IdTranslator* translator = IdTranslator::getInstance(m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
+    Q_UNUSED(translator);
     m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap(),m_gameImgProvider);
-#else
-    m_scenarioManager = new ScenarioManager(ui,m_gameModel->getGameList(),m_gameModel->getGameMap(),m_gameMasterModel->getMasterMap());
-#endif
+    m_scenarioManager->setLabel(ui);
 
     initActions();
 
@@ -80,8 +85,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_fileMenu->insertSeparator(ui->m_quitAct);
 
     ui->m_masterView->installEventFilter(this);
+    m_locview = new LocalisationView(ui->m_timeLine);
 
-    ui->m_tabWidget->addTab(new LocalisationView(),tr("Tables"));
+
+    connect(ui->m_properties,SIGNAL(clicked(bool)),m_locview,SLOT(setProperties()));
+   // ui->m_tabWidget->addTab(,tr("Tables"));
 
 
     //setAttribute( Qt::WA_DeleteOnClose);
@@ -93,12 +101,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->m_scenarioRunningView,SIGNAL(clicked(QModelIndex)),this,SLOT(clearSelection(QModelIndex)));
     connect(ui->m_exportCSVAct,SIGNAL(triggered()),this,SLOT(exporCSV()));
 
+    connect(ui->m_nextDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayNextDay()));
+    connect(ui->m_previousDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayPreviousDay()));
+
 
 }
 
 MainWindow::~MainWindow()
 {
-    qDebug() << "Destructor MainWindow";
     delete ui;
     delete m_scenarioManager;
 }
@@ -110,6 +120,8 @@ void MainWindow::initActions()
     m_addGMAct= new QAction(tr("Add"),this);
     m_makeGMGoneAct = new QAction(tr("GM is leaving"),this);
     connect(m_makeGMGoneAct,SIGNAL(triggered()),this,SLOT(makeGameMasterUnavailable()));
+
+    addAction(ui->m_customerViewDisplayAct);
 
     ui->m_addGameButton->setDefaultAction(m_addGameAct);
     ui->m_addGMButton->setDefaultAction(m_addGMAct);
@@ -136,10 +148,13 @@ void MainWindow::initActions()
 
     // init menu
     connect(ui->m_newAct,SIGNAL(triggered()),this,SLOT(resetData()));
-    connect(ui->m_openAct,SIGNAL(triggered()),this,SLOT(openData()));
+    connect(ui->m_openAct,SIGNAL(triggered()),this,SLOT(openJsonData()));
     connect(ui->m_quitAct,SIGNAL(triggered()),this,SLOT(close()));
-    connect(ui->m_saveAct,SIGNAL(triggered()),this,SLOT(saveData()));
-    connect(ui->m_saveAsAct,SIGNAL(triggered()),this,SLOT(saveAsData()));
+    connect(ui->m_saveAct,SIGNAL(triggered()),this,SLOT(saveDataToJson()));
+    connect(ui->m_saveAsAct,SIGNAL(triggered()),this,SLOT(saveAs()));
+
+    connect(ui->m_importBinary,SIGNAL(triggered()),this,SLOT(openData()));
+    connect(ui->m_exportBinary,SIGNAL(triggered(bool)),this,SLOT(saveAsData()));
 
 
     connect(ui->m_newGameAct,SIGNAL(triggered()),this,SLOT(addGameDialog()));
@@ -173,6 +188,20 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         return QObject::eventFilter(obj, event);
     }
 }
+#include <QFileDialog>
+void MainWindow::saveAs()
+{
+    m_currentDataPath = QFileDialog::getSaveFileName(this,tr("Save Convention Data"),QDir::homePath(),tr("Rolisteam Convention Data(*.rcd)"));
+    if(!m_currentDataPath.isEmpty())
+    {
+        if(!m_currentDataPath.endsWith(".rcd"))
+        {
+            m_currentDataPath.append(QStringLiteral(".rcd"));
+        }
+        saveDataToJson();
+    }
+}
+
 void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
 {
     QMenu menu;
@@ -195,9 +224,7 @@ void  MainWindow::addGameDialog()
     if(dialog.exec())
     {
         Game* tmp = new Game();
-#ifdef __QT_QUICK_2_
         connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
-#endif
         tmp->setTitle(dialog.getTitle());
         tmp->setPunchLine(dialog.getPunchLine());
         tmp->setDescription(dialog.getDescription());
@@ -269,7 +296,89 @@ void MainWindow::saveData()
         m_gameModel->writeToData(in);
         m_gameMasterModel->writeToData(in);
         m_scenarioManager->writeToData(in);
+        m_locview->writeToData(in);
         file.close();
+    }
+}
+void MainWindow::saveDataToJson()
+{
+    if(m_currentDataPath.isEmpty())
+        saveAs();
+    else if(!m_currentDataPath.isEmpty())
+    {
+        if(!m_currentDataPath.endsWith(".rcd"))
+        {
+            m_currentDataPath.append(".rcd");
+            ///@Warning
+        }
+        QFile file(m_currentDataPath);
+        if(file.open(QIODevice::WriteOnly))
+        {
+            //init Json
+            QJsonDocument json;
+            QJsonObject obj;
+
+
+
+            //Get datamodel
+            QJsonObject games;
+            m_gameModel->writeDataToJson(games);
+            obj["games"]=games;
+
+            QJsonObject masters;
+            m_gameMasterModel->writeDataToJson(masters);
+            obj["masters"]=masters;
+
+            QJsonObject scenarios;
+            m_scenarioManager->writeDataToJson(scenarios);
+            obj["scenarios"]=scenarios;
+
+            QJsonObject schedules;
+            m_locview->writeDataToJson(schedules);
+            obj["schedules"]=schedules;
+
+            json.setObject(obj);
+            file.write(json.toJson());
+
+            setWindowTitle(m_title.arg(QFileInfo(m_currentDataPath).fileName()).arg("RCM"));
+            setWindowModified(false);
+        }
+    }
+}
+void MainWindow::openJsonData()
+{
+    m_currentDataPath = QFileDialog::getOpenFileName(this,tr("Open Convention Data"),QDir::homePath(),tr("Rolisteam Convention Data(*.rcd)"));
+    if(!m_currentDataPath.isEmpty())
+    {
+        resetData();
+        readJSonFile();
+        addRecentFile();
+    }
+}
+void MainWindow::readJSonFile()
+{
+    QFile file(m_currentDataPath);
+    QFileInfo info(m_currentDataPath);
+
+
+    setWindowTitle(m_title.arg(info.fileName()));
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        QJsonObject jsonObj = json.object();
+
+        QJsonObject games = jsonObj["games"].toObject();
+        QJsonObject masters = jsonObj["masters"].toObject();
+        QJsonObject scenarios = jsonObj["scenarios"].toObject();
+        QJsonObject schedules = jsonObj["schedules"].toObject();
+
+
+        m_gameModel->readDataFromJson(games);
+        m_gameMasterModel->readDataFromJson(masters);
+        m_scenarioManager->readDataFromJson(scenarios);
+        m_locview->readDataFromJson(schedules);
+        file.close();
+        ensureTabVisible(DATA);
     }
 }
 void MainWindow::saveAsData()
@@ -282,6 +391,7 @@ void MainWindow::saveAsData()
 }
 void MainWindow::openData()
 {
+     //m_currentDataPath = "/home/renaud/documents/rcm/data_test_several_game.rcdb";
     m_currentDataPath = QFileDialog::getOpenFileName(this, tr("Open Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Rolisteam Conv Database (*.rcdb)"));
     if(!m_currentDataPath.isNull())
     {
@@ -294,6 +404,33 @@ void MainWindow::openData()
         addRecentFile();
     }
 }
+
+/*void MainWindow::refreshView()
+{
+    if(m_scenarioManager->isCustomViewDisplayed())
+    {
+        QImage img = m_window->grabWindow();
+
+        if(img.isNull())
+            return;
+
+        static int count = 0;
+
+        //img.save(tr("/home/renaud/application/mine/pasSageEnSeine/screen/%1_screen.png").arg(++count,3,10,QChar('0')),"png");
+        qDebug() << "id page shot save" << i;
+
+        m_ratioImage = (double)img.size().width()/img.size().height();
+        m_ratioImageBis = (double)img.size().height()/img.size().width();
+
+        m_label->setPixmap(QPixmap::fromImage(img));
+
+        if((i+1>=0)&&(i+1<m_commentData.size()))
+        {
+            ui->textEdit->setHtml(m_commentData.at(i));
+        }
+        resizeLabel();
+    }
+}*/
 void MainWindow::readSettings()
 {
     QSettings settings("rolisteam","rcm/preferences");
@@ -320,6 +457,7 @@ void MainWindow::readSettings()
 
 
     m_preferences->readSettings(settings);
+    m_gameModel->readSettings(settings);
 }
 
 void MainWindow::writeSettings()
@@ -345,7 +483,7 @@ void MainWindow::writeSettings()
 
 
     m_preferences->writeSettings(settings);
-
+    m_gameModel->writeSettings(settings);
 }
 void MainWindow::openRecentFile()
 {

@@ -24,8 +24,9 @@
 
 #include <QObject>
 #include <QList>
+#include <QLabel>
 #include <QListView>
-
+#include <QScrollArea>
 
 #include "scenario.h"
 #include "scenariomodel.h"
@@ -67,6 +68,9 @@ public:
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
 
+    virtual void readDataFromJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
+
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
 
@@ -74,13 +78,16 @@ public:
     GameMaster* getGameMasterFromId(QString id);
     bool isPlayersAreRegistred() const;
     
+    bool isCustomViewDisplayed();
+    void setLabel(Ui::MainWindow* wid);
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
     void showContextMenu(QContextMenuEvent* event,Scenario::STATE m);
     bool eventFilterForAvailable(QEvent* );
     bool eventFilterForRunning(QEvent* );
     bool eventFilterForDone(QEvent* );
-    
+    bool eventFilterForListPlaning(QEvent *ent);
+    bool mouseMoveOnScenarioListOnPlanning(QMouseEvent *event);
 public slots:
     void showCustomView(bool);
     void setCustomViewVisible(bool);

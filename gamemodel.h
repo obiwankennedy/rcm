@@ -48,6 +48,9 @@ public:
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
+    virtual void readDataFromJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
+
 
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
@@ -60,6 +63,8 @@ public:
     void resetData();
 
 
+    void writeSettings(QSettings& settings);
+    void readSettings(QSettings& settings);
 
 private:
     QList<Game*> m_gameList;

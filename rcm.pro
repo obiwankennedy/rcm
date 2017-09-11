@@ -37,7 +37,11 @@ SOURCES += main.cpp\
     playersinformationdialog.cpp \
     playerinformationformdialog.cpp \
     export/abstractexport.cpp \
-    export/exportcsv.cpp
+    export/exportcsv.cpp \
+    localisation/rcmmimedata.cpp \
+    localisation/scenariolistview.cpp \
+    localisation/scenarioitem.cpp \
+    idtranslator.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -65,7 +69,11 @@ HEADERS  += mainwindow.h \
     playersinformationdialog.h \
     playerinformationformdialog.h \
     export/abstractexport.h \
-    export/exportcsv.h
+    export/exportcsv.h \
+    localisation/rcmmimedata.h \
+    localisation/scenariolistview.h \
+    localisation/scenarioitem.h \
+    idtranslator.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \
@@ -74,7 +82,8 @@ FORMS    += mainwindow.ui \
     scenarioeditordialog.ui \
     localisation/tableswizard.ui \
     playersinformationdialog.ui \
-    playerinformationformdialog.ui
+    playerinformationformdialog.ui \
+    localisation/eventproperties.ui
 
 OTHER_FILES += \
     listView.qml
@@ -85,7 +94,7 @@ RESOURCES += \
 ## Translation
 TRANSLATIONS =  rcm_fr.ts
 
-
+CONFIG += c++11
 
 CODECFORTR = UTF-8
 

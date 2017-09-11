@@ -22,6 +22,9 @@
 #include "scenariomodel.h"
 #include <QDebug>
 #include <QColor>
+#include <QJsonArray>
+#include <QJsonObject>
+
 
 ScenarioModel::ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent) :
     QAbstractListModel(parent),m_state(m),m_list(l),m_gameMasterMap(lstGm),m_edition(true)
@@ -101,6 +104,15 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     else if(ScenarioModel::DurationRole == role)
     {
         return m_scenarioList->at(index.row())->getDuration();
+    }
+    else if(ScenarioModel::DescriptionRole == role)
+    {
+        QString id = m_scenarioList->at(index.row())->getGameId();
+        Game* tmp  = m_list[id];
+        if(tmp!=NULL)
+            return tmp->getDescription();
+        else
+            return QVariant();
     }
     else if(ScenarioModel::CurrentPlayerRole == role)
     {
@@ -422,6 +434,23 @@ void  ScenarioModel::writeToData(QDataStream& to) const
         tmp->writeToData(to);
     }
 
+}
+
+void ScenarioModel::readDataFromJson(QJsonObject & obj)
+{
+
+}
+
+void ScenarioModel::writeDataToJson(QJsonObject & obj)
+{
+    QJsonArray fieldArray;
+    for(auto tmp : *m_scenarioList)
+    {
+        QJsonObject scenario;
+        tmp->writeDataToJson(scenario);
+        fieldArray.append(scenario);
+    }
+    obj["items"]=fieldArray;
 }
 QDomElement ScenarioModel::writeDataToXml(QDomDocument& to)
 {

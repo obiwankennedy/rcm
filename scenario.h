@@ -27,6 +27,9 @@
 #include <QUuid>
 #include "serializable.h"
 
+/**
+ * @brief The Scenario class
+ */
 class Scenario : public Serialisable
 {
 public:
@@ -86,6 +89,9 @@ public:
 
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&) ;
+
+    virtual void readDataFromJson(QJsonObject&);
+    virtual void writeDataToJson(QJsonObject&);
 
     virtual void writeDataToCsv(QTextStream&);
     virtual void readDataFromCsv(QTextStream&) ;

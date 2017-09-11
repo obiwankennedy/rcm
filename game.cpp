@@ -110,6 +110,26 @@ void Game::readDataFromXml(QDomNode& node)
 
 
 }
+#include <QJsonObject>
+void Game::readDataFromJson(QJsonObject & obj)
+{
+    m_uuid=obj["gameId"].toString();
+    m_title=obj["title"].toString();
+    m_punchLine=obj["punchline"].toString();
+    m_description = obj["description"].toString();
+    m_type = obj["type"].toString();
+    setImageUrl(obj["imageUrl"].toString());
+}
+
+void Game::writeDataToJson(QJsonObject & obj)
+{
+    obj["gameId"]=m_uuid;
+    obj["title"]=m_title;
+    obj["punchline"]=m_punchLine;
+    obj["description"]=m_description;
+    obj["type"]=m_type;
+    obj["imageUrl"]=m_imageUrl;
+}
 
 void Game::setTitle(QString title)
 {

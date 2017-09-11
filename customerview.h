@@ -23,11 +23,17 @@
 #define CUSTOMERVIEW_H
 
 #include <QQuickView>
+#include <QLabel>
+#include <QQmlApplicationEngine>
+#include <QQuickWindow>
+#include <QScrollArea>
+
 #include "scenarioitemdelegate.h"
 #include "scenariomodel.h"
 #include "gameimageprovider.h"
+#include "ui_mainwindow.h"
 
-class CustomerView : public QQuickView
+class CustomerView : public QObject
 {
     Q_OBJECT
     
@@ -35,13 +41,30 @@ public:
     explicit CustomerView(GameImageProvider* gameImgProvider,ScenarioModel* model, QWindow *parent = 0);
     ~CustomerView();
 
+    bool isVisible() const;
+    void setVisible(bool visible);
+
+    void setLabel(Ui::MainWindow* parent);
+    Qt::WindowState windowState();
 public slots:
     void setSelectionIndex(const QModelIndex& index);
-
+    void showNormal();
+    void showFullScreen();
+    void refreshView();
     
+protected:
+    void resizeLabel();
 private:
     ScenarioItemDelegate* m_scenarioDelegate;
     ScenarioModel* m_model;
+    QLabel* m_label;
+    QQmlApplicationEngine* m_engine;
+    QQuickWindow* m_window;
+    QTimer* m_timer;
+    qreal m_ratioImage;
+    qreal m_ratioImageBis;
+    QScrollArea* m_widget;
+    Ui::MainWindow* m_ui;
 };
 
 #endif // CUSTOMERVIEW_H

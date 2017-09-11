@@ -1,6 +1,7 @@
 #include "tableswizard.h"
 #include <QTime>
 #include <QDebug>
+#include <QJsonObject>
 
 #include "ui_eventproperties.h"
 
@@ -142,6 +143,12 @@ EventDay::EventDay()
 {
 
 }
+EventDay::EventDay(EventDay* day)
+{
+    m_startTime = day->getStartTime();
+    m_id = day->getId();
+    m_endTime = day->getEndTime();
+}
 
 int EventDay::getStartTime() const
 {
@@ -176,5 +183,39 @@ int EventDay::getId() const
 void EventDay::setId(int id)
 {
     m_id = id;
+}
+
+void EventDay::readFromData(QDataStream &)
+{
+
+}
+
+void EventDay::writeToData(QDataStream &) const
+{
+
+}
+
+void EventDay::writeDataToJson(QJsonObject & obj)
+{
+    obj["id"]=m_id;
+    obj["endTime"]=m_endTime;
+    obj["startTime"]=m_startTime;
+}
+
+void EventDay::readDataFromJson(QJsonObject & obj)
+{
+    m_id = obj["id"].toInt();
+    m_endTime = obj["endTime"].toInt();
+    m_startTime = obj["startTime"].toInt();
+}
+
+QDomElement EventDay::writeDataToXml(QDomDocument &)
+{
+
+}
+
+void EventDay::readDataFromXml(QDomNode &)
+{
+
 }
 

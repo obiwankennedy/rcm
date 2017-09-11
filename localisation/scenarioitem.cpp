@@ -3,6 +3,7 @@
 
 
 #include <QGraphicsPixmapItem>
+#include <QJsonObject>
 
 ScenarioItem::ScenarioItem()
 {
@@ -85,11 +86,14 @@ QVariant ScenarioItem::itemChange(GraphicsItemChange change, const QVariant &val
     {
 
         auto schedule = dynamic_cast<Schedules*>(scene());
-
-        QPointF newPos = schedule->computeClosePoint(value.toPointF());
-        if(newPos != value.toPointF())
+        if(nullptr != schedule)
         {
-            return newPos;
+
+            QPointF newPos = schedule->computeClosePoint(value.toPointF());
+            if(newPos != value.toPointF())
+            {
+                return newPos;
+            }
         }
     }
 
@@ -109,13 +113,31 @@ void ScenarioItem::writeToData(QDataStream & in) const
 
 }
 
-void ScenarioItem::readDataToJson(QJsonObject &)
+void ScenarioItem::readDataFromJson(QJsonObject & obj)
 {
+    qreal x = obj["x"].toDouble();
+    qreal y = obj["y"].toDouble();
 
+    QString colorName = obj["color"].toString();
+    m_color.setNamedColor(colorName);
+    m_state = static_cast<ScenarioItem::State>(obj["state"].toInt());
+    QJsonObject sce = obj["scenario"].toObject();
+
+    m_data = new Scenario();
+    m_data->readDataFromJson(sce);
+    setPos(x,y);
 }
 
-void ScenarioItem::writeDataToJson(QJsonObject &)
+void ScenarioItem::writeDataToJson(QJsonObject & obj)
 {
+    QPointF posi = pos();
+    obj["x"]=posi.x();
+    obj["y"]=posi.y();
+    obj["color"]=m_color.name();
+    obj["state"]=m_state;
+    QJsonObject sce;
+    m_data->writeDataToJson(sce);
+    obj["scenario"] = sce;
 
 }
 

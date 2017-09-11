@@ -12,6 +12,7 @@ class TableItem : public QGraphicsObject, public Serialisable
     Q_OBJECT
 public:
     explicit TableItem();
+    virtual ~TableItem();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -35,7 +36,7 @@ public:
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
 
-    virtual void readDataToJson(QJsonObject&);
+    virtual void readDataFromJson(QJsonObject&);
     virtual void writeDataToJson(QJsonObject&);
 
 signals:

@@ -436,7 +436,7 @@ void  ScenarioModel::writeToData(QDataStream& to) const
 
 }
 
-void ScenarioModel::readDataToJson(QJsonObject & obj)
+void ScenarioModel::readDataFromJson(QJsonObject & obj)
 {
 
 }

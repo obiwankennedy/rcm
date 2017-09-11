@@ -26,6 +26,8 @@
 #include <QCloseEvent>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -146,10 +148,13 @@ void MainWindow::initActions()
 
     // init menu
     connect(ui->m_newAct,SIGNAL(triggered()),this,SLOT(resetData()));
-    connect(ui->m_openAct,SIGNAL(triggered()),this,SLOT(openData()));
+    connect(ui->m_openAct,SIGNAL(triggered()),this,SLOT(openJsonData()));
     connect(ui->m_quitAct,SIGNAL(triggered()),this,SLOT(close()));
-    connect(ui->m_saveAct,SIGNAL(triggered()),this,SLOT(saveData()));
-    connect(ui->m_saveAsAct,SIGNAL(triggered()),this,SLOT(saveAsData()));
+    connect(ui->m_saveAct,SIGNAL(triggered()),this,SLOT(saveDataToJson()));
+    connect(ui->m_saveAsAct,SIGNAL(triggered()),this,SLOT(saveAs()));
+
+    connect(ui->m_importBinary,SIGNAL(triggered()),this,SLOT(openData()));
+    connect(ui->m_exportBinary,SIGNAL(triggered(bool)),this,SLOT(saveAsData()));
 
 
     connect(ui->m_newGameAct,SIGNAL(triggered()),this,SLOT(addGameDialog()));
@@ -183,6 +188,20 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         return QObject::eventFilter(obj, event);
     }
 }
+#include <QFileDialog>
+void MainWindow::saveAs()
+{
+    m_currentDataPath = QFileDialog::getSaveFileName(this,tr("Save Convention Data"),QDir::homePath(),tr("Rolisteam Convention Data(*.rcd)"));
+    if(!m_currentDataPath.isEmpty())
+    {
+        if(!m_currentDataPath.endsWith(".rcd"))
+        {
+            m_currentDataPath.append(QStringLiteral(".rcd"));
+        }
+        saveDataToJson();
+    }
+}
+
 void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
 {
     QMenu menu;
@@ -281,6 +300,87 @@ void MainWindow::saveData()
         file.close();
     }
 }
+void MainWindow::saveDataToJson()
+{
+    if(m_currentDataPath.isEmpty())
+        saveAs();
+    else if(!m_currentDataPath.isEmpty())
+    {
+        if(!m_currentDataPath.endsWith(".rcd"))
+        {
+            m_currentDataPath.append(".rcd");
+            ///@Warning
+        }
+        QFile file(m_currentDataPath);
+        if(file.open(QIODevice::WriteOnly))
+        {
+            //init Json
+            QJsonDocument json;
+            QJsonObject obj;
+
+
+
+            //Get datamodel
+            QJsonObject games;
+            m_gameModel->writeDataToJson(games);
+            obj["games"]=games;
+
+            QJsonObject masters;
+            m_gameMasterModel->writeDataToJson(masters);
+            obj["masters"]=masters;
+
+            QJsonObject scenarios;
+            m_scenarioManager->writeDataToJson(scenarios);
+            obj["scenarios"]=scenarios;
+
+            QJsonObject schedules;
+            m_locview->writeDataToJson(schedules);
+            obj["schedules"]=schedules;
+
+            json.setObject(obj);
+            file.write(json.toJson());
+
+            setWindowTitle(m_title.arg(QFileInfo(m_currentDataPath).fileName()).arg("RCM"));
+            setWindowModified(false);
+        }
+    }
+}
+void MainWindow::openJsonData()
+{
+    m_currentDataPath = QFileDialog::getOpenFileName(this,tr("Open Convention Data"),QDir::homePath(),tr("Rolisteam Convention Data(*.rcd)"));
+    if(!m_currentDataPath.isEmpty())
+    {
+        resetData();
+        readJSonFile();
+        addRecentFile();
+    }
+}
+void MainWindow::readJSonFile()
+{
+    QFile file(m_currentDataPath);
+    QFileInfo info(m_currentDataPath);
+
+
+    setWindowTitle(m_title.arg(info.fileName()));
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        QJsonObject jsonObj = json.object();
+
+        QJsonObject games = jsonObj["games"].toObject();
+        QJsonObject masters = jsonObj["masters"].toObject();
+        QJsonObject scenarios = jsonObj["scenarios"].toObject();
+        QJsonObject schedules = jsonObj["schedules"].toObject();
+
+
+        m_gameModel->readDataFromJson(games);
+        m_gameMasterModel->readDataFromJson(masters);
+        m_scenarioManager->readDataFromJson(scenarios);
+        m_locview->readDataFromJson(schedules);
+        file.close();
+        ensureTabVisible(DATA);
+    }
+}
 void MainWindow::saveAsData()
 {
     m_currentDataPath = QFileDialog::getSaveFileName(this, tr("Save Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Rolisteam Conv Database (*.rcdb)"));
@@ -291,8 +391,8 @@ void MainWindow::saveAsData()
 }
 void MainWindow::openData()
 {
-     m_currentDataPath = "/home/renaud/documents/rcm/data_test_several_game.rcdb";
-    //m_currentDataPath = QFileDialog::getOpenFileName(this, tr("Open Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Rolisteam Conv Database (*.rcdb)"));
+     //m_currentDataPath = "/home/renaud/documents/rcm/data_test_several_game.rcdb";
+    m_currentDataPath = QFileDialog::getOpenFileName(this, tr("Open Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Rolisteam Conv Database (*.rcdb)"));
     if(!m_currentDataPath.isNull())
     {
         if(!m_currentDataPath.endsWith(".rcdb"))
@@ -304,6 +404,7 @@ void MainWindow::openData()
         addRecentFile();
     }
 }
+
 /*void MainWindow::refreshView()
 {
     if(m_scenarioManager->isCustomViewDisplayed())

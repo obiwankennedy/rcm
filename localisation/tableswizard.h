@@ -7,15 +7,17 @@
 
 #include "roommodel.h"
 #include "tablemodel.h"
+#include "serializable.h"
 
 namespace Ui {
     class EventProperties;
 }
-class EventDay
+class EventDay : public Serialisable
 {
 
 public:
     EventDay();
+    EventDay(EventDay*);
     int getStartTime() const;
     void setStartTime(int startTime);
 
@@ -25,6 +27,17 @@ public:
     int getDuration();//in minutes
     int getId() const;
     void setId(int id);
+
+
+
+    virtual void readFromData(QDataStream&);
+    virtual void writeToData(QDataStream&) const;
+
+    virtual void writeDataToJson(QJsonObject&);
+    virtual void readDataFromJson(QJsonObject&);
+
+    virtual QDomElement writeDataToXml(QDomDocument&);
+    virtual void readDataFromXml(QDomNode&);
 
 private:
     int m_startTime;

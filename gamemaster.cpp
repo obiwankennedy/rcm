@@ -210,15 +210,49 @@ void GameMaster::readDataFromXml(QDomNode& node)
 
 
 }
-
-void GameMaster::readDataToJson(QJsonObject &)
+#include <QJsonObject>
+#include <QJsonArray>
+void GameMaster::readDataFromJson(QJsonObject & obj)
 {
+    m_name = obj["name"].toString();
+    m_phoneNumber=obj["phone"].toString();
+    m_firstName=obj["first"].toString();
+    m_nickname=obj["nick"].toString();
+    m_mailAddress=obj["mail"].toString();
+    m_isPresent = obj["present"].toBool();
+    m_id=obj["id"].toString();
 
+    m_isPresent = false;
+
+    QJsonArray scenarios = obj["scenarios"].toArray();
+    QJsonArray::iterator it;
+    for(it = scenarios.begin(); it != scenarios.end(); ++it)
+    {
+        QJsonObject sce = (*it).toObject();
+        Scenario* tmp = new Scenario();
+        tmp->readDataFromJson(sce);
+        insertScenario(tmp);
+    }
 }
 
-void GameMaster::writeDataToJson(QJsonObject &)
+void GameMaster::writeDataToJson(QJsonObject & obj)
 {
+    obj["name"]=m_name;
+    obj["phone"]=m_phoneNumber;
+    obj["first"]=m_firstName;
+    obj["nick"]=m_nickname;
+    obj["mail"]=m_mailAddress;
+    obj["present"]=m_isPresent;
+    obj["id"]=m_id;
 
+    QJsonArray array;
+    for(Scenario* tmp : *m_scenarioList)
+    {
+        QJsonObject sceObj;
+        tmp->writeDataToJson(sceObj);
+        array.append(sceObj);
+    }
+    obj["scenarios"]=array;
 }
 
 QColor GameMaster::getColor() const

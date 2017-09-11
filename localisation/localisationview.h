@@ -41,14 +41,13 @@ public:
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
 
-    virtual void readDataToJson(QJsonObject&);
+    virtual void readDataFromJson(QJsonObject&);
     virtual void writeDataToJson(QJsonObject&);
 
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
 
-    void addTable(TableItem* table);
-
+    void appendTableItem(TableItem *item, QPointF pos);
 public slots:
     void setTableHeight(qreal height);
     void setMinuteWidth(qreal minuteWidth);
@@ -69,6 +68,7 @@ protected:
      */
     void dragMoveEvent( QGraphicsSceneDragDropEvent * event );
 
+    void addScenarioItem(ScenarioItem *sceneItem, QPointF pos);
 private:
     void addScenario(Scenario* item, QPointF pos);
 
@@ -99,13 +99,14 @@ public:
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
 
-    virtual void readDataToJson(QJsonObject&);
+    virtual void readDataFromJson(QJsonObject&);
     virtual void writeDataToJson(QJsonObject&);
 
 
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
 
+    void appendTableItem(TableItem *item, QPointF pos);
 public slots:
     void setProperties();
     void displayNextDay();

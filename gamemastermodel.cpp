@@ -20,7 +20,8 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include "gamemastermodel.h"
-
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QColor>
 #include <QVariant>
 #include <QDataStream>
@@ -141,13 +142,32 @@ void GameMasterModel::writeToData(QDataStream& to) const
     }
 }
 
-void GameMasterModel::readDataToJson(QJsonObject &)
+void GameMasterModel::readDataFromJson(QJsonObject & json)
 {
+    QJsonArray fieldArray = json["items"].toArray();
+    QJsonArray::Iterator it;
+    for(it = fieldArray.begin(); it != fieldArray.end(); ++it)
+    {
+        QJsonObject obj = (*it).toObject();
+        GameMaster* master = new GameMaster();
+        master->readDataFromJson(obj);
 
+        append(master);
+        emit gmHasBeenAdded(master);
+    }
 }
 
-void GameMasterModel::writeDataToJson(QJsonObject &)
+void GameMasterModel::writeDataToJson(QJsonObject & obj)
 {
+    QJsonArray fieldArray;
+    for(auto key : m_gameMasterMap.keys())
+    {
+        auto master = m_gameMasterMap.value(key);
+        QJsonObject masterObj;
+        master->writeDataToJson(masterObj);
+        fieldArray.append(masterObj);
+    }
+    obj["items"]=fieldArray;
 
 }
 Qt::ItemFlags GameMasterModel::flags ( const QModelIndex & index ) const

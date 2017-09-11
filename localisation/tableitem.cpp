@@ -3,11 +3,21 @@
 #include <QDebug>
 #include <QGraphicsScene>
 #include <QPen>
+#include <QJsonObject>
+#include <QJsonArray>
 
 TableItem::TableItem()
  :  QGraphicsObject(),m_day(nullptr)
 {
     m_idTable =1;
+}
+
+TableItem::~TableItem()
+{
+    if(nullptr != m_day)
+    {
+        delete m_day;
+    }
 }
 QRectF TableItem::boundingRect() const
 {
@@ -91,7 +101,12 @@ EventDay *TableItem::day() const
 
 void TableItem::setDay(EventDay *day)
 {
-    m_day = day;
+    if(nullptr != m_day)
+    {
+        delete m_day;
+        m_day = nullptr;
+    }
+    m_day = new EventDay(day);
 }
 
 int TableItem::idTable() const
@@ -144,13 +159,52 @@ void TableItem::readDataFromXml(QDomNode &)
 
 }
 
-void TableItem::readDataToJson(QJsonObject &)
+void TableItem::readDataFromJson(QJsonObject & obj)
 {
+    qreal x = obj["x"].toDouble();
+    qreal y = obj["y"].toDouble();
+    setPos(x,y);
+    m_idTable= obj["idTable"].toInt();
+    m_tableCount= obj["tableCount"].toInt();
+    m_name= obj["name"].toString();
+
+    QJsonObject dayJson = obj["day"].toObject();
+    m_day = new EventDay();
+    m_day->readDataFromJson(dayJson);
+
+    QJsonArray array = obj["scenarios"].toArray();
+    QJsonArray::Iterator it;
+    for(it = array.begin(); it != array.end(); ++it)
+    {
+         QJsonObject obj = (*it).toObject();
+         Scenario* sce = new Scenario();
+         sce->readDataFromJson(obj);
+         m_scenarioList.append(sce);
+    }
 
 }
 
-void TableItem::writeDataToJson(QJsonObject &)
+void TableItem::writeDataToJson(QJsonObject & obj)
 {
+    QPointF posi = pos();
+    obj["x"]=posi.x();
+    obj["y"]=posi.y();
+    obj["idTable"]=m_idTable;
+    obj["tableCount"]=m_tableCount;
+    obj["name"]=m_name;
+
+    QJsonObject dayJson;
+    m_day->writeDataToJson(dayJson);
+    obj["day"]=dayJson;
+
+    QJsonArray array;
+    for(auto sce : m_scenarioList)
+    {
+        QJsonObject sceJson;
+        sce->writeDataToJson(sceJson);
+        array.append(sceJson);
+    }
+    obj["scenarios"]=array;
 
 }
 

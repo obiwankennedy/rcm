@@ -349,7 +349,7 @@ void Scenario::readDataFromXml(QDomNode& node)
 }
 #include <QJsonObject>
 
-void Scenario::readDataToJson(QJsonObject & obj)
+void Scenario::readDataFromJson(QJsonObject & obj)
 {
     m_gameMasterId=obj["gameMasterId"].toString();
     m_gameId=obj["gameId"].toString();

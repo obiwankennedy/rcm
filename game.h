@@ -58,7 +58,7 @@ public:
      */
     virtual void readDataFromXml(QDomNode&) ;
 
-    virtual void readDataToJson(QJsonObject&);
+    virtual void readDataFromJson(QJsonObject&);
     virtual void writeDataToJson(QJsonObject&);
 
 

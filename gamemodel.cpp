@@ -20,9 +20,12 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
 ***************************************************************************/
 #include "gamemodel.h"
-
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QDataStream>
+#include <QJsonArray>
 #include <QDebug>
+
 #ifdef __QT_QUICK_2_
 GameModel::GameModel(GameImageProvider* gameImageProvider, QObject *parent) :
     QAbstractListModel(parent),m_gameImgProvider(gameImageProvider)
@@ -128,13 +131,31 @@ void GameModel::writeToData(QDataStream& to) const
     }
 }
 
-void GameModel::readDataToJson(QJsonObject &)
-{
 
+void GameModel::readDataFromJson(QJsonObject & json)
+{
+    QJsonArray fieldArray = json["items"].toArray();
+    QJsonArray::Iterator it;
+    for(it = fieldArray.begin(); it != fieldArray.end(); ++it)
+    {
+        QJsonObject obj = (*it).toObject();
+        Game* game = new Game();
+        game->readDataFromJson(obj);
+        append(game);
+    }
 }
 
-void GameModel::writeDataToJson(QJsonObject &)
+void GameModel::writeDataToJson(QJsonObject & obj)
 {
+      QJsonArray fieldArray;
+      for(auto key : m_gameMap.keys())
+      {
+          auto game = m_gameMap.value(key);
+          QJsonObject gameObj;
+          game->writeDataToJson(gameObj);
+          fieldArray.append(gameObj);
+      }
+      obj["items"]=fieldArray;
 
 }
 QMap<QString,Game*>& GameModel::getGameMap()

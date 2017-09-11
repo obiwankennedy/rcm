@@ -3,6 +3,9 @@
 #include <QEvent>
 #include <QGraphicsSceneDragDropEvent>
 #include <QWheelEvent>
+#include <QJsonObject>
+#include <QJsonArray>
+
 
 #include "scenarioitem.h"
 #include "localisationview.h"
@@ -87,6 +90,8 @@ void Schedules::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 QPointF Schedules::computeClosePoint(QPointF pos)
 {
+    if(m_tableList.isEmpty())
+        return pos;
     qreal totalHeight = height()/m_tableList.size();
 
     if(pos.y() <= totalHeight*0.2)
@@ -134,22 +139,18 @@ QPointF Schedules::computeClosePoint(QPointF pos)
 void Schedules::addScenario(Scenario* item, QPointF pos)
 {
     ScenarioItem* sceneItem = new ScenarioItem();
-
+    sceneItem->setData(item);
+    addScenarioItem(sceneItem,pos);
+}
+void Schedules::addScenarioItem(ScenarioItem* sceneItem, QPointF pos)
+{
     sceneItem->setMinutesInPixel(&m_minuteWidth);
     sceneItem->setTableInPixel(&m_tableHeight);
-    sceneItem->setData(item);
     addItem(sceneItem);
     m_scenarioList.append(sceneItem);
-
     sceneItem->setPos(pos);
-
 }
 
-void Schedules::addTable(TableItem *table)
-{
-    m_tableList.append(table);
-    addItem(table);
-}
 
 qreal Schedules::getStartOnDay() const
 {
@@ -174,28 +175,83 @@ void Schedules::writeToData(QDataStream & in) const
     in << m_minuteWidth;
     in << m_startOnDay;
     in << m_tableList.size();
-
     for(auto tableItem : m_tableList)
     {
         tableItem->writeToData(in);
     }
-
-
-
     in << m_scenarioList.size();
     for(auto scenarioItem : m_scenarioList)
     {
         scenarioItem->writeToData(in);
     }
 }
-
-void Schedules::readDataToJson(QJsonObject &)
+void Schedules::appendTableItem(TableItem* item, QPointF pos)
 {
+    connect(item,SIGNAL(minuteWidthChanged(qreal)),this,SLOT(setMinuteWidth(qreal)));
+    connect(item,SIGNAL(heightChanged(qreal)),this,SLOT(setTableHeight(qreal)));
+    //item->setDay(m_day);
+    item->setIdTable(m_tableList.size());
+    m_tableList.append(item);
+    addItem(item);
+    item->setPos(pos);
+}
+void Schedules::readDataFromJson(QJsonObject & obj)
+{
+    m_day=obj["day"].toInt();
+	m_tableHeight=obj["tableHeight"].toInt();
+    m_minuteWidth=obj["minuteWidth"].toInt();
+    m_startOnDay=obj["startOnDay"].toInt();
+	QJsonArray fieldArray = obj["tablelist"].toArray();
+	QJsonArray::Iterator it;
+	for(it = fieldArray.begin(); it != fieldArray.end(); ++it)                                                
+    {  
+		QJsonObject obj = (*it).toObject();
+        TableItem* table = new TableItem();
+        table->readDataFromJson(obj);
+        QPointF pos = table->pos();
+        appendTableItem(table,pos);
+    }
+	QJsonArray scenarioList = obj["scenarioList"].toArray();
+    QJsonArray::Iterator it2;
+    for(it2 = scenarioList.begin(); it2 != scenarioList.end(); ++it2)
+    {  
+        QJsonObject obj = (*it2).toObject();
+        ScenarioItem* sceItem = new ScenarioItem();
+        sceItem->readDataFromJson(obj);
+
+        QPointF pos = sceItem->pos();
+        addScenarioItem(sceItem,pos);
+
+    }
+    
 
 }
 
-void Schedules::writeDataToJson(QJsonObject &)
+void Schedules::writeDataToJson(QJsonObject & obj)
 {
+
+    obj["day"]= m_day;
+    obj["tableHeight"]= m_tableHeight;
+    obj["minuteWidth"]= m_minuteWidth;
+    obj["startOnDay"]=m_startOnDay;
+
+	QJsonArray fieldArray;
+	for(auto table : m_tableList)
+    {
+        QJsonObject tableJson;
+        table->writeDataToJson(tableJson);
+        fieldArray.append(tableJson);
+	}
+	obj["tablelist"]=fieldArray;
+
+	QJsonArray scenarioList;
+    for(auto scenarioItem : m_scenarioList)
+    {
+		QJsonObject scenario;
+        scenarioItem->writeDataToJson(scenario);
+		scenarioList.append(scenario);
+    }
+	obj["scenarioList"]=scenarioList;
 
 }
 
@@ -252,10 +308,8 @@ void Schedules::updatePositionOfTime()
     QTime current = QTime::currentTime();
     qreal time=current.hour()*60+current.minute();
 
-    qDebug() << current << time << m_startOnDay << m_timeItem->boundingRect();
     time-=m_startOnDay;
     time=time*m_minuteWidth;
-    qDebug() << time;
     m_timeItem->setTransformOriginPoint(m_timeItem->boundingRect().center());
     m_timeItem->setPos(time-(m_timeItem->boundingRect().width()*m_minuteWidth*2),0);
 }
@@ -312,14 +366,38 @@ void LocalisationView::writeToData(QDataStream & in) const
     }
 }
 
-void LocalisationView::readDataToJson(QJsonObject &)
+void LocalisationView::readDataFromJson(QJsonObject & obj)
 {
+    m_scenes.clear();
+    QJsonArray array = obj["scenes"].toArray();
+    QJsonArray::iterator it;
+    for(it = array.begin(); it != array.end();++it)
+    {
+         QJsonObject json = (*it).toObject();
+         auto schedule = new Schedules(0,0,1500,900);
+         schedule->readDataFromJson(json);
+         m_scenes.append(schedule);
+    }
+
+    if(!m_scenes.isEmpty())
+    {
+        m_view->setScene(m_scenes.at(0));
+        m_view->ensureVisible(m_scenes.at(0)->sceneRect(),0,0);
+    }
 
 }
 
-void LocalisationView::writeDataToJson(QJsonObject &)
+void LocalisationView::writeDataToJson(QJsonObject & obj)
 {
-
+    QJsonArray array;
+    for(auto scene : m_scenes)
+    {
+        QJsonObject sceObj;
+        auto schedule = dynamic_cast<Schedules*>(scene);
+        schedule->writeDataToJson(sceObj);
+        array.append(sceObj);
+    }
+    obj["scenes"]=array;
 }
 
 QDomElement LocalisationView::writeDataToXml(QDomDocument &)
@@ -450,10 +528,10 @@ void LocalisationView::contextMenuOnView(QPoint f)
         selectedItem->update();
     }
 }
-
 void LocalisationView::setProperties()
 {
     TablesWizard wizzard;
+    m_scenes.clear();
     if(QDialog::Accepted == wizzard.exec())
     {
         auto schedules = wizzard.getSchedule();
@@ -473,13 +551,11 @@ void LocalisationView::setProperties()
             {
                 TableItem* item = new TableItem();
                 item->setName(name.at(i));
-                connect(item,SIGNAL(minuteWidthChanged(qreal)),scene,SLOT(setMinuteWidth(qreal)));
-                connect(item,SIGNAL(heightChanged(qreal)),scene,SLOT(setTableHeight(qreal)));
+                QPointF posi(0,y*i);
                 item->setDay(day);
                 item->setIdTable(i);
                 item->setTableCount(tableCount);
-                scene->addTable(item);
-                item->setPos(0,y*i);
+                scene->appendTableItem(item,posi);
             }
             m_scenes.append(scene);
         }

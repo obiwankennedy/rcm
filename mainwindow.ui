@@ -452,6 +452,7 @@
       <string>Import</string>
      </property>
      <addaction name="m_importXMLAct"/>
+     <addaction name="m_importBinary"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -459,6 +460,7 @@
      </property>
      <addaction name="m_exportXMLAct"/>
      <addaction name="m_exportCSVAct"/>
+     <addaction name="m_exportBinary"/>
     </widget>
     <addaction name="m_newAct"/>
     <addaction name="m_openAct"/>
@@ -586,6 +588,16 @@
   <action name="m_exportCSVAct">
    <property name="text">
     <string>CSV</string>
+   </property>
+  </action>
+  <action name="m_importBinary">
+   <property name="text">
+    <string>Binary</string>
+   </property>
+  </action>
+  <action name="m_exportBinary">
+   <property name="text">
+    <string>Binary</string>
    </property>
   </action>
  </widget>

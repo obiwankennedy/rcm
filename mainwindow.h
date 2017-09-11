@@ -75,7 +75,9 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event);
 
 
+    void readJSonFile();
 private slots:
+    void saveAs();
     void saveData();
     void saveDataToXml();
     void importDataFromXml();
@@ -84,6 +86,9 @@ private slots:
     void saveAsData();
     void resetData();
     void exporCSV();
+
+    void saveDataToJson();
+    void openJsonData();
 
 
 

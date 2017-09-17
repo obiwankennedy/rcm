@@ -82,6 +82,8 @@ void CustomerView::setLabel(Ui::MainWindow* parent)
     });
 
     m_widget = m_ui->m_scrollAreaVisual;
+
+    m_label->installEventFilter(this);
 #endif
 }
 void CustomerView::setSelectionIndex(const QModelIndex& index)
@@ -153,4 +155,41 @@ void CustomerView::resizeLabel()
     {
         m_label->resize(w,w*m_ratioImageBis);
     }
+}
+#include <QMouseEvent>
+bool CustomerView::eventFilter(QObject* label, QEvent* vt)
+{
+    if(label==m_ui->m_scrollAreaVisual)
+    {
+        /*if(vt->type() == QEvent::Resize)
+        {
+            resizeLabel();
+        }*/
+    }
+    else if((label == m_label)&&
+           ((vt->type() == QEvent::MouseButtonPress)||(vt->type() == QEvent::MouseButtonRelease)||(vt->type() == QEvent::MouseMove)))
+    {
+        QMouseEvent* evt = static_cast<QMouseEvent*>(vt);
+        QPoint posOnLabel= evt->pos();
+
+
+        int w = m_label->geometry().width();
+        int h = m_label->geometry().height();
+
+        qreal ratioW =  (qreal)m_window->width()/ ((qreal)w);
+        qreal ratioH =  (qreal)m_window->height()/((qreal)h) ;
+
+        qreal x = (posOnLabel.x()) * ratioW;
+        qreal y = (posOnLabel.y()) * ratioH;
+
+        QPointF posOnQML(x,y);
+        QMouseEvent* event = new QMouseEvent(evt->type(),posOnQML.toPoint(),evt->button(),evt->buttons(),evt->modifiers());
+
+        QObject* root = m_engine->rootObjects().first();
+        //QCoreApplication::sendEvent(m_window,event);
+        QCoreApplication::sendEvent(root,event);
+        //m_window->sendEvent(m_window->contentItem(),event);
+        return true;
+    }
+    return false;
 }

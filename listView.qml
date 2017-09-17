@@ -4,17 +4,12 @@ import QtQuick.Window 2.1
 
 ApplicationWindow {
     id: root
-    //visibility: Window.FullScreen;
     property real factor: 0.04
     property string msg: ""
     property bool autoAnimation: false
     property int itemAngle: 60
     property int itemSize: root.width * 0.8
-
-
-
     onAutoAnimationChanged: {
-
         if(autoAnimation)
         {
             anima.start()
@@ -23,10 +18,7 @@ ApplicationWindow {
         {
             anima.stop()
         }
-
-        console.log("auto animation changed")
     }
-
     Rectangle {
         anchors.fill: parent
         color: "black"
@@ -119,9 +111,6 @@ ApplicationWindow {
 
                         }
                     }
-
-
-
                     TextArea {
                         id:desc
                         text: Description
@@ -134,9 +123,6 @@ ApplicationWindow {
                         textFormat: Text.RichText
                         leftPadding: 0
                     }
-
-
-
                 }
                 Text {
                     id:durationId
@@ -176,9 +162,7 @@ ApplicationWindow {
         onTriggered: {
             view.incrementCurrentIndex()
         }
-
     }
-
     PathView {
          id: view
          anchors.fill: parent
@@ -204,100 +188,7 @@ ApplicationWindow {
              PathAttribute { name: "itemRotation"; value: 54 }
              PathLine { x: view.width*0.5; y: view.height*0.5; }
          }
-
-        /* path: Path {
-            startX: 0
-            startY: height / 2
-
-
-            PathPercent { value: 0.0 }
-            PathAttribute { name: "iconScale"; value: 1.0 }
-            PathAttribute { name: "itemOpacity"; value: 0.01 }
-            PathAttribute { name: "iconScale"; value: 0.2 }
-            PathAttribute { name: "itemRotation"; value: 54.0 }
-            PathAttribute { name: "itemOrigin"; value: 0 }
-
-
-            PathLine { x:view.width*0.25; y: view.height/2 }
-            PathAttribute { name: "itemOrigin"; value: 0 }
-
-            PathAttribute { name: "iconScale"; value: 0.3 }
-            PathAttribute { name: "itemOpacity"; value: 0.01 }
-            PathAttribute { name: "itemRotation"; value: 25.0 }
-
-            PathPercent { value: 0.49 }
-            PathAttribute { name: "z"; value: 10 }
-            PathLine { relativeX: 0; relativeY: 0 }
-            PathAttribute { name: "itemOpacity"; value: 1.0 }
-            PathAttribute { name: "itemRotation"; value: 0.0 }
-            PathAttribute { name: "iconScale"; value: 1.0 }
-            PathLine { x:view.width*0.75; y: view.height/2 }
-            PathAttribute { name: "itemRotation"; value: 0.0 }
-            PathAttribute { name: "iconScale"; value: 1.0 }
-            PathAttribute { name: "itemOpacity"; value: 1.0 }
-            PathPercent { value: 0.51 }
-            PathLine { relativeX: 0; relativeY: 0 }
-
-            PathAttribute { name: "z"; value: 10 }
-            PathAttribute { name: "itemRotation"; value: -25.0 }
-            PathAttribute { name: "itemOrigin"; value: view.width*0.5 }
-            PathAttribute { name: "itemOpacity"; value: 0.01 }
-
-            PathLine { x: width; y: view.height/2; }
-            PathPercent { value: 1 }
-            PathAttribute { name: "z"; value: 0 }
-            PathAttribute { name: "iconScale"; value: 0.3 }
-            PathAttribute { name: "itemOpacity"; value: 0.01 }
-            PathAttribute { name: "itemRotation"; value: -54 }
-            PathAttribute { name: "itemOrigin"; value: view.width*0.5 }
-
-         }*/
-
-         //pathItemCount: 6
-         /*path: Path {
-             startX: 0
-             startY: height / 2
-
-
-             PathPercent { value: 0.0 }
-             PathAttribute { name: "z"; value: 0 }
-             PathAttribute { name: "angle"; value: itemAngle }
-             PathAttribute { name: "origin"; value: 0 }
-             PathLine {
-                 x: (view.width - itemSize) / 2
-                 y: view.height / 2
-             }
-             PathAttribute { name: "angle"; value: itemAngle }
-             PathAttribute { name: "origin"; value: 0 }
-             PathPercent { value: 0.49 }
-             PathAttribute { name: "z"; value: 10 }
-
-
-             PathLine { relativeX: 0; relativeY: 0 }
-
-             PathAttribute { name: "angle"; value: 0 }
-             PathLine {
-                 x: (view.width - itemSize) / 2 + itemSize
-                 y: view.height / 2
-             }
-             PathAttribute { name: "angle"; value: 0 }
-             PathPercent { value: 0.51 }
-
-             PathLine { relativeX: 0; relativeY: 0 }
-
-             PathAttribute { name: "z"; value: 10 }
-             PathAttribute { name: "angle"; value: -itemAngle }
-             PathAttribute { name: "origin"; value: itemSize }
-             PathLine {
-                 x: view.width
-                 y: view.height / 2
-             }
-             PathPercent { value: 1 }
-             PathAttribute { name: "z"; value: 0 }
-             PathAttribute { name: "angle"; value: -itemAngle }
-             PathAttribute { name: "origin"; value: itemSize }
-         }*/
-         focus: true
+       focus: true
        Keys.onLeftPressed: decrementCurrentIndex()
        Keys.onRightPressed: incrementCurrentIndex()
        Keys.onEscapePressed: {
@@ -310,14 +201,10 @@ ApplicationWindow {
                root.visibility = Window.FullScreen
            }
        }
-
     }
-
-
     Rectangle {
         id: popupTop
         color: "white"
-       // property alias msg: popupMenu.text
         border.width: 2
         border.color: "black"
         anchors.top: parent.top
@@ -335,5 +222,4 @@ ApplicationWindow {
             text: root.msg
         }
     }
-
 }

@@ -54,6 +54,8 @@ public slots:
     
 protected:
     void resizeLabel();
+    bool eventFilter(QObject *, QEvent *);
+
 private:
     ScenarioItemDelegate* m_scenarioDelegate;
     ScenarioModel* m_model;

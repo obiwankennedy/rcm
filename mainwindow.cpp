@@ -856,6 +856,7 @@ void MainWindow::readCSV()
               {
                 Game* game1 = new Game();
                 game1->setTitle(rpg1);
+                game1->setDescription(rpg1Description);
                 game1->setImageUrl(rpg1ImgLink);
 
                 m_gameModel->append(game1);
@@ -864,7 +865,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg1PlayerCount.split('-');
 
                 Scenario* scen1 = new Scenario();
-                scen1->setDescription(rpg1Description);
+                scen1->setDescription(rpg1note);
                 scen1->setDuration(rpg1Time.toInt());
                 scen1->setMaximumPlayer(minmax[1].toInt());
                 scen1->setMinimumPlayer(minmax[0].toInt());
@@ -878,6 +879,7 @@ void MainWindow::readCSV()
               {
                 Game* game2 = new Game();
                 game2->setTitle(rpg2);
+                game2->setDescription(rpg2Description);
                 game2->setImageUrl(rpg2ImgLink);
 
                 m_gameModel->append(game2);
@@ -886,7 +888,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg2PlayerCount.split('-');
 
                 Scenario* scen2 = new Scenario();
-                scen2->setDescription(rpg2Description);
+                scen2->setDescription(rpg2note);
                 scen2->setDuration(rpg2Time.toInt());
                 scen2->setMaximumPlayer(minmax[1].toInt());
                 scen2->setMinimumPlayer(minmax[0].toInt());
@@ -900,6 +902,7 @@ void MainWindow::readCSV()
               {
                 Game* game3 = new Game();
                 game3->setTitle(rpg1);
+                game3->setDescription(rpg3Description);
                 game3->setImageUrl(rpg1ImgLink);
 
                 m_gameModel->append(game3);
@@ -908,7 +911,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg3PlayerCount.split('-');
 
                 Scenario* scen3 = new Scenario();
-                scen3->setDescription(rpg3Description);
+                scen3->setDescription(rpg3Note);
                 scen3->setDuration(rpg3Time.toInt());
                 scen3->setMaximumPlayer(minmax[1].toInt());
                 scen3->setMinimumPlayer(minmax[0].toInt());
@@ -923,6 +926,7 @@ void MainWindow::readCSV()
               {
                 Game* game4 = new Game();
                 game4->setTitle(rpg4);
+                game4->setDescription(rpg4Description);
                 game4->setImageUrl(rpg4ImgLink);
 
                 m_gameModel->append(game4);
@@ -931,7 +935,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg4PlayerCount.split('-');
 
                 Scenario* scen4 = new Scenario();
-                scen4->setDescription(rpg4Description);
+                scen4->setDescription(rpg4Note);
                 scen4->setDuration(rpg4Time.toInt());
                 scen4->setMaximumPlayer(minmax[1].toInt());
                 scen4->setMinimumPlayer(minmax[0].toInt());

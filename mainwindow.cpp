@@ -490,8 +490,9 @@ void MainWindow::openRecentFile()
     QAction* tmp = dynamic_cast<QAction*>(sender());
     m_currentDataPath=tmp->data().toString();
 
+    resetData();
     readFile();
-    // updateTitle();
+
 
 }
 void MainWindow::addRecentFile()

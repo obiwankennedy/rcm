@@ -421,6 +421,7 @@ bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
             if(nullptr != scene)
             {
                 m_view->fitInView(scene->itemsBoundingRect(),Qt::KeepAspectRatio);
+                return true;
             }
         }
         else if(event->type() == QEvent::MouseButtonPress)
@@ -432,18 +433,21 @@ bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
                 if(mEvent->modifiers() & Qt::ShiftModifier)
                 {
                     m_view->setDragMode(QGraphicsView::ScrollHandDrag);
+                    return true;
                 }
             }
         }
         else if(event->type() == QEvent::MouseButtonRelease)
         {
             m_view->setDragMode(QGraphicsView::NoDrag);
+            return true;
         }
         else if(event->type() == QEvent::Wheel)
         {
             QWheelEvent* wEvent = dynamic_cast<QWheelEvent*>(event);
 
             wheelEventForView(wEvent);
+            return true;
 
         }
     }

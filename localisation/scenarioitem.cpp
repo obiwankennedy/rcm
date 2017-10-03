@@ -4,7 +4,8 @@
 
 #include <QGraphicsPixmapItem>
 #include <QJsonObject>
-
+#include <QStyleOptionGraphicsItem>
+#define WIDTH_HOUR_LINE 4
 ScenarioItem::ScenarioItem()
 {
     m_lockUp = false;
@@ -26,10 +27,9 @@ ScenarioItem::ScenarioItem()
 
 QRectF ScenarioItem::boundingRect() const
 {
-
-    return QRectF(0,0,(*m_minutesInPixel)*m_data->getDuration(),*m_tableInPixel);
+    return QRectF(0,0,(*m_minutesInPixel)*m_data->getDuration()-(WIDTH_HOUR_LINE*(m_data->getDuration()/60+1)),*m_tableInPixel);
 }
-#include <QStyleOptionGraphicsItem>
+
 void ScenarioItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rect = boundingRect();
@@ -201,6 +201,7 @@ void ScenarioItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
                         m_locker->setPixmap(QPixmap(":/resources/cadenas_closed.png"));
                         setFlags( QGraphicsItem::ItemIsSelectable);
                         update();
+
                     }
                     else
                     {
@@ -208,10 +209,14 @@ void ScenarioItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
                         setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemSendsGeometryChanges);
                         update();
                     }
+                    event->accept();
                 }
             }
         }
     }
+
+    QGraphicsObject::mousePressEvent(event);
+
 }
 qreal *ScenarioItem::minutesInPixel() const
 {

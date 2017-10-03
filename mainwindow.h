@@ -70,6 +70,7 @@ public slots:
     void makeGameMasterUnavailable();
     void openData();
 
+    void readCSV();
 protected:
     void closeEvent ( QCloseEvent * event );
     bool eventFilter(QObject *obj, QEvent *event);

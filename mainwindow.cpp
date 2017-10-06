@@ -40,13 +40,16 @@
 #include "export/exportcsv.h"
 
 #include "idtranslator.h"
+#define  TIME_SAVE_PERIOD 600000
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+	m_timer = new QTimer();
+	m_timer->setInterval(TIME_SAVE_PERIOD);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(saveBackUp()));
     m_gameImgProvider = new GameImageProvider();
 
     m_title=tr("%1[*] - Rolisteam Convention Manager");
@@ -779,6 +782,16 @@ void MainWindow::exporCSV()
         csvWriter.write();
     }
 }
+void MainWindow::saveBackUp()
+{
+	if(!m_currentDataPath.isEmpty())
+	{
+		QString backUp = m_currentDataPath;
+		m_currentDataPath.append("_backup");
+		saveDataToJson();
+		m_currentDataPath = backUp;
+	}
+}
 void MainWindow::readCSV()
 {
     QString fileImport = QFileDialog::getOpenFileName(this, tr("Open CSV Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Csv Conv DataBase (*.csv)"));
@@ -912,7 +925,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg3PlayerCount.split('-');
 
                 Scenario* scen3 = new Scenario();
-                scen3->setDescription(rpg3Note);
+                scen3->setDescription(rpg3note);
                 scen3->setDuration(rpg3Time.toInt());
                 scen3->setMaximumPlayer(minmax[1].toInt());
                 scen3->setMinimumPlayer(minmax[0].toInt());
@@ -936,7 +949,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg4PlayerCount.split('-');
 
                 Scenario* scen4 = new Scenario();
-                scen4->setDescription(rpg4Note);
+                scen4->setDescription(rpg4note);
                 scen4->setDuration(rpg4Time.toInt());
                 scen4->setMaximumPlayer(minmax[1].toInt());
                 scen4->setMinimumPlayer(minmax[0].toInt());

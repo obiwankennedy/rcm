@@ -69,7 +69,7 @@ public slots:
     void ensureTabVisible(TAB);
     void makeGameMasterUnavailable();
     void openData();
-
+	void saveBackUp();
     void readCSV();
 protected:
     void closeEvent ( QCloseEvent * event );
@@ -125,7 +125,7 @@ private:
     QMenu* m_recentFile;
     QList<QAction*>* m_recentFileActions;
     LocalisationView* m_locview;
-
+	QTimer* m_timer;
 
     QQuickWindow* m_window;
 

@@ -440,7 +440,7 @@
      <x>0</x>
      <y>0</y>
      <width>966</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="m_fileMenu">
@@ -452,8 +452,8 @@
       <string>Import</string>
      </property>
      <addaction name="m_importXMLAct"/>
-     <addaction name="m_csvAct"/>
      <addaction name="m_importBinary"/>
+     <addaction name="m_csvAct"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -599,6 +599,11 @@
   <action name="m_exportBinary">
    <property name="text">
     <string>Binary</string>
+   </property>
+  </action>
+  <action name="m_csvAct">
+   <property name="text">
+    <string>CSV</string>
    </property>
   </action>
  </widget>

@@ -24,6 +24,7 @@
 #include <QDebug>
 
 #include "leveldelegateitem.h"
+#include <QColorDialog>
 
 GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedList,QMap<QString,GameMaster*>& lst,QWidget *parent) :
     QDialog(parent),
@@ -51,22 +52,17 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedLi
     ui->m_scenarioTable->hideColumn(7);
     ui->m_scenarioTable->hideColumn(9);
     ui->m_scenarioTable->hideColumn(10);
-//#if QT_VERSION >= 0x050000
-//    ui->m_scenarioTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-//#else
-//    ui->m_scenarioTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-//#endif
-//    ui->m_scenarioTable->horizontalHeader()->setStretchLastSection(true);
     updateGameListHeader();
-//    ui->m_scenarioTable->horizontalHeader()->setCascadingSectionResizes(true);
-
     ui->m_scenarioTable->verticalHeader()->setVisible(false);
-
-
-
     connect(m_addScenarioAct,SIGNAL(triggered()),this,SLOT(addScenario()));
     connect(m_model,SIGNAL(updateHeader()),this,SLOT(updateGameListHeader()));
     connect(ui->m_addGame,SIGNAL(pressed()),this,SIGNAL(addGame()));
+
+    connect(ui->m_color,&QPushButton::clicked,this,[=]()
+    {
+      m_currentColor = QColorDialog::getColor(m_currentColor,this,tr("GM color"));
+      ui->m_color->setStyleSheet(QStringLiteral("background: rgb(%1,%2,%3);").arg(m_currentColor.red()).arg(m_currentColor.green()).arg(m_currentColor.blue()));
+    });
 }
 
 GameMasterDialog::~GameMasterDialog()
@@ -111,7 +107,6 @@ QList<Scenario*>* GameMasterDialog::getScenarioList()
 void GameMasterDialog::setPerformer(QString m_id)
 {
      m_model->setPerformer(m_id);
-
 }
 
 void GameMasterDialog::updateGameListHeader()
@@ -130,14 +125,25 @@ void GameMasterDialog::updateGameListHeader()
 
 
 }
+
+QColor GameMasterDialog::getCurrentColor() const
+{
+  return m_currentColor;
+}
+
+void GameMasterDialog::setCurrentColor(const QColor &currentColor)
+{
+  m_currentColor = currentColor;
+  ui->m_color->setStyleSheet(QStringLiteral("background: rgb(%1,%2,%3);").arg(m_currentColor.red()).arg(m_currentColor.green()).arg(m_currentColor.blue()));
+}
 void GameMasterDialog::setName(QString str)
 {
-    ui->m_nameEdit->setText(str);
+  ui->m_nameEdit->setText(str);
 }
 
 void GameMasterDialog::setNickName(QString str)
 {
-ui->m_nickNameEdit->setText(str);
+  ui->m_nickNameEdit->setText(str);
 }
 
 void GameMasterDialog::setFirstName(QString str)

@@ -72,7 +72,7 @@ void ScenarioItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
             painter->drawText(rect,Qt::AlignTop | Qt::AlignLeft,tr("GM: %1 - tel: %2").arg(master->getNickName()).arg(master->getPhoneNumber()));
             painter->drawText(rect,Qt::AlignBottom | Qt::AlignRight,QString("%1 min").arg(m_data->getDuration()));
             painter->drawText(0,rect.bottom(),QString("%1/%2").arg(m_data->getCurrentPlayers()).arg(m_data->getMaximumPlayers()));
-            painter->drawText(rect.topRight(),tr("State: %1").arg(stateToString()));
+            painter->drawText(rect,Qt::AlignTop | Qt::AlignHCenter,tr("State: %1").arg(stateToString()));
 
         }
     }

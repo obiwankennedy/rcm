@@ -31,7 +31,7 @@ class GameMasterModel : public QAbstractListModel, public Serialisable
 {
     Q_OBJECT
 public:
-    enum CustomRole {BackTime = Qt::UserRole+1,ActivityRole,NameRole,PhoneRole,FirstNameRole,MailRole};
+    enum CustomRole {BackTime = Qt::UserRole+1,ActivityRole,NameRole,PhoneRole,FirstNameRole,MailRole,ColorRole};
 
     explicit GameMasterModel(QObject *parent = 0);
     int rowCount ( const QModelIndex & parent = QModelIndex() ) const;

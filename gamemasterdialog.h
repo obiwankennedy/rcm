@@ -45,6 +45,7 @@ public:
     QString getFirstName();
     QString getPhoneNumber();
     QString getMailAddress();
+    QColor getColor();
 
     void setName(QString str);
     void setNickName(QString str);
@@ -56,6 +57,9 @@ public:
 
     QList<Scenario*>* getScenarioList();
     void setPerformer(QString m_id);
+    QColor getCurrentColor() const;
+    void setCurrentColor(const QColor &currentColor);
+
 signals:
     void addGame();
 
@@ -73,6 +77,7 @@ private:
     QAction* m_delScenarioAct;
     QAction* m_addGameAct;
     GameEditorDelegate* m_gameDelegate;
+    QColor m_currentColor;
 };
 
 #endif // GAMEMASTERDIALOG_H

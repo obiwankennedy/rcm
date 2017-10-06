@@ -54,10 +54,13 @@ QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
             return var;
         }
     }
+    else if(Qt::DecorationRole == role)
+    {
+      return m_gameMasterList[index.row()]->getColor();
+    }
     else if(Qt::CheckStateRole == role)
     {
         return m_gameMasterList[index.row()]->isPresent();
-
     }
     else if(GameMasterModel::NameRole == role)
     {
@@ -73,7 +76,11 @@ QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
     }
     else if(GameMasterModel::MailRole == role)
     {
-        m_gameMasterList[index.row()]->getMailAddress();
+        return m_gameMasterList[index.row()]->getMailAddress();
+    }
+    else if(GameMasterModel::ColorRole == role)
+    {
+      return m_gameMasterList[index.row()]->getColor();
     }
 
     return QVariant();

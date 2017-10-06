@@ -530,6 +530,8 @@ void MainWindow::addGameMasterDialog()
         tmp->setFirstName(dialog.getFirstName());
         tmp->setPhoneNumber(dialog.getPhoneNumber());
         tmp->setMailAddress(dialog.getMailAddress());
+        tmp->setColor(dialog.getCurrentColor());
+
 
 
         //dialog.get
@@ -608,6 +610,7 @@ void MainWindow::editGameMaster(const QModelIndex& index)
         dialog.setFirstName(tmp->getFirstName());
         dialog.setPhoneNumber(tmp->getPhoneNumber());
         dialog.setScenarioList(tmp->getGMScenarios());
+        dialog.setCurrentColor(tmp->getColor());
 
 
 
@@ -619,7 +622,7 @@ void MainWindow::editGameMaster(const QModelIndex& index)
             tmp->setFirstName(dialog.getFirstName());
             tmp->setPhoneNumber(dialog.getPhoneNumber());
             tmp->setMailAddress(dialog.getMailAddress());
-
+            tmp->setColor(dialog.getCurrentColor());
 
 
 

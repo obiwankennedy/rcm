@@ -136,6 +136,7 @@ private:
     QAction* m_startGame;
     QAction* m_gameEnd;
     QAction* m_scheduleGame;
+    QAction* m_removeGame;
 
 };
 

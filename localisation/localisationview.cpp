@@ -343,6 +343,7 @@ LocalisationView::LocalisationView(QGraphicsView* view,QWidget *parent) :
 
     m_addPlayer= new QAction(tr("Add player"),this);
     m_delPlayer= new QAction(tr("Delete player"),this);
+    m_removeGame = new QAction(tr("Remove scheduled Game"),this);
     m_startGame= new QAction(tr("Start"),this);
     m_gameEnd = new QAction(tr("End"),this);
     m_scheduleGame = new QAction(tr("Incoming"),this);
@@ -476,6 +477,7 @@ void LocalisationView::contextMenuOnView(QPoint f)
     menu.addAction(m_delPlayer);
     menu.addSeparator();
     menu.addAction(m_showInfo);
+    menu.addAction(m_removeGame);
     menu.addSeparator();
     menu.addAction(m_startGame);
     menu.addAction(m_gameEnd);
@@ -528,6 +530,11 @@ void LocalisationView::contextMenuOnView(QPoint f)
         else if(selectedAction == m_scheduleGame)
         {
             selectedItem->scheduleGame();
+        }
+        else if(m_removeGame == selectedAction)
+        {
+            auto scene = selectedItem->scene();
+            scene->removeItem(selectedItem);
         }
         selectedItem->update();
     }

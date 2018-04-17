@@ -67,25 +67,27 @@ ApplicationWindow {
                 Item  {
                     id: rootItem
                     anchors.left: image.right
-                    anchors.leftMargin: -(image.width - image.paintedWidth)/2
+                    anchors.leftMargin: -(image.width - image.paintedWidth)/2+10
                     anchors.top: gametitleLabel.bottom
                     anchors.right: rect.right
                     anchors.bottom: rect.bottom
                     //spacing: parent.height * root.factor
                     Text {
                         id:titleLabel
-                        text:Title + "title"
+                        text: Title
                         font.pixelSize: parent.height * root.factor
                         textFormat: Text.RichText
+                        font.weight : Font.Bold
                         anchors.top: parent.top
                         anchors.left: parent.left
-                        height: contentHeight
+                        anchors.right: parent.right
+                        horizontalAlignment: Text.AlignHCenter
                     }
                    Text {
                         id:gmId
                         anchors.top: titleLabel.bottom
                         anchors.left: parent.left
-                        text: qsTr("Votre meneur: ") + GMName
+                        text: qsTr("Meneur: ") + GMName
                         font.pixelSize: parent.height * root.factor
                         textFormat: Text.RichText
                         height: contentHeight
@@ -115,6 +117,7 @@ ApplicationWindow {
                         id:desc
                         text: Description
                         anchors.top: gmId.bottom
+                        anchors.topMargin: 10
                         anchors.left: parent.left
                         font.pixelSize: parent.height * root.factor
                         wrapMode: Text.WordWrap

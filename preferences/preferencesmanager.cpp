@@ -81,18 +81,8 @@ void PreferencesManager::readSettings(QSettings & settings)
     QVariant variant = settings.value("map",*m_optionDictionary);
     if(variant.canConvert<QMap<QString,QVariant> >())
     {
-
         *m_optionDictionary = variant.value<QMap<QString,QVariant> >();
-     }
-    
-
-   for(int i = 0;m_optionDictionary->size()>i;i++)
-    {
-      // qDebug() << "key " << m_optionDictionary->keys().at(i) << "value: " << m_optionDictionary->value(m_optionDictionary->keys().at(i),true).toString();
-
-
     }
-    
     settings.endGroup();
     
 }
@@ -101,11 +91,4 @@ void PreferencesManager::writeSettings(QSettings & settings)
     settings.beginGroup("preferences");
     settings.setValue("map",*m_optionDictionary);
     settings.endGroup();
-
-    for(int i = 0;m_optionDictionary->size()>i;i++)
-     {
-       // qDebug() << "key " << m_optionDictionary->keys().at(i) << "value: " << m_optionDictionary->value(m_optionDictionary->keys().at(i),true).toString();
-
-
-     }
 }

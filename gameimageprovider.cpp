@@ -16,13 +16,20 @@ QPixmap GameImageProvider::requestPixmap(const QString &id, QSize */*size*/, con
         return *pix;
     }
     else
-        return QPixmap();
+    {
+        const QPixmap* pix = m_map->value("default");
+        return *pix;
+    }
 }
 void GameImageProvider::insertPixmap(QString str,QPixmap* map)
 {
-    m_map->insert(str,map);
+    if(!map->isNull())
+    {
+        m_map->insert(str,map);
+    }
 }
 void GameImageProvider::resetData()
 {
     m_map->clear();
+    m_map->insert("default",new QPixmap(":/resources/nologo.png"));
 }

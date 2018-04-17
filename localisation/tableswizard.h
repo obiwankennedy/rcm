@@ -18,6 +18,7 @@ class EventDay : public Serialisable
 public:
     EventDay();
     EventDay(EventDay*);
+    virtual ~EventDay();
     int getStartTime() const;
     void setStartTime(int startTime);
 

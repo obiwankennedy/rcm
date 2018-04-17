@@ -149,6 +149,10 @@ EventDay::EventDay(EventDay* day)
     m_id = day->getId();
     m_endTime = day->getEndTime();
 }
+EventDay::~EventDay()
+{
+
+}
 
 int EventDay::getStartTime() const
 {

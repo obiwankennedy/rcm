@@ -143,7 +143,7 @@ void ScenarioItem::writeDataToJson(QJsonObject & obj)
 
 QDomElement ScenarioItem::writeDataToXml(QDomDocument &)
 {
-
+ return {};
 }
 
 void ScenarioItem::readDataFromXml(QDomNode &)

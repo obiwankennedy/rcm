@@ -257,7 +257,7 @@ void Schedules::writeDataToJson(QJsonObject & obj)
 
 QDomElement Schedules::writeDataToXml(QDomDocument &)
 {
-
+    return {};
 }
 
 void Schedules::readDataFromXml(QDomNode &)

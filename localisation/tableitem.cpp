@@ -151,7 +151,7 @@ void TableItem::writeToData(QDataStream &) const
 
 QDomElement TableItem::writeDataToXml(QDomDocument &)
 {
-
+	return {};
 }
 
 void TableItem::readDataFromXml(QDomNode &)

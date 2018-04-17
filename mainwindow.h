@@ -71,6 +71,7 @@ public slots:
     void openData();
 	void saveBackUp();
     void readCSV();
+    void checkAllGM();
 protected:
     void closeEvent ( QCloseEvent * event );
     bool eventFilter(QObject *obj, QEvent *event);
@@ -121,6 +122,7 @@ private:
     QAction* m_removeGameAct;
     QAction* m_removeGMAct;
     QAction* m_addGMAct;
+    QAction* m_checkAllGMAct;
     QAction* m_makeGMGoneAct;
     QMenu* m_recentFile;
     QList<QAction*>* m_recentFileActions;

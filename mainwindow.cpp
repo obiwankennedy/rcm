@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
 	m_timer = new QTimer();
 	m_timer->setInterval(TIME_SAVE_PERIOD);
@@ -121,6 +122,7 @@ void MainWindow::initActions()
     m_removeGameAct= new QAction(tr("Del"),this);
     m_removeGMAct= new QAction(tr("Del"),this);
     m_addGMAct= new QAction(tr("Add"),this);
+    m_checkAllGMAct = new QAction(tr("Check All GM"),this);
     m_makeGMGoneAct = new QAction(tr("GM is leaving"),this);
     connect(m_makeGMGoneAct,SIGNAL(triggered()),this,SLOT(makeGameMasterUnavailable()));
 
@@ -133,6 +135,7 @@ void MainWindow::initActions()
 
     connect(m_addGameAct,SIGNAL(triggered()),this,SLOT(addGameDialog()));
     connect(m_addGMAct,SIGNAL(triggered()),this,SLOT(addGameMasterDialog()));
+    connect(m_checkAllGMAct,SIGNAL(triggered(bool)),this,SLOT(checkAllGM()));
 
     connect(m_gameMasterModel,SIGNAL(gmHasBeenAdded(GameMaster*)),this,SLOT(addGmScenarioListToGlobalList(GameMaster*)));
     connect(m_gameMasterModel,SIGNAL(gameMasterStatusHasChanged(GameMaster*,bool)),this,SLOT(statusGmHasChanged(GameMaster*,bool)));
@@ -211,6 +214,7 @@ void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
 
     QModelIndex index = ui->m_masterView->indexAt(event->pos());
     menu.addAction(m_addGMAct);
+    menu.addAction(m_checkAllGMAct);
     if(index.isValid())
     {
         menu.addAction(m_removeGMAct);
@@ -515,6 +519,15 @@ void MainWindow::addRecentFile()
     m_recentFileActions->append(tmp);
     refreshOpenedFile();
 }
+void MainWindow::checkAllGM()
+{
+    for(auto& gm : m_gameMasterModel->getMasterList())
+    {
+        gm->setPresent(!gm->isPresent());
+        statusGmHasChanged(gm,gm->isPresent());
+    }
+    ui->m_masterView->update();
+}
 void MainWindow::addGameMasterDialog()
 {
     GameMasterDialog dialog(m_gameModel->getGameMap(),m_gameModel->getGameList(),m_gameMasterModel->getMasterMap());
@@ -778,10 +791,8 @@ void MainWindow::exporCSV()
     if(!fileExport.isNull())
     {
         ExportCSV csvWriter;
-
         csvWriter.setData(m_gameModel,m_gameMasterModel,m_scenarioManager->getRightModel(Scenario::DONE));
         csvWriter.setFilename(fileExport);
-
         csvWriter.write();
     }
 }
@@ -800,7 +811,6 @@ void MainWindow::readCSV()
     QString fileImport = QFileDialog::getOpenFileName(this, tr("Open CSV Data"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Csv Conv DataBase (*.csv)"));
     if(!fileImport.isNull())
     {
-
         QFile file(fileImport);
         if (file.open(QIODevice::ReadOnly))
         {
@@ -814,49 +824,52 @@ void MainWindow::readCSV()
               //Lien vers une image représentant le jeu (exemple la couverture du jeu)	Notes	Autre jeux ?
               //Nom du jdr	Nombre de joueurs (mini-max)	Durée de la partie prévu	Description du jdr et/ou du scénario
               //Lien vers une image représentant le jeu (exemple la couverture du jeu)	Notes	Alors, heureux ?
-//32
               QStringList array = line.split(";");
-
-              while(array.size()!=35)
+              while(array.size()<40)
               {
                   array.append(QString());
               }
-              QString hour = array.at(0);
-              QString mail = array.at(1);
-              QString name = array.at(2);
-              QString pseudo = array.at(3);
-              QString assos= array.at(4);
-              QString dispo = array.at(5);
-              QString info = array.at(6);
-              QString rpg1 = array.at(7);
-              QString rpg1PlayerCount = array.at(8);
-              QString rpg1Time = array.at(9);
-              QString rpg1Description = array.at(10);
-              QString rpg1ImgLink = array.at(11);
-              QString rpg1note = array.at(12);
-              QString rpgOther = array.at(13);
-              QString rpg2 = array.at(14);
-              QString rpg2PlayerCount = array.at(15);
-              QString rpg2Time = array.at(16);
-              QString rpg2Description = array.at(17);
-              QString rpg2ImgLink = array.at(18);
-              QString rpg2note = array.at(19);
-              QString rpgOther2 = array.at(20);
-              QString rpg3 = array.at(21);
-              QString rpg3PlayerCount = array.at(22);
-              QString rpg3Time = array.at(23);
-              QString rpg3Description = array.at(24);
-              QString rpg3ImgLink = array.at(25);
-              QString rpg3note = array.at(26);
-              QString rpgOther3 = array.at(27);
+              int i=0;
+              QString hour = array.at(i++);
+              QString mail = array.at(i++);
+              QString name = array.at(i++);
+              QString pseudo = array.at(i++);
+              QString assos= array.at(i++);
+              QString dispo = array.at(i++);
+              QString info = array.at(i++);
+              QString rpg1 = array.at(i++);
+              QString rpg1title = array.at(i++);//8
+              QString rpg1PlayerCount = array.at(i++);
+              QString rpg1Time = array.at(i++);
+              QString rpg1Description = array.at(i++);
+              QString rpg1ImgLink = array.at(i++);
+              QString rpg1note = array.at(i++);
+              QString rpgOther = array.at(i++);
+              QString rpg2 = array.at(i++);
+              QString rpg2title = array.at(i++);
+              QString rpg2PlayerCount = array.at(i++);
+              QString rpg2Time = array.at(i++);//18
+              QString rpg2Description = array.at(i++);
+              QString rpg2ImgLink = array.at(i++);
+              QString rpg2note = array.at(i++);
+              QString rpgOther2 = array.at(i++);
+              QString rpg3 = array.at(i++);
+              QString rpg3title = array.at(i++);
+              QString rpg3PlayerCount = array.at(i++);
+              QString rpg3Time = array.at(i++);
+              QString rpg3Description = array.at(i++);
+              QString rpg3ImgLink = array.at(i++);//28
+              QString rpg3note = array.at(i++);
+              QString rpgOther3 = array.at(i++);
 
-              QString rpg4 = array.at(28);
-              QString rpg4PlayerCount = array.at(29);
-              QString rpg4Time = array.at(30);
-              QString rpg4Description = array.at(31);
-              QString rpg4ImgLink = array.at(32);
-              QString rpg4note = array.at(33);
-              QString rpgOther4 = array.at(34);
+              QString rpg4 = array.at(i++);
+              QString rpg4title = array.at(i++);
+              QString rpg4PlayerCount = array.at(i++);
+              QString rpg4Time = array.at(i++);
+              QString rpg4Description = array.at(i++);
+              QString rpg4ImgLink = array.at(i++);
+              QString rpg4note = array.at(i++);//38
+              QString rpgOther4 = array.at(i++);
 
 
               qDebug() << "note:"<<rpg4note << rpg1 << rpg2 << array.size();
@@ -882,6 +895,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg1PlayerCount.split('-');
 
                 Scenario* scen1 = new Scenario();
+                scen1->setTitle(rpg1title);
                 scen1->setDescription(rpg1note);
                 scen1->setDuration(rpg1Time.toInt());
                 scen1->setMaximumPlayer(minmax[1].toInt());
@@ -905,6 +919,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg2PlayerCount.split('-');
 
                 Scenario* scen2 = new Scenario();
+                scen2->setTitle(rpg2title);
                 scen2->setDescription(rpg2note);
                 scen2->setDuration(rpg2Time.toInt());
                 scen2->setMaximumPlayer(minmax[1].toInt());
@@ -918,6 +933,7 @@ void MainWindow::readCSV()
               if(!rpg3.isEmpty())
               {
                 Game* game3 = new Game();
+
                 game3->setTitle(rpg1);
                 game3->setDescription(rpg3Description);
                 game3->setImageUrl(rpg1ImgLink);
@@ -928,6 +944,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg3PlayerCount.split('-');
 
                 Scenario* scen3 = new Scenario();
+                scen3->setTitle(rpg3title);
                 scen3->setDescription(rpg3note);
                 scen3->setDuration(rpg3Time.toInt());
                 scen3->setMaximumPlayer(minmax[1].toInt());
@@ -952,6 +969,7 @@ void MainWindow::readCSV()
                 QStringList minmax = rpg4PlayerCount.split('-');
 
                 Scenario* scen4 = new Scenario();
+                scen4->setTitle(rpg4title);
                 scen4->setDescription(rpg4note);
                 scen4->setDuration(rpg4Time.toInt());
                 scen4->setMaximumPlayer(minmax[1].toInt());

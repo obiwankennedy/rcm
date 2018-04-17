@@ -221,6 +221,7 @@ void GameMaster::readDataFromJson(QJsonObject & obj)
     m_mailAddress=obj["mail"].toString();
     m_isPresent = obj["present"].toBool();
     m_id=obj["id"].toString();
+    m_color.setNamedColor(obj["color"].toString());
 
     m_isPresent = false;
 
@@ -244,6 +245,7 @@ void GameMaster::writeDataToJson(QJsonObject & obj)
     obj["mail"]=m_mailAddress;
     obj["present"]=m_isPresent;
     obj["id"]=m_id;
+    obj["color"]=m_color.name();
 
     QJsonArray array;
     for(Scenario* tmp : *m_scenarioList)

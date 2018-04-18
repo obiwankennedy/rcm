@@ -39,6 +39,10 @@ public:
     virtual void readDataFromJson(QJsonObject&);
     virtual void writeDataToJson(QJsonObject&);
 
+    qreal visibleWidth() const;
+public slots:
+    void setVisibleWidth(const qreal &visibleWidth);
+
 signals:
     void heightChanged(qreal );
     void minuteWidthChanged(qreal );
@@ -49,6 +53,7 @@ private:
     int m_idTable;
     int m_tableCount;
     QString m_name;
+    qreal m_visibleWidth = 2000;
 };
 
 #endif // TABLEITEM_H

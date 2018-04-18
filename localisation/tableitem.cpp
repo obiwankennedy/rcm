@@ -22,7 +22,7 @@ TableItem::~TableItem()
 QRectF TableItem::boundingRect() const
 {
     qreal width = scene()->width();
-    qreal height = scene()->height()/m_tableCount;
+    qreal height = std::max(static_cast<int>(scene()->height()/m_tableCount),200);
 
     return QRectF(0,0,width,height);
 }
@@ -30,7 +30,7 @@ QRectF TableItem::boundingRect() const
 void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     qreal width = scene()->width();
-    qreal height = scene()->height()/m_tableCount;
+    qreal height = std::max(static_cast<int>(scene()->height()/m_tableCount),200);
     int duration = m_day->getDuration();
     int startHour = m_day->getStartTime()/60;
 
@@ -206,5 +206,15 @@ void TableItem::writeDataToJson(QJsonObject & obj)
     }
     obj["scenarios"]=array;
 
+}
+
+qreal TableItem::visibleWidth() const
+{
+    return m_visibleWidth;
+}
+
+void TableItem::setVisibleWidth(const qreal &visibleWidth)
+{
+    m_visibleWidth = visibleWidth;
 }
 

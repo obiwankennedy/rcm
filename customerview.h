@@ -57,7 +57,7 @@ protected:
     bool eventFilter(QObject *, QEvent *);
 
 private:
-    ScenarioItemDelegate* m_scenarioDelegate;
+    ScenarioItemDelegate* m_scenarioDelegate = nullptr;
     ScenarioModel* m_model;
     QLabel* m_label;
     QQmlApplicationEngine* m_engine;

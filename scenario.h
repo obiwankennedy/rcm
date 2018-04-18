@@ -117,7 +117,7 @@ private:
     QString m_title;
     QStringList m_playerInformation;
     QString m_description;
-    STATE m_state;
+    STATE m_state = AVAILABLE;
 
 };
 

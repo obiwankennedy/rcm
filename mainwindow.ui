@@ -246,6 +246,9 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="opaqueResize">
+           <bool>true</bool>
+          </property>
           <widget class="QGraphicsView" name="m_timeLine"/>
           <widget class="QWidget" name="layoutWidget">
            <layout class="QVBoxLayout" name="verticalLayout_7">

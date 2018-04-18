@@ -91,7 +91,7 @@ private:
     QList<Scenario*>* m_scenarioList;
 
     bool m_isPresent;
-    Activity m_currentActivity;
+    Activity m_currentActivity = GONE;
     QDateTime m_backTime;
 };
 

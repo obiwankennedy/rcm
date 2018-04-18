@@ -19,7 +19,7 @@ class Schedules : public QGraphicsScene, public Serialisable
 {
     Q_OBJECT
 public:
-    Schedules(int, int,int,int);
+    Schedules(qreal, qreal,qreal,qreal);
 
 
     qreal getTableHeight() const;
@@ -53,6 +53,7 @@ public slots:
     void setMinuteWidth(qreal minuteWidth);
     void replaceScenario(ScenarioItem*);
     void updatePositionOfTime();
+    //void visibleWidthChanged();
 
 
 protected:
@@ -117,7 +118,6 @@ public slots:
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
     bool wheelEventForView(QWheelEvent *event);
-signals:
 
 
 private:

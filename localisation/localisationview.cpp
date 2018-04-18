@@ -22,7 +22,7 @@
 #define ZVALUE 1000
 
 
-Schedules::Schedules(int x, int y, int w, int h)
+Schedules::Schedules(qreal x, qreal y, qreal w, qreal h)
     : QGraphicsScene(x,y,w,h)
 {
     m_timer = new QTimer();
@@ -189,7 +189,8 @@ void Schedules::appendTableItem(TableItem* item, QPointF pos)
 {
     connect(item,SIGNAL(minuteWidthChanged(qreal)),this,SLOT(setMinuteWidth(qreal)));
     connect(item,SIGNAL(heightChanged(qreal)),this,SLOT(setTableHeight(qreal)));
-    //item->setDay(m_day);
+
+    //connect(this,&Schedules::vis);
     item->setIdTable(m_tableList.size());
     m_tableList.append(item);
     addItem(item);
@@ -322,6 +323,7 @@ qreal Schedules::getTableHeight() const
 void Schedules::setTableHeight(qreal height)
 {
     m_tableHeight = height;
+   // setSceneRect(0,0,width(),height);
 }
 
 
@@ -337,6 +339,7 @@ LocalisationView::LocalisationView(QGraphicsView* view,QWidget *parent) :
 {
     m_view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     m_view->setContextMenuPolicy(Qt::CustomContextMenu);
+    m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     connect(m_view,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(contextMenuOnView(QPoint)));
     //m_view->setScene(m_scene);
     //m_view->ensureVisible(m_scene->sceneRect(),0,0);
@@ -375,9 +378,16 @@ void LocalisationView::readDataFromJson(QJsonObject & obj)
     for(it = array.begin(); it != array.end();++it)
     {
          QJsonObject json = (*it).toObject();
-         auto schedule = new Schedules(0,0,1500,900);
+         auto schedule = new Schedules(0,0,m_view->width(),900);
          schedule->readDataFromJson(json);
          m_scenes.append(schedule);
+         auto h = 200;
+         if(0 < schedule->getNumberOfTable())
+         {
+            h = std::max(static_cast<int>(schedule->height()/schedule->getNumberOfTable()),200);
+            auto htotal = h*schedule->getNumberOfTable();
+            schedule->setSceneRect(0,0,m_view->width(),htotal);
+         }
     }
 
     if(!m_scenes.isEmpty())
@@ -403,7 +413,7 @@ void LocalisationView::writeDataToJson(QJsonObject & obj)
 
 QDomElement LocalisationView::writeDataToXml(QDomDocument &)
 {
-
+return {};
 }
 
 void LocalisationView::readDataFromXml(QDomNode &)
@@ -421,7 +431,9 @@ bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
             auto scene = m_view->scene();
             if(nullptr != scene)
             {
-                m_view->fitInView(scene->itemsBoundingRect(),Qt::KeepAspectRatio);
+                scene->setSceneRect(0,0,std::max(m_view->width(),static_cast<int>(scene->width())),
+                                    std::max(scene->height(),scene->itemsBoundingRect().height()));
+                m_view->fitInView(m_view->rect(),Qt::KeepAspectRatio);//scene->itemsBoundingRect()
                 return true;
             }
         }
@@ -446,10 +458,7 @@ bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
         else if(event->type() == QEvent::Wheel)
         {
             QWheelEvent* wEvent = dynamic_cast<QWheelEvent*>(event);
-
-            wheelEventForView(wEvent);
-            return true;
-
+            return wheelEventForView(wEvent);
         }
     }
     return QObject::eventFilter(obj,event);
@@ -551,13 +560,20 @@ void LocalisationView::setProperties()
 
         for(auto day : *schedules)
         {
-            Schedules* scene = new Schedules(0,0,1500,900);
+            Schedules* scene = new Schedules(0,0,m_view->width(),900);
+            auto h = 200;
+            if(0 < scene->getNumberOfTable())
+            {
+                h = std::max(static_cast<int>(scene->height()/scene->getNumberOfTable()),200);
+                auto htotal = h*scene->getNumberOfTable();
+                scene->setSceneRect(0,0,m_view->width(),htotal);
+            }
             scene->setNumberOfTable(tableCount);
             scene->setDay(m_scenes.size());
             scene->setStartOnDay(day->getStartTime());
 
 
-            int y = scene->height()/tableCount;
+            int y = std::max(static_cast<int>(scene->height()/tableCount),200);
             for(int i = 0; i< tableCount; ++i)
             {
                 TableItem* item = new TableItem();
@@ -582,6 +598,7 @@ bool LocalisationView::wheelEventForView(QWheelEvent *event)
 {
     if(event->modifiers() & Qt::ShiftModifier)
     {
+        event->accept();
         m_view->setResizeAnchor(QGraphicsView::AnchorUnderMouse);
         m_view->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
         // Scale the view / do the zoom

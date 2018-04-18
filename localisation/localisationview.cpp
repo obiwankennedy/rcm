@@ -195,6 +195,7 @@ void Schedules::appendTableItem(TableItem* item, QPointF pos)
     m_tableList.append(item);
     addItem(item);
     item->setPos(pos);
+
 }
 void Schedules::readDataFromJson(QJsonObject & obj)
 {
@@ -313,6 +314,7 @@ void Schedules::updatePositionOfTime()
     time=time*m_minuteWidth;
     m_timeItem->setTransformOriginPoint(m_timeItem->boundingRect().center());
     m_timeItem->setPos(time-(m_timeItem->boundingRect().width()*m_minuteWidth*2),0);
+    m_timeItem->setLine(0,0,0,itemsBoundingRect().height());
 }
 
 qreal Schedules::getTableHeight() const

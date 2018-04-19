@@ -176,6 +176,10 @@ void EventDay::setEndTime(int endTime)
 
 int EventDay::getDuration()
 {
+    if(m_endTime < m_startTime)
+    {
+        return ((m_endTime+1440) - m_startTime);
+    }
     return (m_endTime - m_startTime);
 }
 

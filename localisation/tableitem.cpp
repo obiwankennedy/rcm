@@ -37,7 +37,7 @@ void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
     QPen pen = painter->pen();
     if(duration!=0)
     {
-        qreal fiveMinutes = 5*width/duration;
+        qreal fiveMinutes = std::abs(5*width/duration);
         qreal marginY = 0.2*(height);
         qreal marginY2 = 0.8*(height);
 
@@ -46,11 +46,11 @@ void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
 
         if(m_name.isEmpty())
         {
-            painter->drawText(0,marginY,tr("J%2:Table #%1").arg(m_idTable+1).arg(m_day->getId()+1));
+            painter->drawText(0,marginY,tr(" J%2 : Table #%1").arg(m_idTable+1).arg(m_day->getId()+1));
         }
         else
         {
-            painter->drawText(0,marginY,tr("J%2:Table %1").arg(m_name).arg(m_day->getId()+1));
+            painter->drawText(0,marginY,tr(" J%2 : Table %1").arg(m_name).arg(m_day->getId()+1));
         }
         painter->drawLine(0,marginY,width,marginY);
         painter->drawLine(0,marginY2,width,marginY2);
@@ -84,8 +84,8 @@ void TableItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*optio
                 pen.setColor(Qt::red);
                 painter->setPen(pen);
                 painter->drawLine(i,marginY,i,marginY2);
-                pen.setWidth(1);
-                painter->drawText(i,height,tr("%1h").arg(startHour+h));
+                pen.setWidth(1);               
+                painter->drawText(i,height,tr("%1h").arg((startHour+h)%24));
                 h++;
             }
             j++;

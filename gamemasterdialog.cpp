@@ -30,14 +30,16 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedLi
     QDialog(parent),
     ui(new Ui::GameMasterDialog)
 {
-
+    m_selectionModel = new QItemSelectionModel();
     m_addScenarioAct=new QAction(tr("Add"),this);
     m_delScenarioAct=new QAction(tr("Del"),this);
     m_addGameAct=new QAction(tr("Add Game"),this);
 
     ui->setupUi(this);
     m_model = new ScenarioModel(l,lst,Scenario::AVAILABLE);
+    m_selectionModel->setModel(m_model);
     ui->m_scenarioTable->setModel(m_model);
+    ui->m_scenarioTable->setSelectionModel(m_selectionModel);
     ui->m_deleteButton->setDefaultAction(m_delScenarioAct);
     ui->m_newButton->setDefaultAction(m_addScenarioAct);
     ui->m_addGame->setDefaultAction(m_addGameAct);
@@ -48,6 +50,7 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedLi
     ui->m_scenarioTable->setItemDelegateForColumn(0,m_gameDelegate);
     ui->m_scenarioTable->setItemDelegateForColumn(3,new LevelDelegateItem());
 
+
     ui->m_scenarioTable->hideColumn(8);
     ui->m_scenarioTable->hideColumn(7);
     ui->m_scenarioTable->hideColumn(9);
@@ -55,14 +58,19 @@ GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedLi
     updateGameListHeader();
     ui->m_scenarioTable->verticalHeader()->setVisible(false);
     connect(m_addScenarioAct,SIGNAL(triggered()),this,SLOT(addScenario()));
+    connect(m_delScenarioAct,&QAction::triggered,this,&GameMasterDialog::removeScenario);
+
     connect(m_model,SIGNAL(updateHeader()),this,SLOT(updateGameListHeader()));
     connect(ui->m_addGame,SIGNAL(pressed()),this,SIGNAL(addGame()));
-
     connect(ui->m_color,&QPushButton::clicked,this,[=]()
     {
       m_currentColor = QColorDialog::getColor(m_currentColor,this,tr("GM color"));
       ui->m_color->setStyleSheet(QStringLiteral("background: rgb(%1,%2,%3);").arg(m_currentColor.red()).arg(m_currentColor.green()).arg(m_currentColor.blue()));
     });
+
+   ui->m_scenarioTable->setAlternatingRowColors(true);
+   ui->m_scenarioTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+   ui->m_scenarioTable->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 GameMasterDialog::~GameMasterDialog()
@@ -99,6 +107,17 @@ void GameMasterDialog::addScenario()
 {
     m_model->appendScenario(new Scenario());
     updateGameListHeader();
+}
+
+void GameMasterDialog::removeScenario()
+{
+    if(!m_selectionModel->hasSelection())
+        return;
+    auto indexes = m_selectionModel->selectedRows(0);
+    if(indexes.isEmpty())
+        return;
+    m_model->removeScenarioAtIndex(indexes.first());
+    ui->m_scenarioTable->clearSelection();
 }
 QList<Scenario*>* GameMasterDialog::getScenarioList()
 {

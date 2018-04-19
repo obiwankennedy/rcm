@@ -23,7 +23,7 @@
 #define GAMEMASTERDIALOG_H
 
 #include <QDialog>
-
+#include <QItemSelectionModel>
 
 #include "scenariomodel.h"
 #include "gameeditordelegate.h"
@@ -65,6 +65,7 @@ signals:
 
 public slots:
     void addScenario();
+    void removeScenario();
     void updateGameListHeader();
 
 
@@ -77,6 +78,7 @@ private:
     QAction* m_delScenarioAct;
     QAction* m_addGameAct;
     GameEditorDelegate* m_gameDelegate;
+    QItemSelectionModel* m_selectionModel;
     QColor m_currentColor;
 };
 

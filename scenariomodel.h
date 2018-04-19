@@ -55,6 +55,7 @@ public:
 
     void appendScenario(Scenario*);
     void removeScenario(Scenario* tmp);
+    void removeScenarioAtIndex(QModelIndex& index);
     Scenario* getScenarioById(QString tmp);
 
     virtual QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;

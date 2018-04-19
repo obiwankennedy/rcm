@@ -360,9 +360,24 @@ QVariant ScenarioModel::headerData ( int section, Qt::Orientation orientation, i
 }
 void ScenarioModel::removeScenario(Scenario* tmp)
 {
+    if(nullptr == tmp)
+        return;
+
     beginRemoveRows(QModelIndex(),m_scenarioList->indexOf(tmp),m_scenarioList->indexOf(tmp));
     m_scenarioList->removeOne(tmp);
     endRemoveRows();
+}
+
+void ScenarioModel::removeScenarioAtIndex(QModelIndex &index)
+{
+    if(!index.isValid() || m_scenarioList->isEmpty())
+        return;
+
+    auto i = index.row();
+    if(i < m_scenarioList->size())
+    {
+        removeScenario(m_scenarioList->at(i));
+    }
 }
 Scenario* ScenarioModel::getScenarioById(QString id)
 {

@@ -69,6 +69,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_preferences = PreferencesManager::getInstance();
 
     ui->m_gameView->setModel(m_gameModel);
+    ui->m_gameView->hideColumn(0);
+    ui->m_gameView->hideColumn(4);
+    ui->m_gameView->hideColumn(6);
+    ui->m_gameView->horizontalHeader()->setStretchLastSection(true);
     ui->m_masterView->setModel(m_gameMasterModel);
 
 
@@ -108,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->m_nextDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayNextDay()));
     connect(ui->m_previousDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayPreviousDay()));
 
-
+    //openJsonData();
 }
 
 MainWindow::~MainWindow()
@@ -175,7 +179,6 @@ void MainWindow::initActions()
 
 
     //edit game and game master
-    connect(ui->m_gameView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGame(QModelIndex)));
     connect(ui->m_masterView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(editGameMaster(QModelIndex)));
 
 
@@ -354,10 +357,11 @@ void MainWindow::saveDataToJson()
 }
 void MainWindow::openJsonData()
 {
+//    m_currentDataPath = "/home/renaud/Games_Tours_2017.rcd";
     m_currentDataPath = QFileDialog::getOpenFileName(this,tr("Open Convention Data"),QDir::homePath(),tr("Rolisteam Convention Data(*.rcd)"));
     if(!m_currentDataPath.isEmpty())
     {
-        resetData();
+   //     resetData();
         readJSonFile();
         addRecentFile();
     }
@@ -380,10 +384,10 @@ void MainWindow::readJSonFile()
         QJsonObject schedules = jsonObj["schedules"].toObject();
 
 
-        m_gameModel->readDataFromJson(games);
+        //m_gameModel->readDataFromJson(games);
         m_gameMasterModel->readDataFromJson(masters);
-        m_scenarioManager->readDataFromJson(scenarios);
-        m_locview->readDataFromJson(schedules);
+        //m_scenarioManager->readDataFromJson(scenarios);
+        //m_locview->readDataFromJson(schedules);
         file.close();
         ensureTabVisible(DATA);
     }
@@ -579,34 +583,6 @@ void MainWindow::statusGmHasChanged(GameMaster* l,bool b)
     {
         m_scenarioManager->removeScenarioFromList(l->getGMScenarios());
     }
-}
-void MainWindow::editGame(const QModelIndex& index)
-{
-    if(index.isValid())
-    {
-        Game* tmp = m_gameModel->getGameList().at(index.row());
-        GameDialog dialog;
-        dialog.setTitle(tmp->getTitle());
-        dialog.setDescription(tmp->getDescription());
-        dialog.setPunchLine(tmp->getPunchLine());
-        dialog.setGameType(tmp->getType());
-        dialog.setPixmapUrl(tmp->getImageUrl());
-
-        if(dialog.exec())
-        {
-
-            tmp->setTitle(dialog.getTitle());
-            tmp->setPunchLine(dialog.getPunchLine());
-            tmp->setDescription(dialog.getDescription());
-            tmp->setImageUrl(dialog.getPixmapUrl());
-            tmp->setType(dialog.getGameType());
-
-            //m_gameModel->append(tmp);
-
-        }
-
-    }
-
 }
 
 void MainWindow::editGameMaster(const QModelIndex& index)

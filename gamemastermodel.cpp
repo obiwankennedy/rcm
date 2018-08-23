@@ -25,17 +25,18 @@
 #include <QColor>
 #include <QVariant>
 #include <QDataStream>
-
-GameMasterModel::GameMasterModel(QObject *parent) :
-    QAbstractListModel(parent)
+#include <QSqlRecord>
+#include <QSqlError>
+#include <QSqlQuery>
+GameMasterModel::GameMasterModel(QObject *parent)
+    : QSqlTableModel(parent)
 {
-}
-int GameMasterModel::rowCount ( const QModelIndex &  ) const
-{
-    return m_gameMasterList.count();
+    setTable("master");
+    setEditStrategy(QSqlTableModel::OnFieldChange);
+    select();
 }
 
-QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
+/*QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
 {
     if(!index.isValid())
         return QVariant();
@@ -84,46 +85,23 @@ QVariant GameMasterModel::data ( const QModelIndex & index, int role ) const
     }
 
     return QVariant();
-}
-bool GameMasterModel::setData(const QModelIndex & index, const QVariant & value, int role)
-{
-    if(!index.isValid())
-        return false;
-
-    if(role==Qt::CheckStateRole)
-    {
-          m_gameMasterList[index.row()]->setPresent(!m_gameMasterList[index.row()]->isPresent());
-          emit gameMasterStatusHasChanged(m_gameMasterList[index.row()],m_gameMasterList[index.row()]->isPresent());
-          return true;
-    }
-    else if(role == GameMasterModel::BackTime)
-    {
-
-        QDateTime time = QDateTime::currentDateTime();
-        time.addSecs(value.toInt()*60);
-        m_gameMasterList[index.row()]->setBackTime(time);
-        emit dataChanged(index,index);
-        return true;
-    }
-    else if(GameMasterModel::ActivityRole==role)
-    {
-        m_gameMasterList[index.row()]->setCurrentActivity((GameMaster::Activity)value.toInt());
-        emit dataChanged(index,index);
-        return true;
-    }
-    return false;
-
-}
+}*/
 
 void GameMasterModel::append(GameMaster* tmp)
 {
-    beginInsertRows(QModelIndex(),m_gameMasterList.size(),m_gameMasterList.size());
-
-    m_gameMasterList.append(tmp);
-    m_gameMasterMap.insert(tmp->getId(),tmp);
-
-    endInsertRows();
-
+    QSqlQuery query;
+    query.prepare("INSERT INTO master (id, name, phonenumber, firstname, nickname, mailaddress, status, backtime, tag) "
+                  "VALUES (:id, :name, :phone, :firstname,:nickname, :mailaddress, :status, :backtime, :tag)");
+    query.bindValue(":id", tmp->getId());
+    query.bindValue(":name", tmp->getName());
+    query.bindValue(":phone", tmp->getPhoneNumber());
+    query.bindValue(":firstname", tmp->getFirstName());
+    query.bindValue(":nickname", tmp->getNickName());
+    query.bindValue(":mailaddress", tmp->getMailAddress());
+    query.bindValue(":status", static_cast<int>(tmp->getCurrentActivity()));
+    query.bindValue(":backtime", tmp->getBackTime().toString());
+    query.bindValue(":tag", "tours");
+    auto b = query.exec();
 }
 void GameMasterModel::readFromData(QDataStream& from)
 {
@@ -141,12 +119,12 @@ void GameMasterModel::readFromData(QDataStream& from)
 
 void GameMasterModel::writeToData(QDataStream& to) const
 {
-    to << m_gameMasterList.count();
+  /*  to << m_gameMasterList.count();
 
     foreach(GameMaster* tmp,m_gameMasterList)
     {
         tmp->writeToData(to);
-    }
+    }*/
 }
 
 void GameMasterModel::readDataFromJson(QJsonObject & json)
@@ -167,13 +145,13 @@ void GameMasterModel::readDataFromJson(QJsonObject & json)
 void GameMasterModel::writeDataToJson(QJsonObject & obj)
 {
     QJsonArray fieldArray;
-    for(auto key : m_gameMasterMap.keys())
+  /*  for(auto key : m_gameMasterMap.keys())
     {
         auto master = m_gameMasterMap.value(key);
         QJsonObject masterObj;
         master->writeDataToJson(masterObj);
         fieldArray.append(masterObj);
-    }
+    }*/
     obj["items"]=fieldArray;
 
 }
@@ -183,30 +161,30 @@ Qt::ItemFlags GameMasterModel::flags ( const QModelIndex & index ) const
 }
 QMap<QString,GameMaster*>& GameMasterModel::getMasterMap()
 {
-     return m_gameMasterMap;
+    // return m_gameMasterMap;
 }
 QList<GameMaster*>& GameMasterModel::getMasterList()
 {
-    return m_gameMasterList;
+   // return m_gameMasterList;
 }
 void GameMasterModel::removeItem(QModelIndex& index)
 {
-    beginRemoveRows(QModelIndex(),index.row(),index.row());
+   /* beginRemoveRows(QModelIndex(),index.row(),index.row());
 
     GameMaster* tmp = m_gameMasterList.at(index.row());
     m_gameMasterMap.remove(tmp->getId());
     m_gameMasterList.removeAll(tmp);
     emit gameMasterStatusHasChanged(tmp,false);
-    endRemoveRows();
+    endRemoveRows();*/
 }
 QDomElement GameMasterModel::writeDataToXml(QDomDocument& doc)
 {
-    QDomElement gmList = doc.createElement("GameMasterList");
+   /* QDomElement gmList = doc.createElement("GameMasterList");
     foreach(GameMaster* tmp,m_gameMasterList)
     {
         gmList.appendChild(tmp->writeDataToXml(doc));
     }
-    return gmList;
+    return gmList;*/
 
 }
 
@@ -224,8 +202,8 @@ void GameMasterModel::readDataFromXml(QDomNode& node)
 }
 void GameMasterModel::resetData()
 {
-    beginResetModel();
-    m_gameMasterList.clear();
+   /* beginResetModel();
+   m_gameMasterList.clear();
     m_gameMasterMap.clear();
-    endResetModel();
+    endResetModel();*/
 }

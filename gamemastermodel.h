@@ -22,21 +22,21 @@
 #ifndef GAMEMASTERMODEL_H
 #define GAMEMASTERMODEL_H
 
-#include <QAbstractListModel>
+#include <QSqlTableModel>
 #include <QMap>
 
 #include "gamemaster.h"
 #include "serializable.h"
-class GameMasterModel : public QAbstractListModel, public Serialisable
+class GameMasterModel : public QSqlTableModel, public Serialisable
 {
     Q_OBJECT
 public:
     enum CustomRole {BackTime = Qt::UserRole+1,ActivityRole,NameRole,PhoneRole,FirstNameRole,MailRole,ColorRole};
 
     explicit GameMasterModel(QObject *parent = 0);
-    int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
+   /* int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-    bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
+    bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);*/
     Qt::ItemFlags flags ( const QModelIndex & index ) const;
     
     void append(GameMaster*);
@@ -59,12 +59,7 @@ public:
     void resetData();
 signals:
     void gameMasterStatusHasChanged(GameMaster*,bool);
-    void gmHasBeenAdded(GameMaster*);
-public slots:
-    
-private:
-    QList<GameMaster*> m_gameMasterList;
-    QMap<QString,GameMaster*> m_gameMasterMap;
+    void gmHasBeenAdded(GameMaster*);  
 };
 
 #endif // GAMEMASTERMODEL_H

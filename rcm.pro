@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml network
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets qml quick
+QT       += core gui xml network sql widgets qml quick
 
 TARGET = rcm
 OBJECTS_DIR = build/obj

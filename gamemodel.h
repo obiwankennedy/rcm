@@ -23,25 +23,23 @@
 #define GAMEMODEL_H
 
 #include <QAbstractListModel>
+#include <QSqlTableModel>
 
 #include "game.h"
 #include "serializable.h"
-#ifdef __QT_QUICK_2_
 #include "gameimageprovider.h"
-#endif
 
-class GameModel : public QAbstractListModel, public Serialisable
+
+class GameModel : public QSqlTableModel, public Serialisable
 {
     Q_OBJECT
 public:
     enum CustomRole {PunchLine = Qt::UserRole+1,Description,IMAGE_URL,TYPE};
-    #ifdef __QT_QUICK_2_
+
     explicit GameModel(GameImageProvider* gameImageProvider,QObject *parent = 0);
-#else
-    explicit GameModel(QObject *parent = 0);
-#endif
-    int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
-    QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+
+   /* int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
+    QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;*/
 
     void append(Game*);
 
@@ -67,11 +65,7 @@ public:
     void readSettings(QSettings& settings);
 
 private:
-    QList<Game*> m_gameList;
-    QMap<QString,Game*> m_gameMap;
-    #ifdef __QT_QUICK_2_
     GameImageProvider* m_gameImgProvider;
-#endif
 };
 
 #endif // GAMEMODEL_H

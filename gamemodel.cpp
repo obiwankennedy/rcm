@@ -24,23 +24,20 @@
 #include <QJsonObject>
 #include <QDataStream>
 #include <QJsonArray>
-#include <QDebug>
+#include <QSqlRecord>
+#include <QByteArray>
+#include <QPixmap>
+#include <QBuffer>
 
-#ifdef __QT_QUICK_2_
 GameModel::GameModel(GameImageProvider* gameImageProvider, QObject *parent) :
-    QAbstractListModel(parent),m_gameImgProvider(gameImageProvider)
-  #else
-GameModel::GameModel(QObject *parent) :
-    QAbstractListModel(parent)
-#endif
+    QSqlTableModel(parent),m_gameImgProvider(gameImageProvider)
 {
-}
-int GameModel::rowCount ( const QModelIndex &  ) const
-{
-    return m_gameList.count();
+    setTable("game");
+    select();
 }
 
-QVariant GameModel::data ( const QModelIndex & index, int role ) const
+
+/*QVariant GameModel::data ( const QModelIndex & index, int role ) const
 {
     if(!index.isValid())
         return QVariant();
@@ -66,45 +63,32 @@ QVariant GameModel::data ( const QModelIndex & index, int role ) const
         return m_gameList[index.row()]->getType();
     }
     return QVariant();
-}
-
+}*/
 void GameModel::append(Game* tmp)
 {
-    int position = -1;
-  //  bool unfound = true;
-    int start = 0;
-    int end = m_gameList.size();
-    int tmpPosition = 0;
-    while (start!=end)
-    {
-        tmpPosition = (start + end )/2;
-        if(m_gameList[tmpPosition]->getTitle().compare(tmp->getTitle(),Qt::CaseInsensitive)>0)
-        {
-            end = tmpPosition;
-        }
-        else
-        {
-            if(start==tmpPosition)
-            {
-                ++tmpPosition;
-            }
-            start = tmpPosition;
-        }
-    }
-    position = start;
-    beginInsertRows(QModelIndex(),position,position);
-    #ifdef __QT_QUICK_2_
-    QObject::connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
-#endif
+    QSqlRecord record = this->record();
 
-    m_gameList.insert(position,tmp);
-    m_gameMap.insert(tmp->getUuid(),tmp);
+    record.setValue("id",tmp->getUuid());
+    record.setValue("title",tmp->getTitle());
+    record.setValue("description",tmp->getDescription());
+    record.setValue("punchline",tmp->getPunchLine());
+    record.setValue("type",tmp->getType());
+    record.setValue("imageUrl",tmp->getImageUrl());
 
-    #ifdef __QT_QUICK_2_
+    auto pixmap = tmp->getPixmap();
+    QByteArray bytes;
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap->save(&buffer, "PNG");
+
     m_gameImgProvider->insertPixmap(tmp->getIdImage(),tmp->getPixmap());
-#endif
-    endInsertRows();
+    QString img = QString::fromUtf8(bytes.toBase64());
+    record.setValue("image",img);
 
+    if(insertRecord(-1, record))
+    {
+       submitAll();
+    }
 }
 void GameModel::readFromData(QDataStream& from)
 {
@@ -123,12 +107,12 @@ void GameModel::readFromData(QDataStream& from)
 
 void GameModel::writeToData(QDataStream& to) const
 {
-    to << m_gameList.count();
+    /*to << m_gameList.count();
 
-    foreach(Game* tmp,m_gameList)
+    for(Game* tmp: m_gameList)
     {
         tmp->writeToData(to);
-    }
+    }*/
 }
 
 
@@ -147,7 +131,7 @@ void GameModel::readDataFromJson(QJsonObject & json)
 
 void GameModel::writeDataToJson(QJsonObject & obj)
 {
-      QJsonArray fieldArray;
+     /* QJsonArray fieldArray;
       for(auto key : m_gameMap.keys())
       {
           auto game = m_gameMap.value(key);
@@ -155,34 +139,35 @@ void GameModel::writeDataToJson(QJsonObject & obj)
           game->writeDataToJson(gameObj);
           fieldArray.append(gameObj);
       }
-      obj["items"]=fieldArray;
+      obj["items"]=fieldArray;*/
 
 }
 QMap<QString,Game*>& GameModel::getGameMap()
 {
-    return m_gameMap;
+   // return m_gameMap;
 }
 QList<Game*>& GameModel::getGameList()
 {
-    return m_gameList;
+   // return m_gameList;
 }
 void GameModel::removeItem(QModelIndex& index)
 {
-    beginRemoveRows(QModelIndex(),index.row(),index.row());
+    removeRow(index.row());
+    //beginRemoveRows(QModelIndex(),index.row(),index.row());
 
-    Game* tmp = m_gameList.at(index.row());
+/*    Game* tmp = m_gameList.at(index.row());
     m_gameMap.remove(tmp->getUuid());
-    m_gameList.removeAll(tmp);
-    endRemoveRows();
+    m_gameList.removeAll(tmp);*/
+    //endRemoveRows();
 }
 QDomElement GameModel::writeDataToXml(QDomDocument& doc)
 {
-    QDomElement gameList = doc.createElement("GamList");
-    foreach(Game* tmp,m_gameList)
+    /*QDomElement gameList = doc.createElement("GamList");
+    for(Game* tmp: m_gameList)
     {
         gameList.appendChild(tmp->writeDataToXml(doc));
     }
-    return gameList;
+    return gameList;*/
 }
 
 void GameModel::readDataFromXml(QDomNode& doc)
@@ -200,20 +185,19 @@ void GameModel::readDataFromXml(QDomNode& doc)
 }
 void GameModel::resetData()
 {
-    beginResetModel();
-    m_gameList.clear();
-    m_gameMap.clear();
-    #ifdef __QT_QUICK_2_
-    m_gameImgProvider->resetData();
-    #endif
-    endResetModel();
+   // beginResetModel();
+    //m_gameList.clear();
+  //  m_gameMap.clear();
+
+//    m_gameImgProvider->resetData();
+//    endResetModel();
 }
 void GameModel::writeSettings(QSettings& settings)
 {
     settings.beginGroup("games");
     settings.beginWriteArray("games");
 
-    for (int i = 0; i < m_gameList.size(); ++i)
+ /*   for (int i = 0; i < m_gameList.size(); ++i)
     {
         Game* game = m_gameList.at(i);
         settings.setArrayIndex(i);
@@ -226,7 +210,7 @@ void GameModel::writeSettings(QSettings& settings)
         QPixmap* map = game->getPixmap();
         QVariant var = *map;
         settings.setValue("image",var);
-    }
+    }*/
     settings.endArray();
     settings.endGroup();
 }
@@ -250,11 +234,11 @@ void GameModel::readSettings(QSettings& settings)
         *pix = settings.value("image").value<QPixmap>();
         game->setPixmap(pix);
 
-        m_gameList.append(game);
-        m_gameMap.insert(game->getUuid(),game);
+       // m_gameList.append(game);
+       // m_gameMap.insert(game->getUuid(),game);
 
-        m_gameImgProvider->insertPixmap(game->getIdImage(),game->getPixmap());
 
+        append(game);
    }
    settings.endArray();
    settings.endGroup();

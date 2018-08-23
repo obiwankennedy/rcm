@@ -48,7 +48,7 @@ class MainWindow : public QMainWindow
     
 public:
     enum TAB {DATA,SCENARIO};
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 
@@ -95,7 +95,6 @@ private slots:
 
 
     //edition
-    void editGame(const QModelIndex& index);
     void editGameMaster(const QModelIndex& index);
 
     //removal

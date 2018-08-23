@@ -25,6 +25,7 @@
 
 #include "leveldelegateitem.h"
 #include <QColorDialog>
+#include <QAction>
 
 GameMasterDialog::GameMasterDialog(QMap<QString,Game*>& l,QList<Game*>& sortedList,QMap<QString,GameMaster*>& lst,QWidget *parent) :
     QDialog(parent),

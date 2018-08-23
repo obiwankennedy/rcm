@@ -22,7 +22,8 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QTranslator>
-
+#include <QSqlDatabase>
+#include <QSqlError>
 
 int main(int argc, char *argv[])
 {
@@ -34,6 +35,23 @@ int main(int argc, char *argv[])
     QTranslator rcmTranslator;
     rcmTranslator.load(":/rcm_" + locale);
     a.installTranslator(&rcmTranslator);
+
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
+    db.setHostName("localhost");
+    db.setDatabaseName("rcm");
+    db.setUserName("renaud");
+    db.setPassword("hulan8ye");
+    bool ok = db.open();
+
+    if(ok)
+    {
+        qDebug() << "Connection succeed";
+    }
+    else
+    {
+        qDebug() << "error" << db.lastError().text();
+    }
 
 
     MainWindow w;

@@ -30,7 +30,7 @@ QRectF ScenarioItem::boundingRect() const
     return QRectF(0,0,(*m_minutesInPixel)*m_data->getDuration()-(WIDTH_HOUR_LINE*(m_data->getDuration()/60+1)),*m_tableInPixel);
 }
 
-void ScenarioItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ScenarioItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
     QRectF rect = boundingRect();
 

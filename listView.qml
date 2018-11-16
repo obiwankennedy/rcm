@@ -28,10 +28,11 @@ ApplicationWindow {
         Item {
             height: parent.height*0.8//listView.currentIndex == index ? 120 : 60
             width: parent.width*0.8
-            opacity: PathView.itemOpacity
+            opacity: PathView.isCurrentItem ? PathView.itemOpacity : 0.1
             property double rotationValue2: PathView.itemRotation
             scale: PathView.iconScale
             z: PathView.isCurrentItem ? 5 : 0
+
 
             transform: Rotation {origin.x: width /2; origin.y: height/2;  axis { x: 0; y: 1; z: 0 } angle:rotationValue2;}//
             Rectangle {
@@ -129,7 +130,8 @@ ApplicationWindow {
                 }
                 Text {
                     id:durationId
-                    text: Duration+ qsTr("min")
+                    property int hour: Math.floor(Duration/60)
+                    text:Duration < 60 ? qsTr("%1min").arg(Duration) : (hour*60 == Duration ? qsTr("%1h").arg(hour) : qsTr("%1h %2min").arg(hour).arg(Duration%60))
                     font.pixelSize: parent.height*0.05
                     textFormat: Text.RichText
                     anchors.bottom: rect.bottom
@@ -183,17 +185,17 @@ ApplicationWindow {
              PathLine { x:view.width; y: 3*view.height/8 }
              //PathQuad { x: view.width/2; y: view.height/8; controlX: 3*view.width/2; controlY: 3*view.height/8 }
              PathAttribute { name: "iconScale"; value: 0.3 }
-             PathAttribute { name: "itemOpacity"; value: 0.01 }
+             PathAttribute { name: "itemOpacity"; value: 0.001 }
              PathAttribute { name: "itemRotation"; value: -54 }
              PathLine { x: 0; y: 3*view.height/8; }
              PathAttribute { name: "iconScale"; value: 0.3 }
-             PathAttribute { name: "itemOpacity"; value: 0.01 }
+             PathAttribute { name: "itemOpacity"; value: 0.001 }
              PathAttribute { name: "itemRotation"; value: 54 }
              PathLine { x: view.width*0.5; y: view.height*0.5; }
          }
        focus: true
-       Keys.onLeftPressed: decrementCurrentIndex()
-       Keys.onRightPressed: incrementCurrentIndex()
+       Keys.onLeftPressed: incrementCurrentIndex()
+       Keys.onRightPressed: decrementCurrentIndex()
        Keys.onEscapePressed: {
            if(root.visibility == Window.FullScreen )
            {

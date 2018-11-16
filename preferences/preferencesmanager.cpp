@@ -24,7 +24,7 @@
 
 
 PreferencesManager::PreferencesManager()
-    : m_optionDictionary(NULL)
+    : m_optionDictionary(nullptr)
 {
     m_optionDictionary = new QMap<QString,QVariant>;
     
@@ -45,13 +45,13 @@ PreferencesManager::~PreferencesManager()
     delete m_optionDictionary;
 }
 
-PreferencesManager* PreferencesManager::m_singleton = NULL;
+PreferencesManager* PreferencesManager::m_singleton = nullptr;
 
 
 PreferencesManager* PreferencesManager::getInstance()
 {
     
-    if(m_singleton == NULL)
+    if(m_singleton == nullptr)
         m_singleton = new PreferencesManager;
     
     return m_singleton;

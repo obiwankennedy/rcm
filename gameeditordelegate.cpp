@@ -86,7 +86,7 @@ Game*  GameEditorDelegate::getGameFromUuid(QString uuid) const
             return gm;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void GameEditorDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -103,7 +103,7 @@ void GameEditorDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
             Game* tmp = getGameFromUuid(currentText);
             QString value;
-            if(NULL!=tmp)
+            if(nullptr!=tmp)
             {
                 value = tmp->getTitle();
             }
@@ -132,7 +132,7 @@ QSize GameEditorDelegate::sizeHint ( const QStyleOptionViewItem & option, const 
 
     Game* tmp = getGameFromUuid(currentText);
     QString value;
-    if(NULL!=tmp)
+    if(nullptr!=tmp)
     {
         value = tmp->getTitle();
     }

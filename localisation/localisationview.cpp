@@ -284,7 +284,7 @@ int Schedules::getNumberOfTable() const
     return m_tableList.size();
 }
 
-void Schedules::setNumberOfTable(const qreal &numberOfTable)
+void Schedules::setNumberOfTable(const qreal &)
 {
    // m_numberOfTable = numberOfTable;
 }

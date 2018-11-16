@@ -39,7 +39,7 @@ class GameDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit GameDialog(QWidget *parent = 0);
+    explicit GameDialog(QWidget *parent = nullptr);
     ~GameDialog();
 
     QString getTitle();

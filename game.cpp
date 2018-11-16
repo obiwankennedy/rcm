@@ -114,6 +114,8 @@ void Game::readDataFromXml(QDomNode& node)
 void Game::readDataFromJson(QJsonObject & obj)
 {
     m_uuid=obj["gameId"].toString();
+    if(m_uuid.isEmpty())
+        m_uuid=QString::number(obj["gameId"].toInt());
     m_title=obj["title"].toString();
     m_punchLine=obj["punchline"].toString();
     m_description = obj["description"].toString();
@@ -170,8 +172,8 @@ QString Game::getUuid() const
 }
 void  Game::setPixmap(QPixmap* title)
 {
-   m_image = title;
-   emit pixmapChanged(getIdImage(),m_image);
+    m_image = title;
+    emit pixmapChanged(getIdImage(),m_image);
 }
 
 void  Game::setType(QString type)
@@ -186,10 +188,13 @@ void  Game::setImageUrl(QString url)
 }
 void Game::replyFinished(QNetworkReply* reply)
 {
-    QByteArray data = reply->readAll();
+    if(m_image->isNull())
+    {
+        QByteArray data = reply->readAll();
 
-    m_image->loadFromData(data);
-    emit pixmapChanged(getIdImage(),m_image);
+        m_image->loadFromData(data);
+        emit pixmapChanged(getIdImage(),m_image);
+    }
 }
 QPixmap* Game::getPixmap( )const
 {
@@ -205,10 +210,19 @@ QString Game::getImageUrl( )const
 }
 QString  Game::getIdImage() const
 {
-    QString id = m_uuid.mid(1);
-    return id.mid(0,id.size()-1);
+    QUuid id(m_uuid);
+    if(!id.isNull())
+    {
+        return id.toString(QUuid::WithoutBraces);
+    }
+    else
+        return m_uuid;
 }
-bool Game::hasPicture()
+bool Game::hasPicture() const
 {
     return !m_imageUrl.isEmpty();
+}
+bool Game::hasValidImage() const
+{
+    return !m_image->isNull();
 }

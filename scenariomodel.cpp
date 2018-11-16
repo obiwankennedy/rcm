@@ -49,7 +49,7 @@ int ScenarioModel::rowCount ( const QModelIndex &  ) const
 {
     return m_scenarioList->count();
 }
-int ScenarioModel::columnCount ( const QModelIndex & parent  ) const
+int ScenarioModel::columnCount ( const QModelIndex &  ) const
 {
     return m_columns.count();
 }
@@ -109,7 +109,7 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     {
         QString id = m_scenarioList->at(index.row())->getGameId();
         Game* tmp  = m_list[id];
-        if(tmp!=NULL)
+        if(tmp!=nullptr)
             return tmp->getDescription();
         else
             return QVariant();
@@ -134,7 +134,7 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     {
         QString id = m_scenarioList->at(index.row())->getGameId();
         Game* tmp  = m_list[id];
-        if(tmp!=NULL)
+        if(tmp!=nullptr)
             return tmp->getTitle();
         else
             return QVariant();
@@ -143,20 +143,20 @@ QVariant ScenarioModel::data ( const QModelIndex & index, int role ) const
     {
         QString id = m_scenarioList->at(index.row())->getGameMasterId();
         GameMaster* tmp  = m_gameMasterMap[id];
-        if(tmp!=NULL)
+        if(tmp!=nullptr)
             return tmp->getNickName();
         else
             return QVariant();
     }
     else if(ScenarioModel::ColorRole == role)
     {
-        int current = m_scenarioList->at(index.row())->getCurrentPlayers();
-        int max = m_scenarioList->at(index.row())->getMaximumPlayers();
+        int current = static_cast<int>(m_scenarioList->at(index.row())->getCurrentPlayers());
+        int max = static_cast<int>(m_scenarioList->at(index.row())->getMaximumPlayers());
 
-        qreal a = (qreal)current/(qreal)max;
+        qreal a = static_cast<qreal>(current)/static_cast<qreal>(max);
         int endHue= 120;
         int startHue = 0;
-        int hueResult = startHue + (a * (endHue - startHue));
+        int hueResult = startHue + (static_cast<int>(a) * (endHue - startHue));
 
         QColor result;
 
@@ -213,19 +213,19 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
             result = true;
             break;
         case 2:
-            current->setDuration(value.toInt());
+            current->setDuration(static_cast<quint64>(value.toInt()));
             result = true;
             break;
         case 3:
-            current->setLevel((Scenario::LEVEL)value.toInt());
+            current->setLevel(static_cast<Scenario::LEVEL>(value.toInt()));
             result = true;
             break;
         case 4:
-            current->setMinimumPlayer(value.toInt());
+            current->setMinimumPlayer(static_cast<quint32>(value.toInt()));
             result = true;
             break;
         case 5:
-            current->setMaximumPlayer(value.toInt());
+            current->setMaximumPlayer(static_cast<quint32>(value.toInt()));
             result = true;
             break;
         case 6:
@@ -233,7 +233,7 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
             result = true;
             break;
         case 7:
-            current->setCurrentPlayers(value.toInt());
+            current->setCurrentPlayers(static_cast<quint32>(value.toInt()));
             result=true;
             break;
         case 8:
@@ -241,11 +241,11 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
             result=true;
             break;
         case 9:
-            current->setState((Scenario::STATE)value.toInt());
+            current->setState(static_cast<Scenario::STATE>(value.toInt()));
             result=true;
             break;
         case 10:
-            current->setTableNumber(value.toInt());
+            current->setTableNumber(static_cast<quint32>(value.toInt()));
             result=true;
             break;
         }
@@ -256,9 +256,9 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
     else if(ScenarioModel::IncreaseRole == role)
     {
 
-        if(current->getMaximumPlayers()>=current->getCurrentPlayers()+value.toInt())
+        if(current->getMaximumPlayers()>=current->getCurrentPlayers()+static_cast<quint32>(value.toInt()))
         {
-            current->increaseCurrentPlayerCount(value.toInt());
+            current->increaseCurrentPlayerCount(static_cast<quint32>(value.toInt()));
             emit dataChanged(index,index);
             return true;
         }
@@ -270,10 +270,10 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
     else if(ScenarioModel::DecreaseRole == role)
     {
 
-        int valueInt = current->getCurrentPlayers()-value.toInt();
+        int valueInt = static_cast<int>(current->getCurrentPlayers())-value.toInt();
         if(valueInt>=0)
         {
-            current->decreaseCurrentPlayerCount(value.toInt());
+            current->decreaseCurrentPlayerCount(static_cast<quint32>(value.toInt()));
             emit dataChanged(index,index);
             return true;
         }
@@ -298,7 +298,7 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
 
 }
 
-Qt::ItemFlags ScenarioModel::flags ( const QModelIndex & index ) const
+Qt::ItemFlags ScenarioModel::flags ( const QModelIndex & ) const
 {
     if(!m_edition)
     {
@@ -390,7 +390,7 @@ Scenario* ScenarioModel::getScenarioById(QString id)
         }
 
     }
-    return NULL;
+    return nullptr;
 }
 void ScenarioModel::mayStartTimer()
 {
@@ -453,7 +453,15 @@ void  ScenarioModel::writeToData(QDataStream& to) const
 
 void ScenarioModel::readDataFromJson(QJsonObject & obj)
 {
-
+    QJsonArray fieldArray = obj["items"].toArray();
+    QJsonArray::Iterator it;
+    for(it = fieldArray.begin(); it != fieldArray.end(); ++it)
+    {
+        QJsonObject obj = (*it).toObject();
+        Scenario* tmp = new Scenario();
+        tmp->readDataFromJson(obj);
+        appendScenario(tmp);
+    }
 }
 
 void ScenarioModel::writeDataToJson(QJsonObject & obj)

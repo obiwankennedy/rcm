@@ -2,7 +2,7 @@
 
 
 RcmMimeData::RcmMimeData()
-    : m_data(NULL)
+    : m_data(nullptr)
 {
     m_format = "rcm/scenario-item";
 }
@@ -21,7 +21,7 @@ void RcmMimeData::setScenario(Scenario* data)
 }
 bool RcmMimeData::hasScenario() const
 {
-    if(m_data!=NULL)
+    if(m_data!=nullptr)
         return true;
     else
         return false;

@@ -27,7 +27,7 @@ public:
     qreal minuteWidth() const;
 
     int getNumberOfTable() const;
-    void setNumberOfTable(const qreal &numberOfTable);
+    void setNumberOfTable(const qreal &);
 
     QPointF computeClosePoint(QPointF pos);
 
@@ -95,7 +95,7 @@ class LocalisationView : public QObject, public Serialisable
 {
     Q_OBJECT
 public:
-    explicit LocalisationView(QGraphicsView* view, QWidget *parent = 0);
+    explicit LocalisationView(QGraphicsView* view, QWidget *parent = nullptr);
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
@@ -122,21 +122,21 @@ protected:
 
 private:
     int m_counterZoom;
-    QPushButton* m_startWizzard;
-    QGraphicsView* m_view;
+    QPushButton* m_startWizzard= nullptr;
+    TablesWizard* m_wizzard = nullptr;
+    QGraphicsView* m_view= nullptr;
     QList<QGraphicsScene*> m_scenes;
-    TablesWizard* m_wizzard;
-    QList<Table*>* m_data;
+    QList<Table*>* m_data= nullptr;
     int m_roomCount;
 
 
-    QAction* m_addPlayer;
-    QAction* m_delPlayer;
-    QAction* m_showInfo;
-    QAction* m_startGame;
-    QAction* m_gameEnd;
-    QAction* m_scheduleGame;
-    QAction* m_removeGame;
+    QAction* m_addPlayer= nullptr;
+    QAction* m_delPlayer= nullptr;
+    QAction* m_showInfo= nullptr;
+    QAction* m_startGame= nullptr;
+    QAction* m_gameEnd= nullptr;
+    QAction* m_scheduleGame= nullptr;
+    QAction* m_removeGame= nullptr;
 
 };
 

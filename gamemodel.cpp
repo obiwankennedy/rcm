@@ -93,16 +93,14 @@ void GameModel::append(Game* tmp)
     }
     position = start;
     beginInsertRows(QModelIndex(),position,position);
-    #ifdef __QT_QUICK_2_
-    QObject::connect(tmp,SIGNAL(pixmapChanged(QString,QPixmap*)),m_gameImgProvider,SLOT(insertPixmap(QString,QPixmap*)));
-#endif
 
     m_gameList.insert(position,tmp);
     m_gameMap.insert(tmp->getUuid(),tmp);
 
     #ifdef __QT_QUICK_2_
-    m_gameImgProvider->insertPixmap(tmp->getIdImage(),tmp->getPixmap());
-#endif
+    if(tmp->hasValidImage())
+        m_gameImgProvider->insertPixmap(tmp->getIdImage(),tmp->getPixmap());
+    #endif
     endInsertRows();
 
 }
@@ -140,6 +138,9 @@ void GameModel::readDataFromJson(QJsonObject & json)
     {
         QJsonObject obj = (*it).toObject();
         Game* game = new Game();
+        #ifdef __QT_QUICK_2_
+        QObject::connect(game,&Game::pixmapChanged,m_gameImgProvider,&GameImageProvider::insertPixmap);
+        #endif
         game->readDataFromJson(obj);
         append(game);
     }
@@ -245,10 +246,10 @@ void GameModel::readSettings(QSettings& settings)
         game->setDescription(settings.value("description").toString());
         game->setUuid(settings.value("uuid").toString());
         game->setType(settings.value("type").toString());
-        game->setImageUrl(settings.value("imageUrl").toString());
         QPixmap* pix = new QPixmap();
         *pix = settings.value("image").value<QPixmap>();
         game->setPixmap(pix);
+        game->setImageUrl(settings.value("imageUrl").toString());
 
         m_gameList.append(game);
         m_gameMap.insert(game->getUuid(),game);

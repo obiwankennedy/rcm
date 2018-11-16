@@ -18,7 +18,7 @@ public:
     explicit ScenarioItem();
 
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
     qreal* minutesInPixel() const;
     void setMinutesInPixel(qreal* minutesInPixel);

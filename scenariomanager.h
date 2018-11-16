@@ -118,9 +118,9 @@ private:
     //QList<Scenario*>* m_doneScenarioList;
     
     Ui::MainWindow* m_ui;
-    QList<Game*>& m_sortedList;
     QMap<QString,Game*>& m_list;
     QMap<QString,GameMaster*>& m_masterList;
+    QList<Game*>& m_sortedList;
     #ifdef __QT_QUICK_2_
     CustomerView* m_customerView;
     #endif

@@ -353,16 +353,18 @@ void Scenario::readDataFromJson(QJsonObject & obj)
 {
     m_gameMasterId=obj["gameMasterId"].toString();
     m_gameId=obj["gameId"].toString();
-    m_duration=obj["duration"].toInt();
-    m_level= (LEVEL)obj["level"].toInt();
-    m_maximumPlayers=obj["maximumPlayers"].toInt();
-    m_minimumPlayers=obj["minimumPlayers"].toInt();
+    if(m_gameId.isEmpty())
+        m_gameId=QString::number(obj["gameId"].toInt());
+    m_duration=static_cast<quint64>(obj["duration"].toInt());
+    m_level= static_cast<LEVEL>(obj["level"].toInt());
+    m_maximumPlayers=static_cast<quint32>(obj["maximumPlayers"].toInt());
+    m_minimumPlayers=static_cast<quint32>(obj["minimumPlayers"].toInt());
     m_title=obj["title"].toString();
     m_description=obj["description"].toString();
-    m_currentPlayers=obj["currentPlayers"].toInt();
-    m_state= (STATE)obj["state"].toInt();
+    m_currentPlayers=static_cast<quint32>(obj["currentPlayers"].toInt());
+    m_state= static_cast<STATE>(obj["state"].toInt());
     m_startTime=QDateTime::fromString(obj["startTime"].toString(),"dd.MM.yyyy:hh:mm:ss");
-    m_tableNumber=obj["tableNumber"].toInt();
+    m_tableNumber=static_cast<quint32>(obj["tableNumber"].toInt());
     m_playerInformation=obj["playersInfo"].toString().split('\n');
 
 }

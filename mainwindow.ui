@@ -33,7 +33,7 @@
     <item>
      <widget class="QTabWidget" name="m_tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -457,6 +457,7 @@
      <addaction name="m_importXMLAct"/>
      <addaction name="m_importBinary"/>
      <addaction name="m_csvAct"/>
+     <addaction name="m_importPythonJsonAct"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -607,6 +608,11 @@
   <action name="m_csvAct">
    <property name="text">
     <string>CSV</string>
+   </property>
+  </action>
+  <action name="m_importPythonJsonAct">
+   <property name="text">
+    <string>Python JSON</string>
    </property>
   </action>
  </widget>

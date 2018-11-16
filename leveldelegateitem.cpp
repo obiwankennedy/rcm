@@ -15,7 +15,7 @@ QWidget *	LevelDelegateItem::createEditor ( QWidget * parent, const QStyleOption
 void	LevelDelegateItem::setEditorData ( QWidget * editor, const QModelIndex & index ) const
 {
     QComboBox* box = qobject_cast<QComboBox*>(editor);
-    if(NULL!=box)
+    if(nullptr!=box)
     {
         box->addItems(m_data);
         box->setCurrentIndex(index.data().toInt());
@@ -24,7 +24,7 @@ void	LevelDelegateItem::setEditorData ( QWidget * editor, const QModelIndex & in
 void	LevelDelegateItem::setModelData ( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const
 {
     QComboBox* box = qobject_cast<QComboBox*>(editor);
-    if(NULL!=box)
+    if(nullptr!=box)
     {
 
         model->setData(index,box->currentIndex());

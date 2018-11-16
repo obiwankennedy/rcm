@@ -108,7 +108,7 @@ ScenarioManager::~ScenarioManager()
 {
     #ifdef __QT_QUICK_2_
     /*m_customerView->close();
-    if(NULL!=m_customerView)
+    if(nullptr!=m_customerView)
         delete m_customerView;*/
     #endif
 
@@ -188,6 +188,7 @@ bool ScenarioManager::mouseMoveOnScenarioListOnPlanning ( QMouseEvent * event)
         }
 
         Qt::DropAction dropAction = drag->exec();
+        Q_UNUSED(dropAction);
 
     }
     return true;
@@ -209,7 +210,7 @@ ScenarioModel* ScenarioManager::getRightModel(Scenario::STATE m)
     case Scenario::DONE:
         return m_doneScenarioModel;
     }
-    return NULL;
+    return nullptr;
 }
 void ScenarioManager::showCustomView(bool b)
 {
@@ -447,7 +448,7 @@ void ScenarioManager::editScenario()
         Scenario sce = var.value<Scenario>();
         //
         ScenarioModel* model = getRightModel(sce.getState());
-        Scenario* mySce = model->getScenarioById(sce.getScenarioId());
+        model->getScenarioById(sce.getScenarioId());
         ScenarioEditorDialog dialog(m_sortedList);
         dialog.setModel(model);
         dialog.exec();
@@ -551,7 +552,7 @@ QListView* ScenarioManager::getFocusedListView()
     {
         return m_ui->m_scenarioRunningView;
     }
-    return NULL;
+    return nullptr;
 }
 void ScenarioManager::readFromData(QDataStream& from)
 {

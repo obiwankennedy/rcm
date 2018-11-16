@@ -41,9 +41,9 @@ public:
                      MaximumRole,DescriptionRole,CurrentPlayerRole,TitleRole,GameTitleRole,GameMasterNameRole,ColorRole,
                      PixmapRole,LevelRole,AddPlayerInfo,RemovePlayerInfo,ClearPlayerInfo,SetPlayerInfo};
 
-    explicit ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent = 0);
+    explicit ScenarioModel(QMap<QString,Game*>& l,QMap<QString,GameMaster*>& lstGm,Scenario::STATE m,QObject *parent = nullptr);
     int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
-    int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
+    int columnCount (const QModelIndex & = QModelIndex()) const;
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
     bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
     Qt::ItemFlags flags ( const QModelIndex & index ) const;
@@ -91,6 +91,7 @@ public slots:
     void mayStartTimer();
     void timeOut();
 private:
+    Scenario::STATE m_state;
     QList<Scenario*>* m_scenarioList;
     QList<Game*>* m_gameList;/// @brief no longer needed i think
     QMap<QString,Game*>& m_list;
@@ -98,7 +99,6 @@ private:
     QString m_uuid;//isolate
     bool m_isFiltered;
     QStringList m_columns;
-    Scenario::STATE m_state;
     /// @todo there may be a way to place this in manager/controler
     QTimer* m_timer;
     bool m_edition;

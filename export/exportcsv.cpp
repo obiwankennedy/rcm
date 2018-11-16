@@ -21,7 +21,7 @@ void ExportCSV::write()
 
 
 
-    if(m_gameModel!=NULL)
+    if(m_gameModel!=nullptr)
     {
         cvs << QObject::tr("List of Games\n");
       for(int i = 0; i<m_gameModel->rowCount();i++)
@@ -36,7 +36,7 @@ void ExportCSV::write()
 
     }
 
-    if(NULL!= m_gameMasterModel)
+    if(nullptr!= m_gameMasterModel)
     {
         cvs << QObject::tr("List of Game Masters\n");
       for(int i = 0; i<m_gameMasterModel->rowCount();i++)
@@ -51,7 +51,7 @@ void ExportCSV::write()
 
     }
 
-    if(NULL!= m_scenarioModel)
+    if(nullptr!= m_scenarioModel)
     {
         cvs << QObject::tr("List of Scenarios\n");
       for(int i = 0; i<m_scenarioModel->rowCount();i++)

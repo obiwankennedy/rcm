@@ -88,6 +88,7 @@ private:
     QString m_firstName;
     QString m_nickname;
     QString m_mailAddress;
+    QString m_description;
     QList<Scenario*>* m_scenarioList;
 
     bool m_isPresent;

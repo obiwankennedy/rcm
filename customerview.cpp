@@ -77,7 +77,7 @@ void CustomerView::setLabel(Ui::MainWindow* parent)
             m_window->setProperty("autoAnimation",b);
     });
 
-    connect(m_ui->m_showMsg,&QPushButton::clicked,[=](bool b){
+    connect(m_ui->m_showMsg,&QPushButton::clicked,[=](bool){
             m_window->setProperty("msg",m_ui->m_msgEdit->text());
     });
 
@@ -90,7 +90,7 @@ void CustomerView::setSelectionIndex(const QModelIndex& index)
 {
     QObject* root = m_engine->rootObjects().first();
     QObject* listview = root->findChild<QObject*>("listView");
-    if(NULL!=listview)
+    if(nullptr!=listview)
     {
         listview->setProperty("currentIndex",index.row());
     }
@@ -137,8 +137,8 @@ void CustomerView::refreshView()
     if(nullptr!=m_window)
     {
         QImage img = m_window->grabWindow();
-        m_ratioImage = (double)img.size().width()/img.size().height();
-        m_ratioImageBis = (double)img.size().height()/img.size().width();
+        m_ratioImage = static_cast<double>(img.size().width())/static_cast<double>(img.size().height());
+        m_ratioImageBis = static_cast<double>(img.size().height())/static_cast<double>(img.size().width());
         m_label->setPixmap(QPixmap::fromImage(img));
         resizeLabel();
     }
@@ -149,11 +149,11 @@ void CustomerView::resizeLabel()
     int h = m_widget->viewport()->rect().height();
     if(w>h*m_ratioImage)
     {
-        m_label->resize(h*m_ratioImage,h);
+        m_label->resize(static_cast<int>(h*m_ratioImage),h);
     }
     else
     {
-        m_label->resize(w,w*m_ratioImageBis);
+        m_label->resize(w,static_cast<int>(w*m_ratioImageBis));
     }
 }
 #include <QMouseEvent>
@@ -176,8 +176,8 @@ bool CustomerView::eventFilter(QObject* label, QEvent* vt)
         int w = m_label->geometry().width();
         int h = m_label->geometry().height();
 
-        qreal ratioW =  (qreal)m_window->width()/ ((qreal)w);
-        qreal ratioH =  (qreal)m_window->height()/((qreal)h) ;
+        qreal ratioW =  static_cast<qreal>(m_window->width())/ static_cast<qreal>(w);
+        qreal ratioH =  static_cast<qreal>(m_window->height())/static_cast<qreal>(h);
 
         qreal x = (posOnLabel.x()) * ratioW;
         qreal y = (posOnLabel.y()) * ratioH;

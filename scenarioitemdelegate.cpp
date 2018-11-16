@@ -45,10 +45,6 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         QVariant var = index.data(Qt::UserRole);
         Scenario tmp = var.value<Scenario>();
 
-
-
-
-
         QStyle *style=qApp->style();
 
         QRect itemRect=option.rect;//style->subElementRect(QStyle::SE_ItemViewItemText, &option);
@@ -153,17 +149,19 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
 
             }
-
         GameMaster* myGameMaster = m_masterlist[tmp.getGameMasterId()];
-        if(!m_private)
+        if(nullptr != myGameMaster)
         {
-            QString gmStr = tr("GM:%1, phone:%2");
-            style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()).arg(myGameMaster->getPhoneNumber()));
-        }
-        else
-        {
-            QString gmStr = tr("GM:%1");
-            style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()));
+            if(!m_private)
+            {
+                QString gmStr = tr("GM:%1, phone:%2");
+                style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()).arg(myGameMaster->getPhoneNumber()));
+            }
+            else
+            {
+                QString gmStr = tr("GM:%1");
+                style->drawItemText(painter,itemRect,Qt::AlignBottom | Qt::AlignLeft,option.palette,true,gmStr.arg(myGameMaster->getNickName()));
+            }
         }
 
 

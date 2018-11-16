@@ -107,13 +107,13 @@ private:
     QString m_gameMasterId;
     QString m_scenarioId;
     quint64 m_duration;//minutes
-    quint32 m_tableNumber;
     QDateTime m_startTime;
     QDateTime m_availableTime;
     LEVEL m_level;
     quint32 m_maximumPlayers;
     quint32 m_minimumPlayers;
     quint32 m_currentPlayers;
+    quint32 m_tableNumber;
     QString m_title;
     QStringList m_playerInformation;
     QString m_description;

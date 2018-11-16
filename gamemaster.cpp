@@ -46,7 +46,6 @@ GameMaster::GameMaster()
 void GameMaster::insertScenario(Scenario* game)
 {
     m_scenarioList->append(game);
-
 }
 
 void GameMaster::removeScenario(Scenario* game)
@@ -222,6 +221,7 @@ void GameMaster::readDataFromJson(QJsonObject & obj)
     m_isPresent = obj["present"].toBool();
     m_id=obj["id"].toString();
     m_color.setNamedColor(obj["color"].toString());
+    m_description=obj["moreInfo"].toString();
 
     m_isPresent = false;
 
@@ -232,6 +232,7 @@ void GameMaster::readDataFromJson(QJsonObject & obj)
         QJsonObject sce = (*it).toObject();
         Scenario* tmp = new Scenario();
         tmp->readDataFromJson(sce);
+        tmp->setGameMasterId(m_id);
         insertScenario(tmp);
     }
 }

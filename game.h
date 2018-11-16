@@ -101,7 +101,8 @@ public:
      * @brief hasPicture
      * @return
      */
-    bool hasPicture();
+    bool hasPicture() const;
+    bool hasValidImage() const;
 
 
 

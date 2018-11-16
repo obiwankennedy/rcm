@@ -28,6 +28,7 @@
 #include <QMessageBox>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -107,6 +108,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->m_nextDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayNextDay()));
     connect(ui->m_previousDay,SIGNAL(clicked(bool)),m_locview,SLOT(displayPreviousDay()));
+
+    connect(ui->m_importPythonJsonAct,&QAction::triggered,this,&MainWindow::readPythonJsonFile);
 
 
 }
@@ -591,6 +594,8 @@ void MainWindow::editGame(const QModelIndex& index)
         dialog.setPunchLine(tmp->getPunchLine());
         dialog.setGameType(tmp->getType());
         dialog.setPixmapUrl(tmp->getImageUrl());
+        auto pix = tmp->getPixmap();
+        dialog.setImage(*pix);
 
         if(dialog.exec())
         {
@@ -780,7 +785,7 @@ void MainWindow::clearSelection( QModelIndex index)
     QAbstractItemView* view = qobject_cast<QAbstractItemView*>(sender());
    // qDebug() << "view" << view << index.isValid();
 
-    if((NULL!=view)&&(!index.isValid()))
+    if((nullptr!=view)&&(!index.isValid()))
     {
         view->clearSelection();
     }
@@ -805,6 +810,41 @@ void MainWindow::saveBackUp()
 		saveDataToJson();
 		m_currentDataPath = backUp;
 	}
+}
+
+void MainWindow::readPythonJsonFile()
+{
+    QString fileExport = QFileDialog::getOpenFileName(this, tr("Open python generated json"), m_preferences->value("dataDirectory",QDir::homePath()).toString(), tr("Json file (*.json)"));
+    QFile file(fileExport);
+    QFileInfo info(fileExport);
+
+
+    setWindowTitle(m_title.arg(info.fileName()));
+    if (file.open(QIODevice::ReadOnly))
+    {
+        resetData();
+        QJsonDocument json = QJsonDocument::fromJson(file.readAll());
+        QJsonObject jsonObj = json.object();
+
+        QJsonArray games = jsonObj["games"].toArray();
+        QJsonArray masters = jsonObj["masters"].toArray();
+        //QJsonArray scenarios = jsonObj["scenarios"].toArray();
+
+
+        QJsonObject gamesObj;
+        gamesObj["items"]=games;
+        m_gameModel->readDataFromJson(gamesObj);
+
+        QJsonObject mastersObj;
+        mastersObj["items"]=masters;
+        m_gameMasterModel->readDataFromJson(mastersObj);
+
+        /*QJsonObject scenariosObj;
+        scenariosObj["items"]=scenarios;
+        m_scenarioManager->readDataFromJson(scenariosObj);*/
+        file.close();
+        ensureTabVisible(DATA);
+    }
 }
 void MainWindow::readCSV()
 {

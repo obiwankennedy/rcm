@@ -72,6 +72,7 @@ public slots:
 	void saveBackUp();
     void readCSV();
     void checkAllGM();
+    void readPythonJsonFile();
 protected:
     void closeEvent ( QCloseEvent * event );
     bool eventFilter(QObject *obj, QEvent *event);

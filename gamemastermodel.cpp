@@ -100,14 +100,14 @@ bool GameMasterModel::setData(const QModelIndex & index, const QVariant & value,
     {
 
         QDateTime time = QDateTime::currentDateTime();
-        time.addSecs(value.toInt()*60);
+        time=time.addSecs(value.toInt()*60);
         m_gameMasterList[index.row()]->setBackTime(time);
         emit dataChanged(index,index);
         return true;
     }
     else if(GameMasterModel::ActivityRole==role)
     {
-        m_gameMasterList[index.row()]->setCurrentActivity((GameMaster::Activity)value.toInt());
+        m_gameMasterList[index.row()]->setCurrentActivity(static_cast<GameMaster::Activity>(value.toInt()));
         emit dataChanged(index,index);
         return true;
     }
@@ -177,7 +177,7 @@ void GameMasterModel::writeDataToJson(QJsonObject & obj)
     obj["items"]=fieldArray;
 
 }
-Qt::ItemFlags GameMasterModel::flags ( const QModelIndex & index ) const
+Qt::ItemFlags GameMasterModel::flags ( const QModelIndex &  ) const
 {
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
 }

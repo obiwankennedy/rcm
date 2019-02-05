@@ -77,6 +77,7 @@ const QVariant PreferencesManager::value(QString key,QVariant defaultValue)
 
 void PreferencesManager::readSettings(QSettings & settings)
 {
+    qDebug()<<"before reading preferences";
     settings.beginGroup("preferences");
     QVariant variant = settings.value("map",*m_optionDictionary);
     if(variant.canConvert<QMap<QString,QVariant> >())
@@ -84,11 +85,13 @@ void PreferencesManager::readSettings(QSettings & settings)
         *m_optionDictionary = variant.value<QMap<QString,QVariant> >();
     }
     settings.endGroup();
-    
+    qDebug() << "after reading prefrences";
 }
 void PreferencesManager::writeSettings(QSettings & settings)
 {
+    qDebug()<<"before writing preferences";
     settings.beginGroup("preferences");
     settings.setValue("map",*m_optionDictionary);
     settings.endGroup();
+    qDebug() << "after writing prefrences";
 }

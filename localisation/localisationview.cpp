@@ -434,7 +434,7 @@ bool LocalisationView::eventFilter(QObject *obj, QEvent *event)
             if(nullptr != scene)
             {
                 scene->setSceneRect(0,0,std::max(m_view->width(),static_cast<int>(scene->width())),
-                                    std::max(scene->height(),scene->itemsBoundingRect().height()));
+                                    std::min(scene->height(),scene->itemsBoundingRect().height()));
                 m_view->fitInView(m_view->rect(),Qt::KeepAspectRatio);//scene->itemsBoundingRect()
                 return true;
             }

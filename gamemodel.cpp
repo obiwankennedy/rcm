@@ -211,6 +211,7 @@ void GameModel::resetData()
 }
 void GameModel::writeSettings(QSettings& settings)
 {
+    qDebug()<<"write Settings games";
     settings.beginGroup("games");
     settings.beginWriteArray("games");
 
@@ -230,10 +231,12 @@ void GameModel::writeSettings(QSettings& settings)
     }
     settings.endArray();
     settings.endGroup();
+    qDebug()<<"end write Settings games";
 }
 
 void GameModel::readSettings(QSettings& settings)
 {
+    qDebug()<<"read setting games";
     settings.beginGroup("games");
     int size = settings.beginReadArray("games");
 
@@ -259,4 +262,5 @@ void GameModel::readSettings(QSettings& settings)
    }
    settings.endArray();
    settings.endGroup();
+   qDebug()<<"end read setting games";
 }

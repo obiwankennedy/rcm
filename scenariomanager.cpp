@@ -316,8 +316,13 @@ void ScenarioManager::increaseCurrentPlayerCount()
 
         if(dialog.exec())
         {
-            model->setData(index,dialog.getInfo(),ScenarioModel::AddPlayerInfo);
-            model->setData(index,dialog.getPlayerCount() ,ScenarioModel::IncreaseRole);
+            auto name = dialog.name();
+            auto first = dialog.firstName();
+            auto phone = dialog.phone();
+            auto count = dialog.getPlayerCount();
+            QStringList list({first, name, phone, QString::number(count)});
+            model->setData(index,list.join(';'),ScenarioModel::AddPlayerInfo);
+            model->setData(index,count,ScenarioModel::IncreaseRole);
         }
     }
 }

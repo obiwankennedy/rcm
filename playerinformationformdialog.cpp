@@ -12,13 +12,20 @@ PlayerInformationFormDialog::~PlayerInformationFormDialog()
 {
     delete ui;
 }
-QString PlayerInformationFormDialog::getInfo()
+
+QString PlayerInformationFormDialog::name() const
 {
-    QString result;
-    result=tr("%1;%2;%3").arg(ui->m_firstNameEdit->text()).arg(ui->m_nameEdit->text()).arg(ui->m_phoneEdit->text());
-    return result;
+    return ui->m_nameEdit->text();
 }
-int PlayerInformationFormDialog::getPlayerCount()
+QString PlayerInformationFormDialog::firstName() const
+{
+    return ui->m_firstNameEdit->text();
+}
+QString PlayerInformationFormDialog::phone() const
+{
+    return ui->m_phoneEdit->text();
+}
+int PlayerInformationFormDialog::getPlayerCount() const
 {
     return ui->m_playerCount->value();
 }

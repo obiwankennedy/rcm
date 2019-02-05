@@ -12,12 +12,14 @@ class PlayerInformationFormDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PlayerInformationFormDialog(QWidget *parent = 0);
+    explicit PlayerInformationFormDialog(QWidget *parent = nullptr);
     ~PlayerInformationFormDialog();
 
-    QString getInfo();
-
-    int getPlayerCount();
+    //QString getInfo();
+    QString name() const;
+    QString firstName() const;
+    QString phone() const;
+    int getPlayerCount() const;
 
 private:
     Ui::PlayerInformationFormDialog *ui;

@@ -222,7 +222,7 @@ void GameMaster::readDataFromJson(QJsonObject & obj)
     m_id=obj["id"].toString();
     m_color.setNamedColor(obj["color"].toString());
     m_description=obj["moreInfo"].toString();
-
+    m_gameCount = obj["gameCount"].toInt();
     m_isPresent = false;
 
     QJsonArray scenarios = obj["scenarios"].toArray();
@@ -247,6 +247,7 @@ void GameMaster::writeDataToJson(QJsonObject & obj)
     obj["present"]=m_isPresent;
     obj["id"]=m_id;
     obj["color"]=m_color.name();
+    obj["gameCount"] = m_gameCount;
 
     QJsonArray array;
     for(Scenario* tmp : *m_scenarioList)
@@ -266,6 +267,16 @@ QColor GameMaster::getColor() const
 void GameMaster::setColor(const QColor &color)
 {
     m_color = color;
+}
+
+int GameMaster::getGameCount() const
+{
+    return m_gameCount;
+}
+
+void GameMaster::setGameCount(int gameCount)
+{
+    m_gameCount = gameCount;
 }
 int GameMaster::getScenarioCount() const
 {

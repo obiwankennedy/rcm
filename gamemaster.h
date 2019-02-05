@@ -55,19 +55,11 @@ public:
     GameMaster::Activity getCurrentActivity();
     QDateTime getBackTime();
 
-
     QList<Scenario*>* getGMScenarios() const;
     void setGMScenario(QList<Scenario*>* l);
-
-
-
-
     int getScenarioCount() const;
-
-
     bool isPresent();
     void setPresent(bool);
-
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
@@ -80,6 +72,9 @@ public:
     QColor getColor() const;
     void setColor(const QColor &color);
 
+    int getGameCount() const;
+    void setGameCount(int gameCount);
+
 private:
     QString m_id;
     QString m_name;
@@ -89,6 +84,7 @@ private:
     QString m_nickname;
     QString m_mailAddress;
     QString m_description;
+    int m_gameCount = 0;
     QList<Scenario*>* m_scenarioList;
 
     bool m_isPresent;

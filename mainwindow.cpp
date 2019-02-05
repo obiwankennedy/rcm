@@ -489,6 +489,7 @@ void MainWindow::writeSettings()
         settings.setValue("path", m_recentFileActions->at(i)->data());
     }
     settings.endArray();
+    qDebug()<<"end writing recentfile";
 
 
 

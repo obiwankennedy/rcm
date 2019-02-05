@@ -255,17 +255,9 @@ bool ScenarioModel::setData(const QModelIndex & index, const QVariant & value, i
     }
     else if(ScenarioModel::IncreaseRole == role)
     {
-
-        if(current->getMaximumPlayers()>=current->getCurrentPlayers()+static_cast<quint32>(value.toInt()))
-        {
             current->increaseCurrentPlayerCount(static_cast<quint32>(value.toInt()));
             emit dataChanged(index,index);
             return true;
-        }
-        else
-        {
-            return false;
-        }
     }
     else if(ScenarioModel::DecreaseRole == role)
     {

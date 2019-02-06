@@ -1,17 +1,16 @@
 #ifndef LOCALISATIONVIEW_H
 #define LOCALISATIONVIEW_H
 
-#include <QWidget>
-#include <QPushButton>
-#include <QGraphicsView>
-#include <QTimer>
-#include <QGraphicsLineItem>
 #include <QAction>
+#include <QGraphicsLineItem>
+#include <QGraphicsView>
+#include <QPushButton>
+#include <QTimer>
+#include <QWidget>
 
-#include "tableswizard.h"
 #include "serializable.h"
 #include "tableitem.h"
-
+#include "tableswizard.h"
 
 class Scenario;
 class ScenarioItem;
@@ -19,15 +18,14 @@ class Schedules : public QGraphicsScene, public Serialisable
 {
     Q_OBJECT
 public:
-    Schedules(qreal, qreal,qreal,qreal);
-
+    Schedules(qreal, qreal, qreal, qreal);
 
     qreal getTableHeight() const;
 
     qreal minuteWidth() const;
 
     int getNumberOfTable() const;
-    void setNumberOfTable(const qreal &);
+    void setNumberOfTable(const qreal&);
 
     QPointF computeClosePoint(QPointF pos);
 
@@ -35,8 +33,7 @@ public:
     void setDay(int day);
 
     qreal getStartOnDay() const;
-    void setStartOnDay(const qreal &startOnDay);
-
+    void setStartOnDay(const qreal& startOnDay);
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
@@ -47,40 +44,39 @@ public:
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
 
-    void appendTableItem(TableItem *item, QPointF pos);
+    void appendTableItem(TableItem* item, QPointF pos);
 public slots:
     void setTableHeight(qreal height);
     void setMinuteWidth(qreal minuteWidth);
     void replaceScenario(ScenarioItem*);
     void updatePositionOfTime();
-    //void visibleWidthChanged();
-
+    // void visibleWidthChanged();
 
 protected:
-    void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
+    void dragEnterEvent(QGraphicsSceneDragDropEvent* event);
     /**
      * @brief dropEvent
      * @param event
      */
-    void dropEvent ( QGraphicsSceneDragDropEvent * event );
+    void dropEvent(QGraphicsSceneDragDropEvent* event);
     /**
      * @brief dragMoveEvent
      * @param event
      */
-    void dragMoveEvent( QGraphicsSceneDragDropEvent * event );
+    void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 
-    void addScenarioItem(ScenarioItem *sceneItem, QPointF pos);
+    void addScenarioItem(ScenarioItem* sceneItem, QPointF pos);
+
 private:
     void addScenario(Scenario* item, QPointF pos);
 
-
 private:
     Scenario* m_droppingItem;
-    qreal m_tableHeight;
-    qreal m_minuteWidth;
+    qreal m_tableHeight= 200;
+    qreal m_minuteWidth= 10.;
     qreal m_startOnDay;
 
-   // qreal m_numberOfTable;
+    // qreal m_numberOfTable;
     QTimer* m_timer;
     QGraphicsLineItem* m_timeItem;
     QGraphicsTextItem* m_dayId;
@@ -88,14 +84,13 @@ private:
 
     QList<ScenarioItem*> m_scenarioList;
     QList<TableItem*> m_tableList;
-
 };
 
 class LocalisationView : public QObject, public Serialisable
 {
     Q_OBJECT
 public:
-    explicit LocalisationView(QGraphicsView* view, QWidget *parent = nullptr);
+    explicit LocalisationView(QGraphicsView* view, QWidget* parent= nullptr);
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
@@ -103,11 +98,10 @@ public:
     virtual void readDataFromJson(QJsonObject&);
     virtual void writeDataToJson(QJsonObject&);
 
-
     virtual QDomElement writeDataToXml(QDomDocument&);
     virtual void readDataFromXml(QDomNode&);
 
-    void appendTableItem(TableItem *item, QPointF pos);
+    void appendTableItem(TableItem* item, QPointF pos);
 public slots:
     void setProperties();
     void displayNextDay();
@@ -116,19 +110,17 @@ public slots:
     void contextMenuOnView(QPoint p);
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-    bool wheelEventForView(QWheelEvent *event);
-
+    bool eventFilter(QObject* obj, QEvent* event);
+    bool wheelEventForView(QWheelEvent* event);
 
 private:
     int m_counterZoom;
     QPushButton* m_startWizzard= nullptr;
-    TablesWizard* m_wizzard = nullptr;
+    TablesWizard* m_wizzard= nullptr;
     QGraphicsView* m_view= nullptr;
     QList<QGraphicsScene*> m_scenes;
     QList<Table*>* m_data= nullptr;
     int m_roomCount;
-
 
     QAction* m_addPlayer= nullptr;
     QAction* m_delPlayer= nullptr;
@@ -137,7 +129,6 @@ private:
     QAction* m_gameEnd= nullptr;
     QAction* m_scheduleGame= nullptr;
     QAction* m_removeGame= nullptr;
-
 };
 
 #endif // LOCALISATIONVIEW_H

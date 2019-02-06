@@ -77,7 +77,8 @@ HEADERS  += mainwindow.h \
     localisation/rcmmimedata.h \
     localisation/scenariolistview.h \
     localisation/scenarioitem.h \
-    idtranslator.h
+    idtranslator.h \
+    definesize.h
 
 FORMS    += mainwindow.ui \
     gamemasterdialog.ui \

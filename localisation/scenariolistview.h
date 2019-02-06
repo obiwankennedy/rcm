@@ -1,26 +1,26 @@
 #ifndef SCENARIOLISTVIEW_H
 #define SCENARIOLISTVIEW_H
 
-#include <QListView>
-#include <QMouseEvent>
 #include <QMap>
+#include <QMouseEvent>
+#include <QTableView>
 
 #include "game.h"
 
-class ScenarioListView : public QListView
+class ScenarioListView : public QTableView
 {
     Q_OBJECT
 public:
-    ScenarioListView(QWidget* parent = nullptr);
+    ScenarioListView(QWidget* parent= nullptr);
 
-    QMap<QString, Game *>* list() const;
-    void setList(QMap<QString, Game *>* list);
+    QMap<QString, Game*>* list() const;
+    void setList(QMap<QString, Game*>* list);
 
 protected:
     void mouseMoveEvent(QMouseEvent* event);
 
 private:
-    QMap<QString, Game *>* m_list;
+    QMap<QString, Game*>* m_list;
 };
 
 #endif // SCENARIOLISTVIEW_H

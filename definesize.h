@@ -1,4 +1,8 @@
 #ifndef DEFINESIZE_H
 #define DEFINESIZE_H
 
+#define SCHEDULE_WIDTH 1800
+#define TABLE_HEIGHT 200
+#define WIDTH_HOUR_LINE 4
+
 #endif // DEFINESIZE_H

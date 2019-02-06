@@ -1,41 +1,46 @@
 /***************************************************************************
-* Copyright (C) 2014 by Renaud Guezennec                                   *
-* http://renaudguezennec.homelinux.org/accueil,3.html                      *
-*                                                                          *
-*  This file is part of rcm                                                *
-*                                                                          *
-* Rcm is free software; you can redistribute it and/or modify              *
-* it under the terms of the GNU General Public License as published by     *
-* the Free Software Foundation; either version 2 of the License, or        *
-* (at your option) any later version.                                      *
-*                                                                          *
-* This program is distributed in the hope that it will be useful,          *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of           *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the             *
-* GNU General Public License for more details.                             *
-*                                                                          *
-* You should have received a copy of the GNU General Public License        *
-* along with this program; if not, write to the                            *
-* Free Software Foundation, Inc.,                                          *
-* 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
-***************************************************************************/
+ * Copyright (C) 2014 by Renaud Guezennec                                   *
+ * http://renaudguezennec.homelinux.org/accueil,3.html                      *
+ *                                                                          *
+ *  This file is part of rcm                                                *
+ *                                                                          *
+ * Rcm is free software; you can redistribute it and/or modify              *
+ * it under the terms of the GNU General Public License as published by     *
+ * the Free Software Foundation; either version 2 of the License, or        *
+ * (at your option) any later version.                                      *
+ *                                                                          *
+ * This program is distributed in the hope that it will be useful,          *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the             *
+ * GNU General Public License for more details.                             *
+ *                                                                          *
+ * You should have received a copy of the GNU General Public License        *
+ * along with this program; if not, write to the                            *
+ * Free Software Foundation, Inc.,                                          *
+ * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
+ ***************************************************************************/
 #ifndef GAME_H
 #define GAME_H
 
-#include <QString>
-#include <QPixmap>
 #include <QNetworkAccessManager>
+#include <QPixmap>
+#include <QString>
 
 #include "serializable.h"
 
 /**
  * @brief The Game class
  */
-class Game : public QObject,public Serialisable
+class Game : public QObject, public Serialisable
 {
     Q_OBJECT
 public:
-    enum LEVEL {BEGINNER,AVERAGE,EXPERIMENTED};
+    enum LEVEL
+    {
+        BEGINNER,
+        AVERAGE,
+        EXPERIMENTED
+    };
     /**
      * @brief Game
      */
@@ -52,15 +57,14 @@ public:
      * @brief writeDataToXml
      * @return
      */
-    virtual QDomElement writeDataToXml(QDomDocument&)  ;
+    virtual QDomElement writeDataToXml(QDomDocument&);
     /**
      * @brief readDataFromXml
      */
-    virtual void readDataFromXml(QDomNode&) ;
+    virtual void readDataFromXml(QDomNode&);
 
     virtual void readDataFromJson(QJsonObject&);
     virtual void writeDataToJson(QJsonObject&);
-
 
     /**
      * @brief setTitle
@@ -81,7 +85,7 @@ public:
      * @brief setPixmap
      * @param title
      */
-    void setPixmap(QPixmap* title);
+    void setPixmap(QPixmap pic);
     /**
      * @brief setType
      * @param type
@@ -104,22 +108,19 @@ public:
     bool hasPicture() const;
     bool hasValidImage() const;
 
-
-
-
     QString getTitle() const;
     QString getPunchLine() const;
     QString getDescription() const;
     QString getUuid() const;
     QString getIdImage() const;
-    QPixmap* getPixmap( )const;
-    QString getType( )const;
-    QString getImageUrl( )const;
+    const QPixmap getPixmap() const;
+    QString getType() const;
+    QString getImageUrl() const;
 signals:
     /**
      * @brief pixmapChanged
      */
-    void pixmapChanged(QString,QPixmap*);
+    void pixmapChanged(QString, QPixmap);
 
 public slots:
     /**
@@ -128,7 +129,6 @@ public slots:
      */
     void replyFinished(QNetworkReply* reply);
 
-
 private:
     QString m_uuid;
     QString m_title;
@@ -136,10 +136,10 @@ private:
     QString m_punchLine;
     QString m_type;
     QString m_imageUrl;
-    QPixmap* m_image;
+    QPixmap m_image;
     /**/
 
-    QNetworkAccessManager * m_manager;
+    QNetworkAccessManager* m_manager;
 };
 
 #endif // GAME_H

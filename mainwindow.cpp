@@ -50,14 +50,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     m_timer= new QTimer();
     m_timer->setInterval(TIME_SAVE_PERIOD);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(saveBackUp()));
-    m_gameImgProvider= new GameImageProvider();
 
     m_title= tr("%1[*] - Rolisteam Convention Manager");
     m_recentFileActions= new QList<QAction*>();
 
     setWindowTitle(m_title.arg("Unkown"));
 
-    m_gameModel= new GameModel(m_gameImgProvider);
+    m_gameModel= new GameModel();
+    m_gameImgProvider= new GameImageProvider(m_gameModel);
 
     m_gameMasterModel= new GameMasterModel();
 
@@ -72,8 +72,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     IdTranslator* translator= IdTranslator::getInstance(m_gameModel->getGameMap(), m_gameMasterModel->getMasterMap());
     Q_UNUSED(translator);
-    m_scenarioManager= new ScenarioManager(ui, m_gameModel->getGameList(), m_gameModel->getGameMap(),
-        m_gameMasterModel->getMasterMap(), m_gameImgProvider);
+    m_scenarioManager= new ScenarioManager(
+        ui, m_gameModel->getGameList(), m_gameModel, m_gameModel->getGameMap(), m_gameMasterModel, m_gameImgProvider);
     m_scenarioManager->setLabel(ui);
 
     initActions();
@@ -87,7 +87,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->m_fileMenu->insertMenu(ui->m_quitAct, m_recentFile);
     ui->m_fileMenu->insertSeparator(ui->m_quitAct);
 
-    ui->m_masterView->installEventFilter(this);
     m_locview= new LocalisationView(ui->m_timeLine);
 
     connect(ui->m_properties, SIGNAL(clicked(bool)), m_locview, SLOT(setProperties()));
@@ -113,15 +112,28 @@ MainWindow::~MainWindow()
 void MainWindow::initActions()
 {
     m_addGameAct= new QAction(tr("Add"), this);
+    m_addGameAct->setIcon(QIcon(":/resources/images/add_round.png"));
     m_removeGameAct= new QAction(tr("Del"), this);
+    m_removeGameAct->setIcon(QIcon(":/resources/images/delete.png"));
+
     m_removeGMAct= new QAction(tr("Del"), this);
+    m_removeGMAct->setIcon(QIcon(":/resources/images/delete.png"));
+
     m_addGMAct= new QAction(tr("Add"), this);
+    m_addGMAct->setIcon(QIcon(":/resources/images/add_round.png"));
+
     m_checkAllGMAct= new QAction(tr("Check All GM"), this);
-    m_makeGMGoneAct= new QAction(tr("GM is leaving"), this);
-    connect(m_makeGMGoneAct, SIGNAL(triggered()), this, SLOT(makeGameMasterUnavailable()));
+    m_checkAllGMAct->setIcon(QIcon(":/resources/images/selectAll.png"));
+    m_invertSelectionAct= new QAction(tr("invert selection"), this);
+    m_invertSelectionAct->setIcon(QIcon(":/resources/images/invert.svg"));
+
+    connect(m_invertSelectionAct, &QAction::triggered, m_scenarioManager, &ScenarioManager::invertSelection);
+    // connect(m_invertSelectionAct, SIGNAL(triggered()), this, SLOT(makeGameMasterUnavailable()));
 
     addAction(ui->m_customerViewDisplayAct);
 
+    ui->m_invertSelectionBtn->setDefaultAction(m_invertSelectionAct);
+    ui->m_checkallBtn->setDefaultAction(m_checkAllGMAct);
     ui->m_addGameButton->setDefaultAction(m_addGameAct);
     ui->m_addGMButton->setDefaultAction(m_addGMAct);
     ui->m_deleteGameButton->setDefaultAction(m_removeGameAct);
@@ -129,12 +141,24 @@ void MainWindow::initActions()
 
     connect(m_addGameAct, SIGNAL(triggered()), this, SLOT(addGameDialog()));
     connect(m_addGMAct, SIGNAL(triggered()), this, SLOT(addGameMasterDialog()));
-    connect(m_checkAllGMAct, SIGNAL(triggered(bool)), this, SLOT(checkAllGM()));
+    connect(m_checkAllGMAct, &QAction::triggered, m_scenarioManager, &ScenarioManager::checkAllGM);
 
-    connect(
-        m_gameMasterModel, SIGNAL(gmHasBeenAdded(GameMaster*)), this, SLOT(addGmScenarioListToGlobalList(GameMaster*)));
-    connect(m_gameMasterModel, SIGNAL(gameMasterStatusHasChanged(GameMaster*, bool)), this,
-        SLOT(statusGmHasChanged(GameMaster*, bool)));
+    /* connect(m_gameMasterModel, &GameMasterModel::gmHasBeenAdded, m_scenarioManager, [this](GameMaster* gm) {
+         if(!gm)
+             return;
+         m_scenarioManager->addScenarios(gm->getGMScenarios());
+     });*/
+    connect(m_gameMasterModel, &GameMasterModel::gameMasterStatusHasChanged, this, [this](GameMaster* gm, bool status) {
+        if(!gm)
+            return;
+        auto scenarios= gm->getGMScenarios();
+        if(status)
+            m_scenarioManager->addScenarios(scenarios);
+        else
+        {
+            m_scenarioManager->removeScenarioFromList(scenarios);
+        }
+    });
 
     // removal connection
     connect(m_removeGameAct, SIGNAL(triggered()), this, SLOT(removeGame()));
@@ -162,7 +186,7 @@ void MainWindow::initActions()
     connect(ui->m_gameView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(editGame(QModelIndex)));
     connect(ui->m_masterView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(editGameMaster(QModelIndex)));
 }
-bool MainWindow::eventFilter(QObject* obj, QEvent* event)
+/*bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
     if(event->type() == QEvent::ContextMenu)
     {
@@ -175,7 +199,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
         // standard event processing
         return QObject::eventFilter(obj, event);
     }
-}
+}*/
 #include <QFileDialog>
 void MainWindow::saveAs()
 {
@@ -191,7 +215,7 @@ void MainWindow::saveAs()
     }
 }
 
-void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
+/*void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
 {
     QMenu menu;
 
@@ -205,7 +229,7 @@ void MainWindow::contextMenuForGameMaster(QContextMenuEvent* event)
     }
 
     menu.exec(event->globalPos());
-}
+}*/
 
 void MainWindow::addGameDialog()
 {
@@ -214,8 +238,6 @@ void MainWindow::addGameDialog()
     if(dialog.exec())
     {
         Game* tmp= new Game();
-        connect(
-            tmp, SIGNAL(pixmapChanged(QString, QPixmap*)), m_gameImgProvider, SLOT(insertPixmap(QString, QPixmap*)));
         tmp->setTitle(dialog.getTitle());
         tmp->setPunchLine(dialog.getPunchLine());
         tmp->setDescription(dialog.getDescription());
@@ -422,18 +444,11 @@ void MainWindow::addRecentFile()
     m_recentFileActions->append(tmp);
     refreshOpenedFile();
 }
-void MainWindow::checkAllGM()
-{
-    for(auto& gm : m_gameMasterModel->getMasterList())
-    {
-        gm->setPresent(!gm->isPresent());
-        statusGmHasChanged(gm, gm->isPresent());
-    }
-    ui->m_masterView->update();
-}
+
 void MainWindow::addGameMasterDialog()
 {
-    GameMasterDialog dialog(m_gameModel->getGameMap(), m_gameModel->getGameList(), m_gameMasterModel->getMasterMap());
+    GameMasterDialog dialog(
+        m_gameModel->getGameMap(), m_gameModel->getGameList(), m_gameModel, m_gameMasterModel->getMasterMap());
     connect(&dialog, SIGNAL(addGame()), this, SLOT(addGameDialog()));
     dialog.setWindowFlags(Qt::Window);
 
@@ -461,24 +476,6 @@ void MainWindow::addGameMasterDialog()
     }
 }
 
-void MainWindow::addGmScenarioListToGlobalList(GameMaster* l)
-{
-    if(l->isPresent())
-    {
-        m_scenarioManager->addScenarios(l->getGMScenarios());
-    }
-}
-void MainWindow::statusGmHasChanged(GameMaster* l, bool b)
-{
-    if(b)
-    {
-        addGmScenarioListToGlobalList(l);
-    }
-    else
-    {
-        m_scenarioManager->removeScenarioFromList(l->getGMScenarios());
-    }
-}
 void MainWindow::editGame(const QModelIndex& index)
 {
     if(index.isValid())
@@ -512,7 +509,7 @@ void MainWindow::editGameMaster(const QModelIndex& index)
     {
         GameMaster* tmp= m_gameMasterModel->getMasterList().at(index.row());
         GameMasterDialog dialog(
-            m_gameModel->getGameMap(), m_gameModel->getGameList(), m_gameMasterModel->getMasterMap());
+            m_gameModel->getGameMap(), m_gameModel->getGameList(), m_gameModel, m_gameMasterModel->getMasterMap());
         connect(&dialog, SIGNAL(addGame()), this, SLOT(addGameDialog()));
 
         dialog.setName(tmp->getName());

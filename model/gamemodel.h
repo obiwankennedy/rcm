@@ -25,7 +25,6 @@
 #include <QAbstractListModel>
 
 #include "game.h"
-#include "gameimageprovider.h"
 #include "serializable.h"
 
 class GameModel : public QAbstractListModel, public Serialisable
@@ -35,11 +34,12 @@ public:
     enum CustomRole
     {
         PunchLine= Qt::UserRole + 1,
+        Name,
         Description,
         IMAGE_URL,
         TYPE
     };
-    explicit GameModel(GameImageProvider* gameImageProvider, QObject* parent= 0);
+    explicit GameModel(QObject* parent= nullptr);
     int rowCount(const QModelIndex& parent= QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role= Qt::DisplayRole) const;
 
@@ -62,10 +62,11 @@ public:
     void writeSettings(QSettings& settings);
     void readSettings(QSettings& settings);
 
+    int indexOf(Game* tmp);
+
 private:
     QList<Game*> m_gameList;
     QMap<QString, Game*> m_gameMap;
-    GameImageProvider* m_gameImgProvider;
 };
 
 #endif // GAMEMODEL_H

@@ -25,16 +25,39 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-ScenarioModel::ScenarioModel(
-    QMap<QString, Game*>& l, QMap<QString, GameMaster*>& lstGm, Scenario::STATE m, QObject* parent)
-    : QAbstractTableModel(parent), m_state(m), m_list(l), m_gameMasterMap(lstGm), m_edition(true)
+ScenarioModel::ScenarioModel(QMap<QString, Game*>& l, GameModel* gameModel, QMap<QString, GameMaster*>& lstGm,
+    Scenario::STATE m, QObject* parent)
+    : QAbstractTableModel(parent)
+    , m_state(m)
+    , m_list(l)
+    , m_gameMasterMap(lstGm)
+    , m_edition(true)
+    , m_gameModel(gameModel)
 {
     m_scenarioList= new QList<Scenario*>();
-    m_columns << tr("Game") << tr("Title") << tr("Duration") << tr("Level") << tr("Min") << tr("Max") << tr("Register")
-              << tr("Description") << tr("Available") << tr("State") << tr("Table Number") << tr("GM Name");
+
+    // clang-format off
+    m_columns << tr("Game")
+              << tr("Title")
+              << tr("Duration")
+              << tr("Level")
+              << tr("Min")
+              << tr("Max")
+              << tr("Register")
+              << tr("Description")
+              << tr("Available")
+              << tr("State")
+              << tr("Table Number")
+              << tr("GM Name")
+              << tr("Game")
+              << tr("Count");
+    // clang-format on
 
     qRegisterMetaType<Scenario>("Scenario");
     qRegisterMetaTypeStreamOperators<Scenario>("Scenario");
+
+    qRegisterMetaType<Scenario*>("Scenario*");
+    // qRegisterMetaTypeStreamOperators<Scenario*>("Scenario*");
 
     m_timer= new QTimer();
     m_timer->setInterval(1000 * 15);
@@ -92,6 +115,24 @@ QVariant ScenarioModel::data(const QModelIndex& index, int role) const
             GameMaster* tmp= m_gameMasterMap[id];
             if(tmp != nullptr)
                 return tmp->getNickName();
+            else
+                return QVariant();
+        }
+        case 12:
+        {
+            auto id= m_scenarioList->at(index.row())->getGameId();
+            Game* tmp= m_list[id];
+            if(tmp != nullptr)
+                return tmp->getTitle();
+            else
+                return QVariant();
+        }
+        case 13:
+        {
+            auto id= m_scenarioList->at(index.row())->getGameMasterId();
+            GameMaster* tmp= m_gameMasterMap[id];
+            if(tmp != nullptr)
+                return tmp->getGameCount();
             else
                 return QVariant();
         }
@@ -178,7 +219,9 @@ QVariant ScenarioModel::data(const QModelIndex& index, int role) const
         QString id= m_scenarioList->at(index.row())->getGameMasterId();
         GameMaster* tmp= m_gameMasterMap[id];
         if(tmp != nullptr)
+        {
             return tmp->getGameCount();
+        }
         else
             return QVariant();
     }
@@ -186,18 +229,19 @@ QVariant ScenarioModel::data(const QModelIndex& index, int role) const
     {
         QVariant var;
         Scenario* tmp= m_scenarioList->at(index.row());
-        var.setValue(*tmp);
+        var.setValue(tmp);
         return var;
     }
     else if(ScenarioModel::PixmapRole == role)
     {
         QString id= m_scenarioList->at(index.row())->getGameId();
         Game* tmp= m_list[id];
+        return m_gameModel->indexOf(tmp);
 
-        if(tmp->hasPicture())
+        /*if(tmp->hasPicture())
             return tmp->getIdImage();
         else
-            return QString();
+            return QString();*/
     }
     else if(ScenarioModel::LevelRole == role)
     {
@@ -328,10 +372,6 @@ void ScenarioModel::addDataList(QList<Scenario*>* l)
     endInsertRows();
 }
 
-void ScenarioModel::setGameList(QList<Game*>* l)
-{
-    m_gameList= l;
-}
 void ScenarioModel::appendScenario(Scenario* a)
 {
     beginInsertRows(QModelIndex(), m_scenarioList->size(), m_scenarioList->size());

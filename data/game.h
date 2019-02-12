@@ -82,11 +82,6 @@ public:
      */
     void setDescription(QString title);
     /**
-     * @brief setPixmap
-     * @param title
-     */
-    void setPixmap(QPixmap pic);
-    /**
      * @brief setType
      * @param type
      */
@@ -128,6 +123,8 @@ public slots:
      * @param reply
      */
     void replyFinished(QNetworkReply* reply);
+
+    void fetchImage();
 
 private:
     QString m_uuid;

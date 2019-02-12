@@ -15,6 +15,8 @@ public:
 
     QMap<QString, Game*>* list() const;
     void setList(QMap<QString, Game*>* list);
+signals:
+    void updateSorting();
 
 protected:
     void mouseMoveEvent(QMouseEvent* event);

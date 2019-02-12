@@ -39,7 +39,7 @@ CustomerView::CustomerView(GameImageProvider* gameImgProvider, QAbstractItemMode
     m_engine->rootContext()->setContextProperty("_myModel", m_model);
     m_engine->addImageProvider(QString("game"), gameImgProvider);
 
-    m_engine->load(QUrl("qrc:/listView.qml"));
+    m_engine->load(QUrl("qrc:/resources/qml/listView.qml"));
 
     // setResizeMode(QQuickView::SizeRootObjectToView);
     QObject* root= m_engine->rootObjects().first();
@@ -54,8 +54,6 @@ CustomerView::~CustomerView() {}
 
 void CustomerView::setLabel(Ui::MainWindow* parent)
 {
-#ifdef __QT_QUICK_2_
-
     m_ui= parent;
     m_label= new QLabel();
     m_label->setLineWidth(0);
@@ -76,16 +74,18 @@ void CustomerView::setLabel(Ui::MainWindow* parent)
     m_widget= m_ui->m_scrollAreaVisual;
 
     m_label->installEventFilter(this);
-#endif
 }
 void CustomerView::setSelectionIndex(const QModelIndex& index)
 {
     QObject* root= m_engine->rootObjects().first();
-    QObject* listview= root->findChild<QObject*>("listView");
-    if(nullptr != listview)
-    {
-        listview->setProperty("currentIndex", index.row());
-    }
+    if(nullptr == root)
+        return;
+
+    QObject* listview= root->findChild<QObject*>("view");
+    if(nullptr == listview)
+        return;
+
+    listview->setProperty("currentIndex", index.row());
 }
 
 bool CustomerView::isVisible() const
@@ -98,7 +98,7 @@ void CustomerView::setVisible(bool visible)
     m_window->setVisible(visible);
     if(visible)
     {
-        m_timer->start();
+        QTimer::singleShot(2000, m_timer, SLOT(start()));
     }
     else
     {

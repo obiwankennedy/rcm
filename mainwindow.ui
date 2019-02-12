@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>%1[*] - Rolisteam Convention Manager</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/resources/images/symbol.png</normaloff>:/resources/images/symbol.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_4">
     <property name="spacing">
@@ -33,7 +37,7 @@
     <item>
      <widget class="QTabWidget" name="m_tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -56,6 +60,10 @@
                <property name="text">
                 <string>+</string>
                </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+               </property>
               </widget>
              </item>
              <item>
@@ -76,6 +84,10 @@
                <property name="text">
                 <string>-</string>
                </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
+               </property>
               </widget>
              </item>
             </layout>
@@ -88,38 +100,85 @@
           <property name="title">
            <string>GM</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="QListView" name="m_masterView"/>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
-              <widget class="QToolButton" name="m_addGMButton">
-               <property name="text">
-                <string>+</string>
-               </property>
-              </widget>
+              <widget class="QListView" name="m_masterView"/>
              </item>
              <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>178</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QToolButton" name="m_deleteGMButton">
-               <property name="text">
-                <string>-</string>
-               </property>
-              </widget>
+              <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0,1">
+               <item>
+                <widget class="QToolButton" name="m_addGMButton">
+                 <property name="text">
+                  <string>+</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="m_deleteGMButton">
+                 <property name="text">
+                  <string>-</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QToolButton" name="m_checkallBtn">
+                 <property name="text">
+                  <string>Select All</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/resources/images/selectAll.png</normaloff>:/resources/images/selectAll.png</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="m_invertSelectionBtn">
+                 <property name="text">
+                  <string>Invert</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/resources/images/invert.svg</normaloff>:/resources/images/invert.svg</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
@@ -149,7 +208,7 @@
                 </property>
                 <property name="icon">
                  <iconset resource="resources.qrc">
-                  <normaloff>:/resources/go-left.png</normaloff>:/resources/go-left.png</iconset>
+                  <normaloff>:/resources/images/go-left.png</normaloff>:/resources/images/go-left.png</iconset>
                 </property>
                </widget>
               </item>
@@ -193,7 +252,7 @@
                 </property>
                 <property name="icon">
                  <iconset resource="resources.qrc">
-                  <normaloff>:/resources/go-right.png</normaloff>:/resources/go-right.png</iconset>
+                  <normaloff>:/resources/images/go-right.png</normaloff>:/resources/images/go-right.png</iconset>
                 </property>
                </widget>
               </item>
@@ -228,6 +287,9 @@
               <property name="dragDropMode">
                <enum>QAbstractItemView::DragOnly</enum>
               </property>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
               <property name="selectionMode">
                <enum>QAbstractItemView::SingleSelection</enum>
               </property>
@@ -238,10 +300,13 @@
                <bool>true</bool>
               </property>
               <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-               <bool>false</bool>
+               <bool>true</bool>
               </attribute>
               <attribute name="horizontalHeaderStretchLastSection">
-               <bool>true</bool>
+               <bool>false</bool>
+              </attribute>
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
               </attribute>
              </widget>
             </item>
@@ -442,6 +507,10 @@
    </property>
   </action>
   <action name="m_quitAct">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/images/exit.png</normaloff>:/resources/images/exit.png</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -461,6 +530,10 @@
    </property>
   </action>
   <action name="m_newGameAct">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+   </property>
    <property name="text">
     <string>New Game</string>
    </property>
@@ -469,6 +542,10 @@
    </property>
   </action>
   <action name="m_newGmAct">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+   </property>
    <property name="text">
     <string>New Gm</string>
    </property>
@@ -528,6 +605,10 @@
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/resources/images/settings.png</normaloff>:/resources/images/settings.png</iconset>
+   </property>
    <property name="text">
     <string>Preferences</string>
    </property>

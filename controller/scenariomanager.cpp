@@ -20,6 +20,7 @@
  * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
  ***************************************************************************/
 #include "scenariomanager.h"
+#include "model/gamemastermodel.h"
 #include "playerinformationformdialog.h"
 #include "playersinformationdialog.h"
 #include "scenarioeditordialog.h"
@@ -30,17 +31,19 @@
 #include <QHeaderView>
 #include <QInputDialog>
 
-ScenarioManager::ScenarioManager(Ui::MainWindow* ui, QList<Game*>& sortedList, QMap<QString, Game*>& map,
-    QMap<QString, GameMaster*>& mastermap, GameImageProvider* gameImgProvider, QObject* parent)
+ScenarioManager::ScenarioManager(Ui::MainWindow* ui, QList<Game*>& sortedList, GameModel* gameModel,
+    QMap<QString, Game*>& map, GameMasterModel* masters, GameImageProvider* gameImgProvider, QObject* parent)
     : QObject(parent)
+    , m_gameModel(gameModel)
+    , m_gameMasterModel(masters)
     , m_ui(ui)
     , m_list(map)
-    , m_masterList(mastermap)
     , m_sortedList(sortedList)
     , m_registrerPlayerInfo(true)
 {
     // model
-    m_availableScenarioModel= new ScenarioModel(m_list, m_masterList, Scenario::AVAILABLE);
+    m_availableScenarioModel
+        = new ScenarioModel(m_list, gameModel, m_gameMasterModel->getMasterMap(), Scenario::AVAILABLE);
     m_availableScenarioModel->disableEdition();
 
     m_proxyModel= new SortedScenario(this);
@@ -53,22 +56,28 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui, QList<Game*>& sortedList, Q
 
     // view
     m_ui->m_availableScenario->setList(&m_list);
+    connect(m_ui->m_availableScenario, &ScenarioListView::updateSorting, m_proxyModel, &SortedScenario::invalidate);
 
     m_ui->m_availableScenario->setModel(m_proxyModel);
 
+    connect(m_ui->m_availableScenario, &QTableView::clicked, m_customerView, &CustomerView::setSelectionIndex);
+
     auto header= m_ui->m_availableScenario->horizontalHeader();
     // header->hideSection(0);
+    header->hideSection(0);
     header->hideSection(2);
     header->hideSection(3);
     header->hideSection(4);
     header->hideSection(5);
     header->hideSection(6);
+    header->hideSection(7);
     header->hideSection(8);
     header->hideSection(9);
     header->hideSection(10);
+    header->hideSection(10);
 
     header->moveSection(11, 1);
-    header->moveSection(0, 2);
+    header->moveSection(12, 2);
     header->setSectionResizeMode(1, QHeaderView::Stretch);
 
     // Actions
@@ -93,7 +102,7 @@ ScenarioManager::ScenarioManager(Ui::MainWindow* ui, QList<Game*>& sortedList, Q
 
     connect(m_showPlayersInfo, SIGNAL(triggered()), this, SLOT(showPlayerInfo()));
 
-    m_avScenarioDelegate= new ScenarioItemDelegate(m_list, m_masterList, Scenario::AVAILABLE);
+    m_avScenarioDelegate= new ScenarioItemDelegate(m_list, m_gameMasterModel->getMasterMap(), Scenario::AVAILABLE);
     // m_ui->m_availableScenario->setItemDelegate(m_avScenarioDelegate);
 }
 ScenarioManager::~ScenarioManager()
@@ -141,7 +150,6 @@ bool ScenarioManager::mouseMoveOnScenarioListOnPlanning(QMouseEvent* event)
 {
     QModelIndex tmp= m_ui->m_availableScenario->indexAt(event->pos());
 
-    qDebug() << "mouseMoveOnScenarioListOnPlanning" << tmp;
     if((event->buttons() == Qt::LeftButton) && (tmp.isValid()))
     {
         QVariant var= tmp.data(Qt::UserRole);
@@ -158,7 +166,7 @@ bool ScenarioManager::mouseMoveOnScenarioListOnPlanning(QMouseEvent* event)
         auto game= m_list.value(trueScenario->getGameId());
         if(nullptr != game)
         {
-            drag->setPixmap(game->getPixmap());
+            // drag->setPixmap(game->getPixmap());
         }
 
         Qt::DropAction dropAction= drag->exec();
@@ -199,7 +207,13 @@ void ScenarioManager::removeScenarioFromList(QList<Scenario*>* l)
     }
 }
 
-// slots to perform action
+void ScenarioManager::invertSelection()
+{
+    for(auto gm : m_gameMasterModel->getMasterList())
+    {
+        m_gameMasterModel->setPresence(gm, !gm->isPresent());
+    }
+} // slots to perform action
 /*void ScenarioManager::showContextMenu(QContextMenuEvent* event, Scenario::STATE m)
 {
     QModelIndex index= getFocusedListView()->indexAt(event->pos());
@@ -449,7 +463,8 @@ void ScenarioManager::writeDataToJson(QJsonObject& obj)
 }
 GameMaster* ScenarioManager::getGameMasterFromId(QString id)
 {
-    return m_masterList[id];
+    auto list= m_gameMasterModel->getMasterMap();
+    return list[id];
 }
 void ScenarioManager::toggleFullScreen()
 {
@@ -466,10 +481,40 @@ void ScenarioManager::toggleFullScreen()
 void ScenarioManager::resetData()
 {
     m_availableScenarioModel->resetData();
-    m_list.clear();
-    m_masterList.clear();
+    m_gameModel->resetData();
+    m_gameMasterModel->resetData();
 }
+void ScenarioManager::checkAllGM()
+{
+    int gmPresentCount= 0;
+    int gmAwayCount= 0;
+    auto list= m_gameMasterModel->getMasterList();
+    for(auto& gm : list)
+    {
+        if(gm->isPresent())
+            ++gmPresentCount;
+        else
+            ++gmAwayCount;
+    }
 
+    auto check= true;
+    if(list.size() == gmAwayCount)
+        check= true;
+    else if(list.size() == gmPresentCount)
+        check= false;
+
+    for(auto& gm : list)
+    {
+        m_gameMasterModel->setPresence(gm, check);
+        if(check)
+            addScenarios(gm->getGMScenarios());
+        else
+        {
+            removeScenarioFromList(gm->getGMScenarios());
+        }
+    }
+    m_ui->m_masterView->update();
+}
 /********************
  *
  * sorted scenario
@@ -480,7 +525,7 @@ SortedScenario::SortedScenario(QObject* parent) : QSortFilterProxyModel(parent)
 {
     setDynamicSortFilter(true);
 }
-bool SortedScenario::lessThan(const QModelIndex& left, const QModelIndex& right) const
+/*bool SortedScenario::lessThan(const QModelIndex& left, const QModelIndex& right) const
 {
     auto leftCount= sourceModel()->data(left, ScenarioModel::GameCount).toInt();
     auto rightCount= sourceModel()->data(right, ScenarioModel::GameCount).toInt();
@@ -491,11 +536,11 @@ bool SortedScenario::lessThan(const QModelIndex& left, const QModelIndex& right)
     }
     else
     {
-        auto leftGameName= sourceModel()->data(left, ScenarioModel::GameTitleRole).toString();
-        auto rightGameName= sourceModel()->data(right, ScenarioModel::GameTitleRole).toString();
+        auto leftGameName= sourceModel()->data(left, ScenarioModel::GameMasterNameRole).toString();
+        auto rightGameName= sourceModel()->data(right, ScenarioModel::GameMasterNameRole).toString();
         return leftGameName < rightGameName;
     }
-}
+}*/
 
 bool SortedScenario::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {

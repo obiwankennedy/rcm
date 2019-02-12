@@ -16,10 +16,10 @@ void ScenarioListView::mouseMoveEvent(QMouseEvent* event)
     if((event->buttons() == Qt::LeftButton) && (tmp.isValid()))
     {
         QVariant var= tmp.data(Qt::UserRole);
-        Scenario sce= var.value<Scenario>();
+        Scenario* sce= var.value<Scenario*>();
 
         Scenario* trueScenario= new Scenario();
-        trueScenario->setReferenceScenario(&sce);
+        trueScenario->setReferenceScenario(sce);
 
         QDrag* drag= new QDrag(this);
         RcmMimeData* mimeData= new RcmMimeData();
@@ -29,10 +29,13 @@ void ScenarioListView::mouseMoveEvent(QMouseEvent* event)
         auto game= m_list->value(trueScenario->getGameId());
         if(nullptr != game)
         {
-            drag->setPixmap(game->getPixmap());
+            // drag->setPixmap(game->getPixmap());
         }
 
         Qt::DropAction dropAction= drag->exec();
+
+        // model()->sort(0);
+        emit updateSorting();
     }
 }
 

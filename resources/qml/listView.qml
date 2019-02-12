@@ -4,6 +4,8 @@ import QtQuick.Window 2.1
 
 ApplicationWindow {
     id: root
+    height: 400
+    width: 800
     property real factor: 0.04
     property string msg: ""
     property bool autoAnimation: false
@@ -56,9 +58,9 @@ ApplicationWindow {
                 }
                 Image {
                     id: image
-                    source: PixmapRole ? "image://game/"+PixmapRole : "image://game/default"
+                    source: "image://game/"+PixmapRole
                     cache: false
-                    visible:PixmapRole.length>0
+                    //visible:PixmapRole.length>0
                     fillMode: Image.PreserveAspectFit
                     x: 5
                     y: gametitleLabel.contentHeight
@@ -170,6 +172,7 @@ ApplicationWindow {
     }
     PathView {
          id: view
+         objectName: "view"
          anchors.fill: parent
 
          //model: 32

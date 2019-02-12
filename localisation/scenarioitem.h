@@ -3,9 +3,10 @@
 
 #include <QGraphicsObject>
 #include <QGraphicsSceneMouseEvent>
+#include <memory>
 
-#include "scenario.h"
 #include "idtranslator.h"
+#include "scenario.h"
 #include "serializable.h"
 /**
  * @brief The ScenarioItem class
@@ -14,11 +15,16 @@ class ScenarioItem : public QGraphicsObject, public Serialisable
 {
     Q_OBJECT
 public:
-    enum State {Scheduled, Running, Done};
+    enum State
+    {
+        Scheduled,
+        Running,
+        Done
+    };
     explicit ScenarioItem();
 
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*);
 
     qreal* minutesInPixel() const;
     void setMinutesInPixel(qreal* minutesInPixel);
@@ -26,10 +32,10 @@ public:
     Scenario* data() const;
     void setData(Scenario* data);
 
-    qreal *tableInPixel() const;
-    void setTableInPixel(qreal *tableInPixel);
+    qreal* tableInPixel() const;
+    void setTableInPixel(qreal* tableInPixel);
 
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
     virtual void readFromData(QDataStream&);
     virtual void writeToData(QDataStream&) const;
@@ -47,12 +53,15 @@ public slots:
 
 signals:
     void positionChanged(Scenario*);
+
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *);
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
 
     QString stateToString();
+    void updateTooltip();
+
 private:
-    Scenario* m_data;
+    std::unique_ptr<Scenario> m_data;
     qreal* m_minutesInPixel;
     qreal* m_tableInPixel;
     IdTranslator* m_idTranslator;

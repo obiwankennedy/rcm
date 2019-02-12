@@ -2,6 +2,7 @@
 #include <QPainter>
 
 #include "definesize.h"
+#include "localisationview.h"
 #include <QGraphicsPixmapItem>
 #include <QJsonObject>
 #include <QStyleOptionGraphicsItem>
@@ -60,18 +61,18 @@ void ScenarioItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* opti
 
         if((game != nullptr) && (nullptr != master))
         {
+            auto h= painter->fontMetrics().height();
             painter->drawText(rect.center().x(), rect.topLeft().y(), m_data->getTitle());
             painter->drawText(0, rect.center().y(), game->getTitle());
-            painter->drawText(rect, Qt::AlignTop | Qt::AlignLeft,
-                tr("GM: %1 - tel: %2").arg(master->getNickName()).arg(master->getPhoneNumber()));
-            painter->drawText(rect, Qt::AlignBottom | Qt::AlignRight, QString("%1 min").arg(m_data->getDuration()));
+            painter->drawText(0, h * 2, tr("GM: %1").arg(master->getNickName()));
+            painter->drawText(
+                rect.translated(0, -h), Qt::AlignBottom | Qt::AlignRight, QString("%1 min").arg(m_data->getDuration()));
             painter->drawText(
                 0, rect.bottom(), QString("%1/%2").arg(m_data->getCurrentPlayers()).arg(m_data->getMaximumPlayers()));
             painter->drawText(rect, Qt::AlignTop | Qt::AlignHCenter, tr("State: %1").arg(stateToString()));
         }
     }
 }
-#include "localisationview.h"
 QVariant ScenarioItem::itemChange(GraphicsItemChange change, const QVariant& value)
 {
     if(change == ItemPositionChange)
@@ -109,9 +110,10 @@ void ScenarioItem::readDataFromJson(QJsonObject& obj)
     m_state= static_cast<ScenarioItem::State>(obj["state"].toInt());
     QJsonObject sce= obj["scenario"].toObject();
 
-    m_data= new Scenario();
+    m_data.reset(new Scenario());
     m_data->readDataFromJson(sce);
     setPos(x, y);
+    updateTooltip();
 }
 
 void ScenarioItem::writeDataToJson(QJsonObject& obj)
@@ -180,13 +182,13 @@ void ScenarioItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
                     m_lockUp= !m_lockUp;
                     if(m_lockUp)
                     {
-                        m_locker->setPixmap(QPixmap(":/resources/cadenas_closed.png"));
+                        m_locker->setPixmap(QPixmap(":/resources/images/cadenas_closed.png"));
                         setFlags(QGraphicsItem::ItemIsSelectable);
                         update();
                     }
                     else
                     {
-                        m_locker->setPixmap(QPixmap(":/resources/cadenas_open.png"));
+                        m_locker->setPixmap(QPixmap(":/resources/images/cadenas_open.png"));
                         setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable
                                  | QGraphicsItem::ItemSendsGeometryChanges);
                         update();
@@ -211,12 +213,27 @@ void ScenarioItem::setMinutesInPixel(qreal* minutesInPixel)
 
 Scenario* ScenarioItem::data() const
 {
-    return m_data;
+    return m_data.get();
 }
 
 void ScenarioItem::setData(Scenario* data)
 {
-    m_data= data;
+    m_data.reset(data);
+    updateTooltip();
+}
+void ScenarioItem::updateTooltip()
+{
+    if(m_data)
+    {
+        GameMaster* master= m_idTranslator->getGameMasterById(m_data->getGameMasterId());
+        setToolTip(tr("GM: %1\nTel: %2\nDuration: %3\nTitle: %4\nDescription: %5\nPlayer Informations:\n%6")
+                       .arg(master->getName())
+                       .arg(master->getPhoneNumber())
+                       .arg(m_data->getDuration())
+                       .arg(m_data->getTitle())
+                       .arg(m_data->getDescription())
+                       .arg(m_data->getPlayerInformation().join('\n')));
+    }
 }
 
 qreal* ScenarioItem::tableInPixel() const

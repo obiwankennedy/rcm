@@ -29,14 +29,12 @@
 #include <QScrollArea>
 #include <QSortFilterProxyModel>
 
+#include "customerview.h"
+#include "gameimageprovider.h"
+#include "gamemaster.h"
 #include "scenario.h"
 #include "scenarioitemdelegate.h"
 #include "scenariomodel.h"
-#ifdef __QT_QUICK_2_
-#include "customerview.h"
-#include "gameimageprovider.h"
-#endif
-#include "gamemaster.h"
 
 #include "serializable.h"
 
@@ -44,7 +42,7 @@ namespace Ui
 {
     class MainWindow;
 }
-
+class GameMasterModel;
 class SortedScenario : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -56,7 +54,7 @@ public slots:
     void setFilter(const QString& filter);
 
 protected:
-    bool lessThan(const QModelIndex& left, const QModelIndex& right) const override;
+    // bool lessThan(const QModelIndex& left, const QModelIndex& right) const override;
     bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
 
 private:
@@ -67,8 +65,9 @@ class ScenarioManager : public QObject, public Serialisable
 {
     Q_OBJECT
 public:
-    explicit ScenarioManager(Ui::MainWindow* ui, QList<Game*>& sortedList, QMap<QString, Game*>& map,
-        QMap<QString, GameMaster*>& mastermap, GameImageProvider* gameImgProvider, QObject* parent= nullptr);
+    explicit ScenarioManager(Ui::MainWindow* ui, QList<Game*>& sortedList, GameModel* gameModel,
+        QMap<QString, Game*>& map, GameMasterModel* masters, GameImageProvider* gameImgProvider,
+        QObject* parent= nullptr);
     virtual ~ScenarioManager();
 
     void addScenarios(QList<Scenario*>* l);
@@ -105,25 +104,31 @@ public slots:
     void setRegistrerPlayer(bool);
     void closeView();
 
+    void checkAllGM();
+
+    void invertSelection();
+
 private:
-    ScenarioModel* m_availableScenarioModel;
-    SortedScenario* m_proxyModel;
+    ScenarioModel* m_availableScenarioModel= nullptr;
+    SortedScenario* m_proxyModel= nullptr;
+    GameModel* m_gameModel= nullptr;
+    GameMasterModel* m_gameMasterModel= nullptr;
 
-    ScenarioItemDelegate* m_avScenarioDelegate;
+    ScenarioItemDelegate* m_avScenarioDelegate= nullptr;
 
-    Ui::MainWindow* m_ui;
+    Ui::MainWindow* m_ui= nullptr;
     QMap<QString, Game*>& m_list;
-    QMap<QString, GameMaster*>& m_masterList;
+    // QMap<QString, GameMaster*>& m_masterList;
     QList<Game*>& m_sortedList;
     CustomerView* m_customerView;
 
     // Actions
-    QAction* m_increasePlayersCount;
-    QAction* m_decreasePlayersCount;
-    QAction* m_startScenario;
-    QAction* m_editScenario;
-    QAction* m_scenarioIsFinished;
-    QAction* m_showPlayersInfo;
+    QAction* m_increasePlayersCount= nullptr;
+    QAction* m_decreasePlayersCount= nullptr;
+    QAction* m_startScenario= nullptr;
+    QAction* m_editScenario= nullptr;
+    QAction* m_scenarioIsFinished= nullptr;
+    QAction* m_showPlayersInfo= nullptr;
 
     bool m_registrerPlayerInfo;
 };

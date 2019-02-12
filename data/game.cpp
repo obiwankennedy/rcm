@@ -20,10 +20,13 @@
  * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 *
  ***************************************************************************/
 #include "game.h"
+#include <QDir>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QUrl>
 #include <QUuid>
+
+#include "preferences/preferencesmanager.h"
 
 Game::Game() : m_uuid(QUuid::createUuid().toString())
 {
@@ -107,6 +110,8 @@ void Game::readDataFromJson(QJsonObject& obj)
     m_description= obj["description"].toString();
     m_type= obj["type"].toString();
     setImageUrl(obj["imageUrl"].toString());
+
+    fetchImage();
 }
 
 void Game::writeDataToJson(QJsonObject& obj)
@@ -155,11 +160,6 @@ QString Game::getUuid() const
 {
     return m_uuid;
 }
-void Game::setPixmap(QPixmap pix)
-{
-    m_image= pix;
-    emit pixmapChanged(getIdImage(), m_image);
-}
 
 void Game::setType(QString type)
 {
@@ -169,21 +169,28 @@ void Game::setType(QString type)
 void Game::setImageUrl(QString url)
 {
     m_imageUrl= url;
-    m_manager->get(QNetworkRequest(QUrl(m_imageUrl)));
+    fetchImage();
 }
 void Game::replyFinished(QNetworkReply* reply)
 {
-    if(m_image.isNull())
-    {
-        QByteArray data= reply->readAll();
+    QByteArray data= reply->readAll();
 
-        m_image.loadFromData(data);
-        emit pixmapChanged(getIdImage(), m_image);
-    }
+    auto pref= PreferencesManager::getInstance();
+    auto root= pref->value("imagesDirectory", QDir::homePath()).toString();
+
+    auto path= QStringLiteral("%1/%2").arg(root, m_title);
+    QPixmap pix;
+    pix.loadFromData(data);
+    if(!pix.isNull())
+        pix.save(path, "png");
 }
 const QPixmap Game::getPixmap() const
 {
-    return m_image;
+    auto pref= PreferencesManager::getInstance();
+    auto root= pref->value("imagesDirectory", QDir::homePath()).toString();
+    auto path= QStringLiteral("%1/%2").arg(root, m_title);
+    QPixmap pix(path, "png");
+    return pix;
 }
 QString Game::getType() const
 {
@@ -210,4 +217,15 @@ bool Game::hasPicture() const
 bool Game::hasValidImage() const
 {
     return !m_image.isNull();
+}
+void Game::fetchImage()
+{
+    auto pref= PreferencesManager::getInstance();
+    auto root= pref->value("imagesDirectory", QDir::homePath()).toString();
+
+    auto path= QStringLiteral("%1/%2").arg(root, m_title);
+    if(QFile::exists(path))
+        return;
+
+    m_manager->get(QNetworkRequest(QUrl(m_imageUrl)));
 }

@@ -25,10 +25,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-GameModel::GameModel(GameImageProvider* gameImageProvider, QObject* parent)
-    : QAbstractListModel(parent), m_gameImgProvider(gameImageProvider)
-{
-}
+GameModel::GameModel(QObject* parent) : QAbstractListModel(parent) {}
 int GameModel::rowCount(const QModelIndex&) const
 {
     return m_gameList.count();
@@ -39,7 +36,7 @@ QVariant GameModel::data(const QModelIndex& index, int role) const
     if(!index.isValid())
         return QVariant();
 
-    if((Qt::DisplayRole == role) || (Qt::EditRole == role))
+    if((Qt::DisplayRole == role) || (Qt::EditRole == role) || (GameModel::Name == role))
     {
         return m_gameList[index.row()]->getTitle();
     } // enum CustomRole {PunchLine = Qt::UserRole+1,Description,IMAGE_URL,TYPE};
@@ -191,14 +188,10 @@ void GameModel::resetData()
     beginResetModel();
     m_gameList.clear();
     m_gameMap.clear();
-#ifdef __QT_QUICK_2_
-    m_gameImgProvider->resetData();
-#endif
     endResetModel();
 }
 void GameModel::writeSettings(QSettings& settings)
 {
-    qDebug() << "write Settings games";
     settings.beginGroup("games");
     settings.beginWriteArray("games");
 
@@ -212,18 +205,13 @@ void GameModel::writeSettings(QSettings& settings)
         settings.setValue("uuid", game->getUuid());
         settings.setValue("type", game->getType());
         settings.setValue("imageUrl", game->getImageUrl());
-        QPixmap map= game->getPixmap();
-        QVariant var= map;
-        settings.setValue("image", var);
     }
     settings.endArray();
     settings.endGroup();
-    qDebug() << "end write Settings games";
 }
 
 void GameModel::readSettings(QSettings& settings)
 {
-    qDebug() << "read setting games";
     settings.beginGroup("games");
     int size= settings.beginReadArray("games");
 
@@ -236,9 +224,6 @@ void GameModel::readSettings(QSettings& settings)
         game->setDescription(settings.value("description").toString());
         game->setUuid(settings.value("uuid").toString());
         game->setType(settings.value("type").toString());
-
-        auto pix= settings.value("image").value<QPixmap>();
-        game->setPixmap(pix);
         game->setImageUrl(settings.value("imageUrl").toString());
 
         m_gameList.append(game);
@@ -249,5 +234,8 @@ void GameModel::readSettings(QSettings& settings)
     }
     settings.endArray();
     settings.endGroup();
-    qDebug() << "end read setting games";
+}
+int GameModel::indexOf(Game* tmp)
+{
+    return m_gameList.indexOf(tmp);
 }

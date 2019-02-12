@@ -52,7 +52,7 @@ public:
         DATA,
         SCENARIO
     };
-    explicit MainWindow(QWidget* parent= 0);
+    explicit MainWindow(QWidget* parent= nullptr);
     ~MainWindow();
 
     void readSettings();
@@ -65,20 +65,16 @@ public:
 public slots:
     void addGameDialog();
     void addGameMasterDialog();
-    void addGmScenarioListToGlobalList(GameMaster* l);
-    void statusGmHasChanged(GameMaster* l, bool);
     void ensureTabVisible(TAB);
     void makeGameMasterUnavailable();
     void saveBackUp();
     void readCSV();
-    void checkAllGM();
     void readPythonJsonFile();
 
     void on_actionPreferences_triggered();
 
 protected:
     void closeEvent(QCloseEvent* event);
-    bool eventFilter(QObject* obj, QEvent* event);
 
     void readJSonFile();
 private slots:
@@ -121,7 +117,7 @@ private:
     QAction* m_removeGMAct;
     QAction* m_addGMAct;
     QAction* m_checkAllGMAct;
-    QAction* m_makeGMGoneAct;
+    QAction* m_invertSelectionAct;
     QMenu* m_recentFile;
     QList<QAction*>* m_recentFileActions;
     LocalisationView* m_locview;

@@ -29,6 +29,7 @@
 
 #include "game.h"
 #include "gamemaster.h"
+#include "gamemodel.h"
 #include "scenario.h"
 #include "serializable.h"
 
@@ -61,8 +62,8 @@ public:
         GameCount
     };
 
-    explicit ScenarioModel(
-        QMap<QString, Game*>& l, QMap<QString, GameMaster*>& lstGm, Scenario::STATE m, QObject* parent= nullptr);
+    explicit ScenarioModel(QMap<QString, Game*>& l, GameModel* gameModel, QMap<QString, GameMaster*>& lstGm,
+        Scenario::STATE m, QObject* parent= nullptr);
     int rowCount(const QModelIndex& parent= QModelIndex()) const;
     int columnCount(const QModelIndex& index= QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role= Qt::DisplayRole) const;
@@ -113,12 +114,12 @@ public slots:
 private:
     Scenario::STATE m_state;
     QList<Scenario*>* m_scenarioList;
-    QList<Game*>* m_gameList; /// @brief no longer needed i think
     QMap<QString, Game*>& m_list;
     QMap<QString, GameMaster*>& m_gameMasterMap;
     QString m_uuid; // isolate
     bool m_isFiltered;
     QStringList m_columns;
+    GameModel* m_gameModel= nullptr;
     /// @todo there may be a way to place this in manager/controler
     QTimer* m_timer;
     bool m_edition;

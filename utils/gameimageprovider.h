@@ -1,24 +1,24 @@
 #ifndef GAMEIMAGEPROVIDER_H
 #define GAMEIMAGEPROVIDER_H
 
-#include <QQuickImageProvider>
 #include <QMap>
+#include <QNetworkAccessManager>
 #include <QPixmap>
+#include <QQuickImageProvider>
 
-class GameImageProvider : public QObject, public QQuickImageProvider
+#include "gamemodel.h"
+
+class GameImageProvider : public QQuickImageProvider
 {
-    Q_OBJECT
 public:
-    GameImageProvider();
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
-
-    void resetData();
-public slots:
-    void insertPixmap(QString,QPixmap*);
+    GameImageProvider(GameModel* m_gameModel);
+    QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requestedSize);
 
 private:
-    QMap<QString,QPixmap*>* m_map;
-
+    GameModel* m_gameModel;
+    QString m_rootPath;
+    QPixmap m_default;
+    std::map<QString, QPixmap> m_cache;
 };
 
 #endif // GAMEIMAGEPROVIDER_H

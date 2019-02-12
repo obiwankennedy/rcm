@@ -27,8 +27,8 @@
 #include <QAction>
 #include <QColorDialog>
 
-GameMasterDialog::GameMasterDialog(
-    QMap<QString, Game*>& l, QList<Game*>& sortedList, QMap<QString, GameMaster*>& lst, QWidget* parent)
+GameMasterDialog::GameMasterDialog(QMap<QString, Game*>& l, QList<Game*>& sortedList, GameModel* model,
+    QMap<QString, GameMaster*>& lst, QWidget* parent)
     : QDialog(parent), ui(new Ui::GameMasterDialog)
 {
     m_selectionModel= new QItemSelectionModel();
@@ -37,7 +37,7 @@ GameMasterDialog::GameMasterDialog(
     m_addGameAct= new QAction(tr("Add Game"), this);
 
     ui->setupUi(this);
-    m_model= new ScenarioModel(l, lst, Scenario::AVAILABLE);
+    m_model= new ScenarioModel(l, model, lst, Scenario::AVAILABLE);
     m_selectionModel->setModel(m_model);
     ui->m_scenarioTable->setModel(m_model);
     ui->m_scenarioTable->setSelectionModel(m_selectionModel);

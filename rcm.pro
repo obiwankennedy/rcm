@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml network
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets qml quick
+QT       += core gui xml network widgets qml quick
 
 TARGET = rcm
 OBJECTS_DIR = build/obj
@@ -16,20 +14,27 @@ RCC_DIR = build/qrc
 TEMPLATE = app
 include(preferences/preferences.pri)
 
+INCLUDEPATH+=utils\
+            model\
+            data\
+            widget\
+            widget/delegate\
+            controller
+
 SOURCES += main.cpp\
         mainwindow.cpp \
-    gamemaster.cpp \
-    game.cpp \
-    gamemodel.cpp \
-    gamemasterdialog.cpp \
-    gamedialog.cpp \
-    gamemastermodel.cpp \
-    scenario.cpp \
-    scenariomodel.cpp \
-    gameeditordelegate.cpp \
-    scenariomanager.cpp \
-    scenarioitemdelegate.cpp \
-    scenarioeditordialog.cpp \
+    data/gamemaster.cpp \
+    data/game.cpp \
+    model/gamemodel.cpp \
+    widget/gamemasterdialog.cpp \
+    widget/gamedialog.cpp \
+    model/gamemastermodel.cpp \
+    data/scenario.cpp \
+    model/scenariomodel.cpp \
+    widget/delegate/gameeditordelegate.cpp \
+    controller/scenariomanager.cpp \
+    widget/delegate/scenarioitemdelegate.cpp \
+    widget/scenarioeditordialog.cpp \
     localisation/localisationview.cpp \
     localisation/tableswizard.cpp \
     localisation/table.cpp \
@@ -37,31 +42,31 @@ SOURCES += main.cpp\
     localisation/tablemodel.cpp \
     localisation/tableitem.cpp \
     localisation/roomitem.cpp \
-    leveldelegateitem.cpp \
-    playersinformationdialog.cpp \
-    playerinformationformdialog.cpp \
+    widget/delegate/leveldelegateitem.cpp \
+    widget/playersinformationdialog.cpp \
+    widget/playerinformationformdialog.cpp \
     export/abstractexport.cpp \
     export/exportcsv.cpp \
     localisation/rcmmimedata.cpp \
     localisation/scenariolistview.cpp \
     localisation/scenarioitem.cpp \
-    idtranslator.cpp
+    utils/idtranslator.cpp
 
 
 HEADERS  += mainwindow.h \
-    gamemaster.h \
-    game.h \
-    serializable.h \
-    gamemodel.h \
-    gamemasterdialog.h \
-    gamedialog.h \
-    gamemastermodel.h \
-    scenario.h \
-    scenariomodel.h \
-    gameeditordelegate.h \
-    scenariomanager.h \
-    scenarioitemdelegate.h \
-    scenarioeditordialog.h \
+    data/gamemaster.h \
+    data/game.h \
+    utils/serializable.h \
+    model/gamemodel.h \
+    widget/gamemasterdialog.h \
+    widget/gamedialog.h \
+    model/gamemastermodel.h \
+    data/scenario.h \
+    model/scenariomodel.h \
+    widget/delegate/gameeditordelegate.h \
+    controller/scenariomanager.h \
+    widget/delegate/scenarioitemdelegate.h \
+    widget/scenarioeditordialog.h \
     localisation/localisationview.h \
     localisation/tableswizard.h \
     localisation/table.h \
@@ -69,35 +74,35 @@ HEADERS  += mainwindow.h \
     localisation/tablemodel.h \
     localisation/tableitem.h \
     localisation/roomitem.h \
-    leveldelegateitem.h \
-    playersinformationdialog.h \
-    playerinformationformdialog.h \
+    widget/delegate/leveldelegateitem.h \
+    widget/playersinformationdialog.h \
+    widget/playerinformationformdialog.h \
     export/abstractexport.h \
     export/exportcsv.h \
     localisation/rcmmimedata.h \
     localisation/scenariolistview.h \
     localisation/scenarioitem.h \
-    idtranslator.h \
-    definesize.h
+    utils/idtranslator.h \
+    utils/definesize.h
 
 FORMS    += mainwindow.ui \
-    gamemasterdialog.ui \
-    gamedialog.ui \
-    customerview.ui \
-    scenarioeditordialog.ui \
+    widget/gamemasterdialog.ui \
+    widget/gamedialog.ui \
+    widget/customerview.ui \
+    widget/scenarioeditordialog.ui \
     localisation/tableswizard.ui \
-    playersinformationdialog.ui \
-    playerinformationformdialog.ui \
+    widget/playersinformationdialog.ui \
+    widget/playerinformationformdialog.ui \
     localisation/eventproperties.ui
 
 OTHER_FILES += \
-    listView.qml
+    resources/qml/listView.qml
 
 RESOURCES += \
     resources.qrc
 
 ## Translation
-TRANSLATIONS =  rcm_fr.ts
+TRANSLATIONS =  translation/rcm_fr.ts
 
 CONFIG += c++11
 
@@ -127,13 +132,10 @@ PRE_TARGETDEPS += compiler_updateqm_make_all
 ## End of Translation
 
 
-greaterThan(QT_MAJOR_VERSION, 4) {
-message("qt5")
-    SOURCES+=customerview.cpp \
-    gameimageprovider.cpp
 
-    HEADERS+=customerview.h \
-    gameimageprovider.h
+SOURCES+=widget/customerview.cpp \
+    utils/gameimageprovider.cpp
 
-DEFINES+=__QT_QUICK_2_
-}
+HEADERS+=widget/customerview.h \
+    utils/gameimageprovider.h
+

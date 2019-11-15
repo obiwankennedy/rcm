@@ -185,3 +185,8 @@ void GameMasterDialog::setScenarioList(QList<Scenario*>* lst)
     m_model->addDataList(lst);
     updateGameListHeader();
 }
+
+void GameMasterDialog::on_m_nickNameEdit_textEdited(const QString &arg1)
+{
+
+}

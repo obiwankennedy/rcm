@@ -122,6 +122,11 @@ void GameMasterModel::setPresence(GameMaster* tmp, bool present)
 
 void GameMasterModel::append(GameMaster* tmp)
 {
+    if(!tmp)
+        return;
+    if(tmp->getId().isEmpty())
+        return;
+
     beginInsertRows(QModelIndex(), m_gameMasterList.size(), m_gameMasterList.size());
 
     m_gameMasterList.append(tmp);
@@ -174,6 +179,8 @@ void GameMasterModel::writeDataToJson(QJsonObject& obj)
     {
         auto master= m_gameMasterMap.value(key);
         QJsonObject masterObj;
+        if(!master)
+            continue;
         master->writeDataToJson(masterObj);
         fieldArray.append(masterObj);
     }

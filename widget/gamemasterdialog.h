@@ -70,6 +70,9 @@ public slots:
     void removeScenario();
     void updateGameListHeader();
 
+private slots:
+    void on_m_nickNameEdit_textEdited(const QString &arg1);
+
 private:
     Ui::GameMasterDialog* ui;
     ScenarioModel* m_model;

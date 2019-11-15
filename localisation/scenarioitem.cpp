@@ -24,7 +24,7 @@ QRectF ScenarioItem::boundingRect() const
 {
     return QRectF(0, 0,
         (*m_minutesInPixel) * m_data->getDuration() - (WIDTH_HOUR_LINE * (m_data->getDuration() / 60 + 1)),
-        *m_tableInPixel);
+        TABLE_HEIGHT/2);
 }
 
 void ScenarioItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*)

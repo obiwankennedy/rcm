@@ -394,7 +394,7 @@ void MainWindow::readSettings()
     settings.endArray();
 
     m_preferences->readSettings(settings);
-    m_gameModel->readSettings(settings);
+    //m_gameModel->readSettings(settings);
 }
 
 void MainWindow::writeSettings()
@@ -457,6 +457,10 @@ void MainWindow::addGameMasterDialog()
         GameMaster* tmp= new GameMaster();
 
         tmp->setName(dialog.getName());
+        auto name = dialog.getNickName();
+        if(name.isEmpty())
+            name="inconnu";
+
         tmp->setNickName(dialog.getNickName());
         tmp->setFirstName(dialog.getFirstName());
         tmp->setPhoneNumber(dialog.getPhoneNumber());

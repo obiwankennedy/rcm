@@ -176,7 +176,7 @@ void Schedules::writeToData(QDataStream& in) const
 }
 void Schedules::appendTableItem(TableItem* item, QPointF pos)
 {
-    // connect(item, SIGNAL(minuteWidthChanged(qreal)), this, SLOT(setMinuteWidth(qreal)));
+     connect(item, SIGNAL(minuteWidthChanged(qreal)), this, SLOT(setMinuteWidth(qreal)));
     // connect(item, SIGNAL(heightChanged(qreal)), this, SLOT(setTableHeight(qreal)));
 
     // connect(this,&Schedules::vis);

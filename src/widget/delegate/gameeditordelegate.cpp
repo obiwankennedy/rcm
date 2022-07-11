@@ -136,7 +136,7 @@ QSize GameEditorDelegate::sizeHint ( const QStyleOptionViewItem & option, const 
     {
         value = tmp->getTitle();
     }
-    a.setWidth(option.fontMetrics.width(value));
+    a.setWidth(option.fontMetrics.boundingRect(value).width());
 
     return a;
 }

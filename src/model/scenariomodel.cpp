@@ -54,7 +54,7 @@ ScenarioModel::ScenarioModel(QMap<QString, Game*>& l, GameModel* gameModel, QMap
     // clang-format on
 
     qRegisterMetaType<Scenario>("Scenario");
-    qRegisterMetaTypeStreamOperators<Scenario>("Scenario");
+    //qRegisterMetaTypeStreamOperators<Scenario>("Scenario");
 
     qRegisterMetaType<Scenario*>("Scenario*");
     // qRegisterMetaTypeStreamOperators<Scenario*>("Scenario*");

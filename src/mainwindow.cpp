@@ -112,20 +112,20 @@ MainWindow::~MainWindow()
 void MainWindow::initActions()
 {
     m_addGameAct= new QAction(tr("Add"), this);
-    m_addGameAct->setIcon(QIcon(":/resources/images/add_round.png"));
+    m_addGameAct->setIcon(QIcon(":/images/add_round.png"));
     m_removeGameAct= new QAction(tr("Del"), this);
-    m_removeGameAct->setIcon(QIcon(":/resources/images/delete.png"));
+    m_removeGameAct->setIcon(QIcon(":/images/delete.png"));
 
     m_removeGMAct= new QAction(tr("Del"), this);
-    m_removeGMAct->setIcon(QIcon(":/resources/images/delete.png"));
+    m_removeGMAct->setIcon(QIcon(":/images/delete.png"));
 
     m_addGMAct= new QAction(tr("Add"), this);
-    m_addGMAct->setIcon(QIcon(":/resources/images/add_round.png"));
+    m_addGMAct->setIcon(QIcon(":/images/add_round.png"));
 
     m_checkAllGMAct= new QAction(tr("Check All GM"), this);
-    m_checkAllGMAct->setIcon(QIcon(":/resources/images/selectAll.png"));
+    m_checkAllGMAct->setIcon(QIcon(":/images/selectAll.png"));
     m_invertSelectionAct= new QAction(tr("invert selection"), this);
-    m_invertSelectionAct->setIcon(QIcon(":/resources/images/invert.svg"));
+    m_invertSelectionAct->setIcon(QIcon(":/images/invert.svg"));
 
     connect(m_invertSelectionAct, &QAction::triggered, m_scenarioManager, &ScenarioManager::invertSelection);
     // connect(m_invertSelectionAct, SIGNAL(triggered()), this, SLOT(makeGameMasterUnavailable()));

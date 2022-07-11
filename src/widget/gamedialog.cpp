@@ -88,7 +88,7 @@ QString GameDialog::getGameType()
     return ui->m_typeEdit->text();
 }
 
-const QPixmap* GameDialog::getPixmap()
+const QPixmap GameDialog::getPixmap()
 {
     return ui->m_picture->pixmap();
 }

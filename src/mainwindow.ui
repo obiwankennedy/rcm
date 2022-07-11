@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/resources/images/symbol.png</normaloff>:/resources/images/symbol.png</iconset>
+    <normaloff>:/images/symbol.png</normaloff>:/images/symbol.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -62,7 +62,7 @@
                </property>
                <property name="icon">
                 <iconset resource="resources.qrc">
-                 <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+                 <normaloff>:/images/add_round.png</normaloff>:/images/add_round.png</iconset>
                </property>
               </widget>
              </item>
@@ -86,7 +86,7 @@
                </property>
                <property name="icon">
                 <iconset resource="resources.qrc">
-                 <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
+                 <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
                </property>
               </widget>
              </item>
@@ -115,7 +115,7 @@
                  </property>
                  <property name="icon">
                   <iconset resource="resources.qrc">
-                   <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+                   <normaloff>:/images/add_round.png</normaloff>:/images/add_round.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -126,7 +126,7 @@
                  </property>
                  <property name="icon">
                   <iconset resource="resources.qrc">
-                   <normaloff>:/resources/images/delete.png</normaloff>:/resources/images/delete.png</iconset>
+                   <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -150,7 +150,7 @@
                  </property>
                  <property name="icon">
                   <iconset resource="resources.qrc">
-                   <normaloff>:/resources/images/selectAll.png</normaloff>:/resources/images/selectAll.png</iconset>
+                   <normaloff>:/images/selectAll.png</normaloff>:/images/selectAll.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -161,7 +161,7 @@
                  </property>
                  <property name="icon">
                   <iconset resource="resources.qrc">
-                   <normaloff>:/resources/images/invert.svg</normaloff>:/resources/images/invert.svg</iconset>
+                   <normaloff>:/images/invert.svg</normaloff>:/images/invert.svg</iconset>
                  </property>
                 </widget>
                </item>
@@ -208,7 +208,7 @@
                 </property>
                 <property name="icon">
                  <iconset resource="resources.qrc">
-                  <normaloff>:/resources/images/go-left.png</normaloff>:/resources/images/go-left.png</iconset>
+                  <normaloff>:/images/go-left.png</normaloff>:/images/go-left.png</iconset>
                 </property>
                </widget>
               </item>
@@ -252,7 +252,7 @@
                 </property>
                 <property name="icon">
                  <iconset resource="resources.qrc">
-                  <normaloff>:/resources/images/go-right.png</normaloff>:/resources/images/go-right.png</iconset>
+                  <normaloff>:/images/go-right.png</normaloff>:/images/go-right.png</iconset>
                 </property>
                </widget>
               </item>
@@ -509,7 +509,7 @@
   <action name="m_quitAct">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/resources/images/exit.png</normaloff>:/resources/images/exit.png</iconset>
+     <normaloff>:/images/exit.png</normaloff>:/images/exit.png</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -532,7 +532,7 @@
   <action name="m_newGameAct">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+     <normaloff>:/images/add_round.png</normaloff>:/images/add_round.png</iconset>
    </property>
    <property name="text">
     <string>New Game</string>
@@ -544,7 +544,7 @@
   <action name="m_newGmAct">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/resources/images/add_round.png</normaloff>:/resources/images/add_round.png</iconset>
+     <normaloff>:/images/add_round.png</normaloff>:/images/add_round.png</iconset>
    </property>
    <property name="text">
     <string>New Gm</string>
@@ -607,7 +607,7 @@
   <action name="actionPreferences">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/resources/images/settings.png</normaloff>:/resources/images/settings.png</iconset>
+     <normaloff>:/images/settings.png</normaloff>:/images/settings.png</iconset>
    </property>
    <property name="text">
     <string>Preferences</string>

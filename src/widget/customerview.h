@@ -58,15 +58,15 @@ protected:
 
 private:
     ScenarioItemDelegate* m_scenarioDelegate= nullptr;
-    QAbstractItemModel* m_model;
-    QLabel* m_label;
-    QQmlApplicationEngine* m_engine;
-    QQuickWindow* m_window;
-    QTimer* m_timer;
+    QAbstractItemModel* m_model= nullptr;
+    QLabel* m_label= nullptr;
+    QQmlApplicationEngine* m_engine= nullptr;
+    QQuickWindow* m_window = nullptr;
+    QTimer* m_timer= nullptr;
     qreal m_ratioImage;
     qreal m_ratioImageBis;
-    QScrollArea* m_widget;
-    Ui::MainWindow* m_ui;
+    QScrollArea* m_widget= nullptr;
+    Ui::MainWindow* m_ui= nullptr;
 };
 
 #endif // CUSTOMERVIEW_H

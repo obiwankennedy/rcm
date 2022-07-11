@@ -25,6 +25,7 @@
 #include "scenarioitemdelegate.h"
 #include "scenariomodel.h"
 #include <QDebug>
+#include <QStyleOptionProgressBar>
 
 #define FACTOR_SIZE 3
 
@@ -119,7 +120,7 @@ void ScenarioItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
                 QString str=minutesToHours(tmp.getRestingTimeInSecond()/60,tr("End in"));
                 style->drawItemText(painter,itemRect,Qt::AlignRight | Qt::AlignBottom ,option.palette,true,str);
 
-                QStyleOptionProgressBarV2 progressBarStyleOption;
+                QStyleOptionProgressBar progressBarStyleOption;
                 QRect progressBarRect;
 
 

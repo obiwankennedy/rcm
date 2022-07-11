@@ -47,7 +47,7 @@ public:
     QString getDescription();
     QString getGameType();
     QString getPixmapUrl();
-    const QPixmap* getPixmap();
+    const QPixmap getPixmap();
 
     void setTitle(QString);
     void setPunchLine(QString);

@@ -39,7 +39,7 @@ CustomerView::CustomerView(GameImageProvider* gameImgProvider, QAbstractItemMode
     m_engine->rootContext()->setContextProperty("_myModel", m_model);
     m_engine->addImageProvider(QString("game"), gameImgProvider);
 
-    m_engine->load(QUrl("qrc:/resources/qml/listView.qml"));
+    m_engine->load(QUrl("qrc:/qml/listView.qml"));
 
     // setResizeMode(QQuickView::SizeRootObjectToView);
     QObject* root= m_engine->rootObjects().first();

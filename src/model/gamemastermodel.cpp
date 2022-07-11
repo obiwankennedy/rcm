@@ -41,7 +41,7 @@ QVariant GameMasterModel::data(const QModelIndex& index, int role) const
     {
         return m_gameMasterList[index.row()]->getNickName();
     }
-    else if(Qt::BackgroundColorRole == role)
+    else if(Qt::BackgroundRole == role)
     {
         /// @todo puts image
         if(!m_gameMasterList[index.row()]->isPresent())

@@ -568,6 +568,7 @@ void LocalisationView::setProperties()
         m_view->ensureVisible(m_scenes.at(0)->sceneRect(), 0, 0);
     }
 }
+
 bool LocalisationView::wheelEventForView(QWheelEvent* event)
 {
     if(event->modifiers() & Qt::ShiftModifier)
@@ -578,7 +579,7 @@ bool LocalisationView::wheelEventForView(QWheelEvent* event)
         // Scale the view / do the zoom
         double scaleFactor= 1.1;
 
-        if((event->delta() > 0) && (m_counterZoom < 20))
+        if((event->angleDelta().y() > 0) && (m_counterZoom < 20))
         {
             m_view->scale(scaleFactor, scaleFactor);
             ++m_counterZoom;

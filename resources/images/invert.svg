@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+
+<rect x="0" y="0" width="128" height="128" style="fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)"/>
+<polygon points="128,0 128,128 0,128" style="fill:rgb(255,255,255);stroke:rgb(255,255,255);stroke-width:0"/>
+<g stroke="none" fill="black">
+<path d="M 32 96 A 32 32, 0, 0 0, 96 32"/>
+</g>
+<g stroke="none" fill="white">
+<path d="M 96 32  A 32 32, 0, 0 0, 32 96"/>
+</g>
+</svg>
+
+
+<!--
+
+a64 64, 0, 0, 1 96,32 z
+
+l32,-32
+l64,64
+
+
+-->

@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/listView.qml</file>
+        <file>translation/rcm_fr.qm</file>
+        <file>images/nologo.png</file>
+        <file>images/go-left.png</file>
+        <file>images/go-right.png</file>
+        <file>images/cadenas_closed.png</file>
+        <file>images/cadenas_open.png</file>
+        <file>images/symbol.png</file>
+        <file>images/add_round.png</file>
+        <file>images/delete.png</file>
+        <file>images/exit.png</file>
+        <file>images/invert.svg</file>
+        <file>images/selectAll.png</file>
+        <file>images/settings.png</file>
+    </qresource>
+</RCC>
